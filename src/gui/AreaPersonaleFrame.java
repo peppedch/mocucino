@@ -248,7 +248,7 @@ public class AreaPersonaleFrame extends JFrame {
         //TEST ESEMPIO, POI LO TOLGO PER PROVARE DON DB
         // MOCK: raccolte dell’utente, POI LI CARICHEREMO CON RaccoltaDAO.getRaccolteByUtenteId(...)
         raccolteModel.addElement("Dolci al cucchiaio");
-        raccolteModel.addElement("Pranzo veloce");
+        raccolteModel.addElement("veloce");
         raccolteModel.addElement("Cene leggere");
 
         //LISTENER SE CLICCO SU UNA RICETTA
