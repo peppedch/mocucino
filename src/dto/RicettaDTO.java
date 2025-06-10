@@ -22,6 +22,17 @@ public class RicettaDTO {
         return idRaccolta;
     }
 
+    private boolean visibilita;
+
+    public boolean getVisibilita() {
+        return visibilita;
+    }
+
+    public void setVisibilita(boolean visibilita) {
+        this.visibilita = visibilita;
+    }
+
+
 
 
     public RicettaDTO(String titolo, String descrizione, int tempoPreparazione,

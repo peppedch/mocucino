@@ -298,6 +298,8 @@ public class NuovaRicettaFrame extends JFrame {
                     nomeRaccoltaSelezionato = "Default";
                     idRaccolta = controller.getIdRaccoltaByTitolo("Default", username);
                 }
+                boolean visibilita = pubblica_button.isSelected();  // true se è selezionato "Pubblica", false se "Privata"
+
 
                 //FINO AD ORA ABBIAMO SOLO "SELEZIONATO" LA RISPETTIVA RACCOLTA. ORA DEVO SALVARE LA RICETTA NORMALMENTE, MA ANCHE AGGIUNGERLA ALLA RISPETTIVA RACCOLTA DESIDERATA.
                 //questo viene fatto esattamente a partire dal metodo entity.Piattaforma.creaRicetta(), richiamato però dal controller, rispettando i layer bced.
@@ -309,6 +311,7 @@ public class NuovaRicettaFrame extends JFrame {
                         ingredienti,
                         tagSelezionati
                 );
+                nuovaRicetta.setVisibilita(visibilita);
 
                 //passo a Ricetta DTO anche la raccolta selezionata ovviamente
                 nuovaRicetta.setNomeRaccolta(nomeRaccoltaSelezionato);

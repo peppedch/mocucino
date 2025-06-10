@@ -25,7 +25,7 @@ public class RicettaDAO {
             stmt.setString(1, dto.getTitolo());
             stmt.setString(2, dto.getDescrizione());
             stmt.setInt(3, dto.getTempoPreparazione());
-            stmt.setBoolean(4, true); // per ora fissi visibilità e autore
+            stmt.setBoolean(4, dto.getVisibilita()); // 
             stmt.setString(5, dto.getAutoreUsername()); //
             stmt.setInt(6, dto.getIdRaccolta());
 
