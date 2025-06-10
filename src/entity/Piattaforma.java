@@ -113,6 +113,13 @@ public class Piattaforma {
         return dao.getIdRaccoltaByTitolo(titolo, username);
     }
 
+    //invocato a riga 39 di controller.GestoreController
+    public List<RicettaDTO> getUltime5RicettePubbliche(String username) {
+        RicettaDAO dao = new RicettaDAO();
+        return dao.getUltime5RicettePubbliche(username);
+    }
+
+
 
 
 

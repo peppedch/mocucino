@@ -34,5 +34,12 @@ public class GestoreController {
     //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user
 
 
+    //invocato a riga 158 di gui.FeedFrame
+    public List<RicettaDTO> getRicetteRecenti(String username) {
+        return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
+    }
+
+
+
 }
 

@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
+import controller.GestoreController;
 import dto.CommentoDTO;
+import dto.RicettaDTO;
+
 import java.awt.Font;
 
 
@@ -151,14 +155,26 @@ public class FeedFrame extends JFrame {
         contentPane.setLayout(gl_contentPane);
 
         //ESEMPIO PER PROVARE, PI VEDIAMO CON accesso al DB, mostrare solo una vista compatta delle ricette nel feed, ora implemento un modom che cliccando su una rucetta mostra tutto!
-        String[] colonne = {"Titolo", "Autore", "Like"};
-        Object[][] dati = {
-                {"Tiramisù", "Luca", 15},
-                {"Carbonara", "Giulia", 22},
-                {"Pizza Margherita", "Marco", 30}
-        };
+        GestoreController controller = new GestoreController();
+        List<RicettaDTO> recenti = controller.getRicetteRecenti(username);  //da qui si capisce l'importanza di passare lo username, per mostrare le ricette recenti di ALTRI UTENTI TRANNE QUELLA dell'utente corrente che ha effettuato il login. basta vedere la query finale e si capisce
 
-        table.setModel(new javax.swing.table.DefaultTableModel(dati, colonne));
+        for (RicettaDTO ricetta : recenti) {
+            System.out.println("Titolo: " + ricetta.getTitolo() + " | Autore: " + ricetta.getAutoreUsername());     //print debug per vedere che le ricette sono state recuperate correttamente
+        }
+
+        String[] colonne = {"Titolo", "Autore", "Tempo"};
+        DefaultTableModel model = new DefaultTableModel(colonne, 0);
+
+        for (RicettaDTO r : recenti) {
+            Object[] row = { r.getTitolo(), r.getAutoreUsername(), r.getTempoPreparazione() };
+            model.addRow(row);
+        }
+
+        table.setModel(model);
+
+
+
+        //table.setModel(new javax.swing.table.DefaultTableModel(dati, colonne));
 
 
         //inizialmente ho usato mouseclicked

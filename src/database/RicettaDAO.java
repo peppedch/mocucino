@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.RicettaDTO;   // solo in IngredienteDAO
 
@@ -25,7 +27,7 @@ public class RicettaDAO {
             stmt.setString(1, dto.getTitolo());
             stmt.setString(2, dto.getDescrizione());
             stmt.setInt(3, dto.getTempoPreparazione());
-            stmt.setBoolean(4, dto.getVisibilita()); // 
+            stmt.setBoolean(4, dto.getVisibilita()); //
             stmt.setString(5, dto.getAutoreUsername()); //
             stmt.setInt(6, dto.getIdRaccolta());
 
@@ -43,5 +45,42 @@ public class RicettaDAO {
 
         return generatedId;
     }
+
+    //invocato a riga 119 di entity.Piattaforma
+    public List<RicettaDTO> getUltime5RicettePubbliche(String username) {
+        List<RicettaDTO> ricette = new ArrayList<>();
+
+        String query = "SELECT idRicetta, titolo, procedimento, tempo, dataPubblicazione, Utenti_username " +
+                "FROM Ricette " +
+                "WHERE visibilita = true AND Utenti_username != ? " +
+                "ORDER BY dataPubblicazione DESC LIMIT 5";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RicettaDTO dto = new RicettaDTO(
+                        rs.getString("titolo"),
+                        rs.getString("procedimento"),
+                        rs.getInt("tempo"),
+                        null, // ingredienti da caricare a parte se necessario
+                        null  // tag da caricare a parte se necessario
+                );
+                dto.setAutoreUsername(rs.getString("Utenti_username"));
+                ricette.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ricette;
+    }
+
+
 
 }
