@@ -3,12 +3,15 @@ package gui;
 //anche qui importati i vari moduli javax.swing e il modulo CommentoDTO nel package dto da me creato
 //serve per visualizzare i 3 commenti recenti una volta cliccata la ricetta da feed (e quindi ora ci troviamo nella ricetta in dettaglio comn tutto)
 //nel costruttore sotto infatti c'è List<CommentoDTO> commentiRecenti
+import controller.GestoreController;
 import dto.CommentoDTO;
+import dto.RicettaDTO;
 
 
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DettaglioRicettaFrame extends JFrame {
@@ -24,52 +27,71 @@ public class DettaglioRicettaFrame extends JFrame {
     private int tempoPreparazione;
     private List<String> tag;
 
+    private RicettaDTO ricetta;     //mi serve per avere un "riferimento " alla ricetta  da aprire nel dettaglio.
+    private String username; //  utente loggato, NON autore della ricetta, passato sempre da feedframe a partire dal login.
+
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    DettaglioRicettaFrame frame = new DettaglioRicettaFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        // Creo una lista di ingredienti fittizi
+        List<dto.IngredienteDTO> ingredienti = new ArrayList<>();
+        ingredienti.add(new dto.IngredienteDTO("Farina", "200", "g"));
+        ingredienti.add(new dto.IngredienteDTO("Acqua", "100", "ml"));
+        ingredienti.add(new dto.IngredienteDTO("Sale", "1", "pz"));
+
+        // Creo una lista di tag fittizi
+        List<String> tag = new ArrayList<>();
+        tag.add("Dolce");
+        tag.add("Salutare");
+
+        // Creo una RicettaDTO fittizia, QUESTO SOLO PER QUESTO MAIN, OPER RUNNARLO E TESTARLO, MA IL VERO OGGETTO RICETTA DTO è PASSATO DA FEEDFRAME!
+        RicettaDTO ricetta = new RicettaDTO(
+            "Paneveloce",
+            "Mescola .",
+            30,
+            ingredienti,
+            tag
+        );
+
+        String username = "utenteprova"; // Simulazione di un utente loggato. Once again, i veri parametri sono passati da FeedFrame e il costruttore da vedere è quello sotto, questo è il main per testare.
+
+        EventQueue.invokeLater(() -> {
+            try {
+                DettaglioRicettaFrame frame = new DettaglioRicettaFrame(ricetta, username);
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
+
+
     /**
      * Create the frame.
      */
-    public DettaglioRicettaFrame() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public DettaglioRicettaFrame(RicettaDTO ricetta, String username) {
+
+        this.ricetta = ricetta; // Salvo la ricetta passata come parametro
+        this.username = username; // Salvo l'username dell'utente loggato passato come parametro.
+
+        this.titolo = ricetta.getTitolo();
+        this.autore = ricetta.getAutoreUsername();
+        this.like = ricetta.getNumeroLike();
+        this.ingredienti = ricetta.getIngredientiAsString();    // Converto lista di IngredientiDTO in stringa leggibile
+        this.descrizione = ricetta.getDescrizione();
+        this.tempoPreparazione = ricetta.getTempoPreparazione();
+        this.tag = ricetta.getTag();
+
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  //chiudo solo finestra corrente, non tutto il programma->altrimenti EXIT_ON_CLOSE
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));	//meglio una disposizione verticale in caso di commenti lunghi
-
-    }
-
-    //questo sopra è il costruttore di default di winodows builder
-    //Costruttore personalizzato per aprire il dettaglio con i dati:
-
-    public DettaglioRicettaFrame(String titolo, String autore, int like, String ingredienti,
-                                 String descrizione, int tempoPreparazione, List<String> tag, List<CommentoDTO> commentiRecenti) {
-
-        this(); // richiama il costruttore base (mantiene compatibilità con Design)
-
-        // Assegna ai campi interni
-        this.titolo = titolo;
-        this.autore = autore;
-        this.like = like;
-        this.ingredienti = ingredienti;
-        this.descrizione = descrizione;
-        this.tempoPreparazione = tempoPreparazione;
-        this.tag = tag;
 
 
         // Costruzione UI dinamica
@@ -99,22 +121,43 @@ public class DettaglioRicettaFrame extends JFrame {
         contentPane.add(new JLabel("Tempo di preparazione: " + tempoPreparazione + " min"));
         contentPane.add(new JLabel("Tag: " + String.join(", ", tag)));
 
-        //per i commenti recenti
+        // COMMENTI RECENTI
         contentPane.add(new JLabel("Commenti recenti:"));
-        if (commentiRecenti == null || commentiRecenti.isEmpty()) {
-            contentPane.add(new JLabel("Nessun commento disponibile."));
-        } else {
-            for (CommentoDTO c : commentiRecenti) {
-                String line = "- " + c.getAutore() + " (" + c.getData() + "): " + c.getTesto();
-                contentPane.add(new JLabel(line));
+
+        List<CommentoDTO> commenti = ricetta.getCommentiRecenti();
+        if (commenti != null && !commenti.isEmpty()) {
+            for (CommentoDTO c : commenti) {
+                JTextArea area = new JTextArea(c.getAutore() + " (" + c.getData() + "): " + c.getTesto());
+                area.setLineWrap(true);
+                area.setWrapStyleWord(true);
+                area.setEditable(false);            //ovviamente i commenti non sono editabili
+                area.setBackground(contentPane.getBackground());
+                area.setAlignmentX(Component.LEFT_ALIGNMENT);
+                area.setMaximumSize(new Dimension(400, 40)); // limita larghezza e altezza  senno si allarga troppo
+
+                contentPane.add(area);
+                contentPane.add(Box.createRigidArea(new Dimension(0, 5)));
             }
+        } else {
+            contentPane.add(new JLabel("Nessun commento disponibile."));
         }
+
 
         //  Sezione Interazione: Like + Commento
         JButton btnLike = new JButton("Metti Like");
         btnLike.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         contentPane.add(btnLike);
+
+        //LISTENER PER IL LIKE
+        btnLike.addActionListener(e -> {
+            GestoreController controller = new GestoreController();
+            boolean likeAggiunto = controller.toggleLike(username, ricetta.getIdRicetta());     //RICORDA: ricetta l'oggetto DTO che ho passato al costruttore e lo stesso username
+
+            ricetta.setNumeroLike(ricetta.getNumeroLike() + (likeAggiunto ? 1 : -1));
+            JOptionPane.showMessageDialog(this,
+                    likeAggiunto ? "Hai messo like!" : "Like rimosso.");
+        });
 
         JTextField txtCommento = new JTextField();
         txtCommento.setMaximumSize(new Dimension(400, 25));
@@ -125,20 +168,26 @@ public class DettaglioRicettaFrame extends JFrame {
         btnCommenta.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPane.add(btnCommenta);
 
-        // Azioni (placeholder)	//fare il check se gia l 'ha messso e toggle che si leva se clixìcca di nuovo
-        btnLike.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Hai messo Like a: " + titolo);
-        });
-
+        //LISTENER PER IL COMMENTO
         btnCommenta.addActionListener(e -> {
-            String commento = txtCommento.getText();
-            if (commento.isBlank()) {
+            String testo = txtCommento.getText().trim();
+            if (testo.isBlank()) {
                 JOptionPane.showMessageDialog(this, "Il commento non può essere vuoto.");
+                return;
+            }
+
+            GestoreController controller = new GestoreController();
+            boolean successo = controller.aggiungiCommento(username, ricetta.getIdRicetta(), testo);
+
+            if (successo) {
+                JOptionPane.showMessageDialog(this, "Commento aggiunto!");
+                txtCommento.setText("");  // pulisci il campo
+                ricetta.setNumCommenti(ricetta.getNumCommenti() + 1);  // aggiorna UI se vuoi
             } else {
-                JOptionPane.showMessageDialog(this, "Hai commentato: \"" + commento + "\"");
-                txtCommento.setText("");
+                JOptionPane.showMessageDialog(this, "Errore nell'aggiunta del commento.");
             }
         });
+
 
         contentPane.revalidate();
         contentPane.repaint();

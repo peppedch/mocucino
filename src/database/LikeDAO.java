@@ -1,0 +1,84 @@
+package database;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class LikeDAO {
+
+    public int getNumeroLikePerRicetta(int ricettaId) {
+        String query = "SELECT COUNT(*) FROM Likes WHERE ricette_idRicetta = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, ricettaId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //richiamato sotto per toggle like
+    public boolean utenteHaGiaMessoLike(String username, int idRicetta) {
+        String query = "SELECT * FROM Likes WHERE utenti_username = ? AND ricette_idRicetta = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setInt(2, idRicetta);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // true se esiste, ha messo like.
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;               //vuol dire che non esiste, quindi non ha messo like
+        }
+    }
+
+        //invocato a riga 129 di controller.GestoreController
+    public boolean toggleLike(String username, int idRicetta) {
+        if (utenteHaGiaMessoLike(username, idRicetta)) {
+            String delete = "DELETE FROM Likes WHERE utenti_username = ? AND ricette_idRicetta = ?";
+            try (Connection conn = DBManager.openConnection();
+                 PreparedStatement stmt = conn.prepareStatement(delete)) {
+                stmt.setString(1, username);
+                stmt.setInt(2, idRicetta);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+            aggiornaConteggioLike(idRicetta, -1);   //implementato sotto, private perchè non c'è bisogno di fornirlo all'esterno tipo API. con delta -1 lo tolgo
+            return false;
+        } else {
+            String insert = "INSERT INTO Likes (utenti_username, ricette_idRicetta) VALUES (?, ?)";
+            try (Connection conn = DBManager.openConnection();
+                 PreparedStatement stmt = conn.prepareStatement(insert)) {
+                stmt.setString(1, username);
+                stmt.setInt(2, idRicetta);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+            aggiornaConteggioLike(idRicetta, 1);    //secondo caso: con delta=+1 lo aggiungo!
+            return true;
+        }
+    }
+
+    // Metodo privato per aggiornare il conteggio dei like per una ricetta, USATO SOLO SOPRA!!!!!!!!!! riga 53 e 66 per i due casi di toggleLike
+    private void aggiornaConteggioLike(int idRicetta, int delta) {
+        String update = "UPDATE Ricette SET numLike = numLike + ? WHERE idRicetta = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(update)) {
+            stmt.setInt(1, delta);
+            stmt.setInt(2, idRicetta);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

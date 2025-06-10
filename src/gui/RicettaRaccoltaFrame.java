@@ -79,8 +79,8 @@ public class RicettaRaccoltaFrame extends JFrame {
                 commenti.add(new CommentoDTO("Giulia", "Facilissimo e veloce",LocalDate.of(2025, 7, 2)));
 
 
-                DettaglioRicettaFrame frame = new DettaglioRicettaFrame(titolo, autore, like, ingredienti, descrizione, tempo, tag, commenti);
-                frame.setVisible(true);
+                //DettaglioRicettaFrame frame = new DettaglioRicettaFrame(titolo, autore, like, ingredienti, descrizione, tempo, tag, commenti);
+                //frame.setVisible(true);
             }
         });
     }

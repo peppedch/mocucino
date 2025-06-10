@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import dto.CommentoDTO;
+import dto.IngredienteDTO;
 import dto.RicettaDTO;   // solo in IngredienteDAO
 
 
@@ -51,26 +53,36 @@ public class RicettaDAO {
         List<RicettaDTO> ricette = new ArrayList<>();
 
         String query = "SELECT idRicetta, titolo, procedimento, tempo, dataPubblicazione, Utenti_username " +
-                "FROM Ricette " +
-                "WHERE visibilita = true AND Utenti_username != ? " +
+                "FROM Ricette WHERE visibilita = true AND Utenti_username != ? " +
                 "ORDER BY dataPubblicazione DESC LIMIT 5";
 
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                RicettaDTO dto = new RicettaDTO(
-                        rs.getString("titolo"),
-                        rs.getString("procedimento"),
-                        rs.getInt("tempo"),
-                        null, // ingredienti da caricare a parte se necessario
-                        null  // tag da caricare a parte se necessario
-                );
-                dto.setAutoreUsername(rs.getString("Utenti_username"));
+                int idRicetta = rs.getInt("idRicetta");
+                String titolo = rs.getString("titolo");
+                String procedimento = rs.getString("procedimento");
+                int tempo = rs.getInt("tempo");
+                String autore = rs.getString("Utenti_username");
+
+                // Recupera tag e ingredienti
+                List<IngredienteDTO> ingredienti = new IngredienteDAO().getIngredientiByRicetta(idRicetta);
+                List<String> tag = new TagDAO().getTagByRicetta(idRicetta);
+
+                //  Recupera i 3 commenti recenti
+                List<CommentoDTO> commenti = new CommentoDAO().getUltimi3CommentiPerRicetta(idRicetta);
+
+                RicettaDTO dto = new RicettaDTO(titolo, procedimento, tempo, ingredienti, tag);
+                dto.setIdRicetta(idRicetta);
+                dto.setAutoreUsername(autore);
+                dto.setNumeroLike(new LikeDAO().getNumeroLikePerRicetta(idRicetta));
+                dto.setCommentiRecenti(new CommentoDAO().getUltimi3CommentiPerRicetta(idRicetta));
+
+
                 ricette.add(dto);
             }
 
@@ -79,9 +91,12 @@ public class RicettaDAO {
         }
 
         return ricette;
+
     }
 
-    //invocato a riga 125 di entity.Piattaforma
+
+    //invocato a riga 125 di entity.Piattaforma. DA CANCELLARE, NON SERVE PIU'!
+    /*
     public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
         RicettaDTO dto = null;
         String query = "SELECT idRicetta, procedimento, tempo FROM Ricette WHERE titolo = ? AND Utenti_username = ?";
@@ -111,7 +126,7 @@ public class RicettaDAO {
         return dto;
     }
 
-
+*/
 
 
 }

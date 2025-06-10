@@ -34,16 +34,28 @@ public class GestoreController {
     //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user
 
 
-    //invocato a riga 158 di gui.FeedFrame
+    //invocato a riga 159 di gui.FeedFrame
     public List<RicettaDTO> getRicetteRecenti(String username) {
         return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
     }
 
-    //invocato a riga 200 di gui.FeedFrame
+    //invocato a riga 199 di gui.FeedFrame
+    /* DA ELIMINARE, NON USATO
     public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
         return Piattaforma.getInstance(null, null).getRicettaCompletaByTitoloEAutore(titolo, autore);
     }
 
+*/
+
+    //invocato a riga 130 di gui.DettaglioRicettaFrame
+    public boolean toggleLike(String username, int idRicetta) {
+        return Piattaforma.getInstance(null, null).gestisciToggleLike(username, idRicetta);
+    }
+
+    //invocato a riga 155 di gui.DettaglioRicettaFrame
+    public boolean aggiungiCommento(String username, int idRicetta, String testo) {
+        return Piattaforma.getInstance(null, null).aggiungiCommento(username, idRicetta, testo);
+    }
 
 
 }

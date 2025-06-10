@@ -154,38 +154,37 @@ public class FeedFrame extends JFrame {
         scrollPane.setViewportView(table);
         contentPane.setLayout(gl_contentPane);
 
-        //ESEMPIO PER PROVARE, PI VEDIAMO CON accesso al DB, mostrare solo una vista compatta delle ricette nel feed, ora implemento un modom che cliccando su una rucetta mostra tutto!
+        // Inizializzo il controller per recuperare le ricette recenti
         GestoreController controller = new GestoreController();
-        List<RicettaDTO> recenti = controller.getRicetteRecenti(username);  //da qui si capisce l'importanza di passare lo username, per mostrare le ricette recenti di ALTRI UTENTI TRANNE QUELLA dell'utente corrente che ha effettuato il login. basta vedere la query finale e si capisce
+        List<RicettaDTO> recenti = controller.getRicetteRecenti(username);
 
-        for (RicettaDTO ricetta : recenti) {
-            System.out.println("Titolo: " + ricetta.getTitolo() + " | Autore: " + ricetta.getAutoreUsername());     //print debug per vedere che le ricette sono state recuperate correttamente
+        for (RicettaDTO ricetta : recenti) {    //debug, stampo le ricette recenti
+            System.out.println("Titolo: " + ricetta.getTitolo() + " | Autore: " + ricetta.getAutoreUsername());
         }
 
         String[] colonne = {"Titolo", "Autore", "Tempo"};
-        DefaultTableModel model = new DefaultTableModel(colonne, 0);
 
-        for (RicettaDTO r : recenti) {
-            Object[] row = { r.getTitolo(), r.getAutoreUsername(), r.getTempoPreparazione() };
-            model.addRow(row);
+        // Creo un array di Object[][] dai dati
+        Object[][] dati = new Object[recenti.size()][3];
+        for (int i = 0; i < recenti.size(); i++) {
+            RicettaDTO r = recenti.get(i);
+            dati[i][0] = r.getTitolo();
+            dati[i][1] = r.getAutoreUsername();
+            dati[i][2] = r.getTempoPreparazione();
         }
 
-        table.setModel(model);
+        // Imposto il modello non editabile
+        table.setModel(new javax.swing.table.DefaultTableModel(dati, colonne) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
 
 
 
-        //table.setModel(new javax.swing.table.DefaultTableModel(dati, colonne));
 
-
-        //inizialmente ho usato mouseclicked
-		/*
-		 table.addMouseListener(new java.awt.event.MouseAdapter() {
-    public void mouseClicked(java.awt.event.MouseEvent evt) {
-       e il resto uguale come quello sotto, unica differenza le prime due righe.
-});
-		 */
-
-        //ma così permette di renderlo compatibile anche a versione mobile come richiesto.
+        // Aggiungo un listener alla tabella per gestire il click su una riga
 
         //MODO PER, UNA VOLTA VISUALIZZATA UNA VISTA DELLE RICETTE, CLICCANDONE UNA ESCE TUTTO->DETTAGLIORICETTAFRAME!
 
@@ -197,12 +196,13 @@ public class FeedFrame extends JFrame {
                     String autore = table.getValueAt(rigaSelezionata, 1).toString();
 
 
-                    RicettaDTO dettagliata = controller.getRicettaCompletaByTitoloEAutore(titolo, autore);
+                    RicettaDTO selezionata = recenti.get(rigaSelezionata);
+                    DettaglioRicettaFrame dettaglio = new DettaglioRicettaFrame(selezionata, username); //passo la ricetta selezionata e l'username dell'utente che ha cliccato, cioè quello attualmente loggato che sta usufruendo della piattforma. mi servira per commento e like!
+                    dettaglio.setVisible(true);
+
 
 
                     //ECCO QUI. GUARDARE FRAME "DettaglioRicettaFrame.java", stai instanziando un oggeto di DettaglioRicettaFrame per vedere la ricetta in dettaglio
-                    DettaglioRicettaFrame dettaglio = new DettaglioRicettaFrame(dettagliata);
-                    dettaglio.setVisible(true);
                 }
             }
         });

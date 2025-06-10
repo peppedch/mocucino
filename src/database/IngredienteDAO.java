@@ -80,11 +80,12 @@ public class IngredienteDAO {
         return success;
     }
 
-    //invocato a riga 102 di RICETTADAO, per recuperare gli ingredienti di una ricetta!!!!!!!!!!!
-    public List<String> getIngredientiByRicetta(int idRicetta) {
-        List<String> ingredienti = new ArrayList<>();
+    //invocato a riga 102 di RICETTADAO, per recuperare gli ingredienti di una ricetta!!!!
+    public List<IngredienteDTO> getIngredientiByRicetta(int idRicetta) {
+        List<IngredienteDTO> ingredienti = new ArrayList<>();
 
-        String query = "SELECT i.nome FROM ingredienti i " +
+        String query = "SELECT i.nome, ri.quantità, ri.unità " +
+                "FROM ingredienti i " +
                 "JOIN ricette_has_ingredienti ri ON i.idIngrediente = ri.ingredienti_idIngrediente " +
                 "WHERE ri.ricette_idRicetta = ?";
 
@@ -95,7 +96,10 @@ public class IngredienteDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                ingredienti.add(rs.getString("nome"));
+                String nome = rs.getString("nome");
+                String quantita = rs.getString("quantità");
+                String unita = rs.getString("unità");
+                ingredienti.add(new IngredienteDTO(nome, quantita, unita));
             }
 
         } catch (SQLException e) {

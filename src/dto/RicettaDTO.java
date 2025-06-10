@@ -8,6 +8,36 @@ public class RicettaDTO {
     private int tempoPreparazione;
     private List<IngredienteDTO> ingredienti;
     private List<String> tag;
+    private int numeroLike;
+    private List<CommentoDTO> commentiRecenti;
+    private int numCommenti;
+
+    public int getNumCommenti() {
+        return numCommenti;
+    }
+
+    public void setNumCommenti(int numCommenti) {
+        this.numCommenti = numCommenti;
+    }
+
+
+    public int getNumeroLike() { return numeroLike; }
+    public void setNumeroLike(int numeroLike) { this.numeroLike = numeroLike; }
+
+    public void setCommentiRecenti(List<CommentoDTO> c) { this.commentiRecenti = c; }
+    public List<CommentoDTO> getCommentiRecenti() { return commentiRecenti; }
+
+    private int idRicetta;
+
+    public int getIdRicetta() {
+        return idRicetta;
+    }
+
+    public void setIdRicetta(int idRicetta) {
+        this.idRicetta = idRicetta;
+    }
+
+
 
     private String nomeRaccolta;
 
@@ -102,4 +132,24 @@ public class RicettaDTO {
 
         return sb.toString();
     }
+
+    public String getIngredientiAsString() {
+        if (ingredienti == null || ingredienti.isEmpty()) {
+            return "Nessun ingrediente";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (dto.IngredienteDTO ing : ingredienti) {
+            sb.append(ing.getNome())
+                    .append(" (")
+                    .append(ing.getQuantita())
+                    .append(" ")
+                    .append(ing.getUnita())
+                    .append("), ");
+        }
+
+        // Rimuove l'ultima virgola e spazio
+        return sb.substring(0, sb.length() - 2);
+    }
+
 }

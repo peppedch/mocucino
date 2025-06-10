@@ -82,7 +82,7 @@ public class LoginFrame extends JFrame {
                 if (success) {
                     // POI prendi anche l'oggetto. IMPORTANTE PRELEVARE USERNAME
                     Utente utente = controller.getUtenteAutenticato(email, password);
-                    String usernameReale = utente.getUsername(); //username pk del database, mostro il feed a lui.
+                    String usernameReale = utente.getUsername(); //username pk del database, mostro il feed a lui. FONDAMENTALE
 
                     //per debug
                     System.out.println("Autore username: " + usernameReale);

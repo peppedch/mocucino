@@ -46,13 +46,13 @@ public class TagDAO {
         return success;
     }
 
-    //invocato a riga 69 di entity.Piattaforma, per recuperare i tag associati alla ricetta
+    //invocato a riga 103 di RICETTADAO, per recuperare i tag associati alla ricetta
     public List<String> getTagByRicetta(int idRicetta) {
         List<String> tagList = new ArrayList<>();
 
         String query = "SELECT t.nome FROM tags t " +
-                "JOIN ricette_has_tag rt ON t.idTag = rt.idTag " +
-                "WHERE rt.idRicetta = ?";
+                "JOIN ricette_has_tags rt ON t.idTag = rt.tags_idTag " +
+                "WHERE rt.ricette_idRicetta = ?";
 
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -61,7 +61,7 @@ public class TagDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                tagList.add(rs.getString("nome"));
+                tagList.add(rs.getString("nome"));      //sto macello per mostrare i tag associati alla ricetta per i dettagli della ricetta
             }
 
         } catch (SQLException e) {

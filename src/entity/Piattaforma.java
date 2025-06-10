@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import database.UtenteDAO;
+import database.*;
 
-import database.RicettaDAO;
-import database.TagDAO;
-import database.IngredienteDAO;
 import dto.RicettaDTO;
 import dto.IngredienteDTO;
-import database.RaccoltaDAO;
 
 
 public class Piattaforma {
@@ -120,12 +116,24 @@ public class Piattaforma {
     }
 
     //invocato a riga 44 di controller.GestoreController
+    /* DA ELIMINARE, NON USATO
     public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
         RicettaDAO dao = new RicettaDAO();
         return dao.getRicettaCompletaByTitoloEAutore(titolo, autore);
     }
+*/
 
+    //invocato a riga 52 di controller.GestoreController
+    public boolean gestisciToggleLike(String username, int idRicetta) {
+        LikeDAO dao = new LikeDAO();
+        return dao.toggleLike(username, idRicetta); // true se aggiunto, false se rimosso
+    }
 
+    //invocato a riga 57 di controller.GestoreController
+    public boolean aggiungiCommento(String username, int idRicetta, String testo) {
+        CommentoDAO dao = new CommentoDAO();
+        return dao.inserisciCommento(username, idRicetta, testo);
+    }
 
 
 
