@@ -3,7 +3,6 @@ package gui;
 import java.awt.EventQueue;
 import javax.swing.ButtonGroup;
 
-import database.RaccoltaDAO;
 import dto.IngredienteDTO;
 import controller.GestoreController;
 
@@ -16,9 +15,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import javax.swing.BoxLayout;
-import java.awt.Checkbox;
-import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -59,11 +55,11 @@ public class NuovaRicettaFrame extends JFrame {
     private JCheckBox chechkboxdieta;
     private JCheckBox chckbox_spuntino;
     private JCheckBox chckbox_vegetariano;
-    private JCheckBox chckbox_pranzoveloce;
-    private JCheckBox chckbox_glutenfree;
+    private JCheckBox chckbox_veloce;
+    private JCheckBox chckbox_senzaglutine;
     private JCheckBox chckbox_primopiatto;
-    private JCheckBox chckbox_ospitiacena;
-    private JCheckBox chckbx_contorno;
+    private JCheckBox chckbox_vegano;
+    private JCheckBox chckbx_italiano;
 
     private JLabel titolo_label;
     private JLabel descrizione_label;
@@ -182,14 +178,14 @@ public class NuovaRicettaFrame extends JFrame {
                 List<String> tagSelezionati = new ArrayList<>();    //aggiungo i tag spuntati
                 if (checkboxsalato.isSelected()) tagSelezionati.add("salato");
                 if (checkboxdolce.isSelected()) tagSelezionati.add("dolce");
-                if (chechkboxdieta.isSelected()) tagSelezionati.add("dietetico/healthy");
+                if (chechkboxdieta.isSelected()) tagSelezionati.add("salutare");
                 if (chckbox_spuntino.isSelected()) tagSelezionati.add("spuntino");
                 if (chckbox_vegetariano.isSelected()) tagSelezionati.add("vegetariano");
-                if (chckbox_pranzoveloce.isSelected()) tagSelezionati.add("pranzo_veloce");
-                if (chckbox_glutenfree.isSelected()) tagSelezionati.add("gluten_free");
-                if (chckbox_primopiatto.isSelected()) tagSelezionati.add("primo_piatto");
-                if (chckbox_ospitiacena.isSelected()) tagSelezionati.add("ospiti_a_cena");
-                if (chckbx_contorno.isSelected()) tagSelezionati.add("contorno");
+                if (chckbox_veloce.isSelected()) tagSelezionati.add("veloce");
+                if (chckbox_senzaglutine.isSelected()) tagSelezionati.add("senza glutine");
+                if (chckbox_primopiatto.isSelected()) tagSelezionati.add("primo piatto");
+                if (chckbox_vegano.isSelected()) tagSelezionati.add("vegano");
+                if (chckbx_italiano.isSelected()) tagSelezionati.add("italiano");
 
                 //secondo check
                 //la traccia richiede esplicitamente che l'utente deve selezionare almeno un tag per la creazione della ricetta
@@ -350,21 +346,21 @@ public class NuovaRicettaFrame extends JFrame {
 
         checkboxdolce = new JCheckBox("Dolce");
 
-        chechkboxdieta = new JCheckBox("Healthy");
+        chechkboxdieta = new JCheckBox("Salutare");
 
         chckbox_spuntino = new JCheckBox("Spuntino");
 
         chckbox_vegetariano = new JCheckBox("Vegetariano");
 
-        chckbox_pranzoveloce = new JCheckBox("Pranzo veloce");
+        chckbox_veloce = new JCheckBox("Veloce");
 
-        chckbox_glutenfree = new JCheckBox("Gluten free");
+        chckbox_senzaglutine = new JCheckBox("Senza glutine");
 
         chckbox_primopiatto = new JCheckBox("Primo piatto");
 
-        chckbox_ospitiacena = new JCheckBox("Ospiti a cena");
+        chckbox_vegano = new JCheckBox("Vegano");
 
-        chckbx_contorno = new JCheckBox("Contorno");
+        chckbx_italiano = new JCheckBox("Italiano");
 
         textField_ingrediente = new JTextField();
         textField_ingrediente.setColumns(10);
@@ -468,7 +464,7 @@ public class NuovaRicettaFrame extends JFrame {
                                                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
                                                                         .addComponent(chechkboxdieta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(chckbox_glutenfree, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                        .addComponent(chckbox_senzaglutine, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
                                                                         .addGroup(gl_contentPane.createSequentialGroup()
@@ -480,14 +476,14 @@ public class NuovaRicettaFrame extends JFrame {
                                                                         .addGroup(gl_contentPane.createSequentialGroup()
                                                                                 .addComponent(chckbox_primopiatto)
                                                                                 .addGap(16)
-                                                                                .addComponent(chckbox_ospitiacena)))))
+                                                                                .addComponent(chckbox_vegano)))))
                                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
                                                         .addComponent(chckbox_vegetariano)
-                                                        .addComponent(chckbx_contorno))
+                                                        .addComponent(chckbx_italiano))
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(chckbox_pranzoveloce, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(chckbox_veloce, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(addingrediente_button)))
                                         .addGroup(gl_contentPane.createSequentialGroup()
                                                 .addContainerGap()
@@ -543,18 +539,18 @@ public class NuovaRicettaFrame extends JFrame {
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
                                         .addComponent(tag_label)
                                         .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-                                                .addComponent(chckbox_glutenfree)
+                                                .addComponent(chckbox_senzaglutine)
                                                 .addComponent(checkboxsalato)
                                                 .addComponent(checkboxdolce)
                                                 .addComponent(chckbox_spuntino)
                                                 .addComponent(chckbox_vegetariano)
-                                                .addComponent(chckbox_pranzoveloce)))
+                                                .addComponent(chckbox_veloce)))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(chechkboxdieta)
                                         .addComponent(chckbox_primopiatto)
-                                        .addComponent(chckbox_ospitiacena)
-                                        .addComponent(chckbx_contorno))
+                                        .addComponent(chckbox_vegano)
+                                        .addComponent(chckbx_italiano))
                                 .addGap(27)
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(visbilita_label)
