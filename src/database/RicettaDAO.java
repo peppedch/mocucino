@@ -81,6 +81,37 @@ public class RicettaDAO {
         return ricette;
     }
 
+    //invocato a riga 125 di entity.Piattaforma
+    public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
+        RicettaDTO dto = null;
+        String query = "SELECT idRicetta, procedimento, tempo FROM Ricette WHERE titolo = ? AND Utenti_username = ?";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, titolo);
+            stmt.setString(2, autore);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int idRicetta = rs.getInt("idRicetta");             // recupera l'id della ricetta, importante per ingredienti e tag
+                String procedimento = rs.getString("procedimento");
+                int tempo = rs.getInt("tempo");
+
+                dto = new RicettaDTO(titolo, procedimento, tempo,
+                        new IngredienteDAO().getIngredientiByRicetta(idRicetta),
+                        new TagDAO().getTagByRicetta(idRicetta));
+                dto.setAutoreUsername(autore);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+
 
 
 }

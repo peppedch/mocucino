@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,6 +45,32 @@ public class TagDAO {
 
         return success;
     }
+
+    //invocato a riga 69 di entity.Piattaforma, per recuperare i tag associati alla ricetta
+    public List<String> getTagByRicetta(int idRicetta) {
+        List<String> tagList = new ArrayList<>();
+
+        String query = "SELECT t.nome FROM tags t " +
+                "JOIN ricette_has_tag rt ON t.idTag = rt.idTag " +
+                "WHERE rt.idRicetta = ?";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, idRicetta);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                tagList.add(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tagList;
+    }
+
 
 
 }

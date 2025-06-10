@@ -4,6 +4,7 @@ package database;
 import dto.IngredienteDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredienteDAO {
@@ -78,5 +79,31 @@ public class IngredienteDAO {
 
         return success;
     }
+
+    //invocato a riga 102 di RICETTADAO, per recuperare gli ingredienti di una ricetta!!!!!!!!!!!
+    public List<String> getIngredientiByRicetta(int idRicetta) {
+        List<String> ingredienti = new ArrayList<>();
+
+        String query = "SELECT i.nome FROM ingredienti i " +
+                "JOIN ricette_has_ingredienti ri ON i.idIngrediente = ri.ingredienti_idIngrediente " +
+                "WHERE ri.ricette_idRicetta = ?";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, idRicetta);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ingredienti.add(rs.getString("nome"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ingredienti;
+    }
+
 
 }

@@ -195,19 +195,14 @@ public class FeedFrame extends JFrame {
                 if (rigaSelezionata != -1) {
                     String titolo = table.getValueAt(rigaSelezionata, 0).toString();
                     String autore = table.getValueAt(rigaSelezionata, 1).toString();
-                    int like = Integer.parseInt(table.getValueAt(rigaSelezionata, 2).toString());
 
-                    //esempio per provare . queste righe poi vanno tolte perchè proviamo dal db
-                    List<String> tag = List.of("dolci", "facile");
-                    List<CommentoDTO> commenti = new ArrayList<>();
-                    commenti.add(new CommentoDTO("Mario", "Ottima ricetta!", LocalDate.now().minusDays(1)));
-                    commenti.add(new CommentoDTO("Sara", "L'ho provata, buonissima", LocalDate.now().minusDays(2)));
-                    commenti.add(new CommentoDTO("Luca", "Facile e veloce!", LocalDate.now().minusDays(3)));
+
+                    RicettaDTO dettagliata = controller.getRicettaCompletaByTitoloEAutore(titolo, autore);
 
 
                     //ECCO QUI. GUARDARE FRAME "DettaglioRicettaFrame.java", stai instanziando un oggeto di DettaglioRicettaFrame per vedere la ricetta in dettaglio
-                    DettaglioRicettaFrame dettaglio = new DettaglioRicettaFrame(titolo, autore, like, "Uova, mascarpone, savoiardi, caffè","Sbatti i tuorli con lo zucchero e il mascarpone, dopodichè inserisci nel microonde a 180 gradi per 10 minuti. Una volta fuori procedi con......",30,tag,commenti);
-                    dettaglio.setVisible(true);		//chiaramente sto mettendo gli ultimi 4 vLORI Hardcoded, COME ESEMPI, poi andranno pasaati dall'input poi al db ecc..
+                    DettaglioRicettaFrame dettaglio = new DettaglioRicettaFrame(dettagliata);
+                    dettaglio.setVisible(true);
                 }
             }
         });

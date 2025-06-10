@@ -39,6 +39,11 @@ public class GestoreController {
         return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
     }
 
+    //invocato a riga 200 di gui.FeedFrame
+    public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
+        return Piattaforma.getInstance(null, null).getRicettaCompletaByTitoloEAutore(titolo, autore);
+    }
+
 
 
 }
