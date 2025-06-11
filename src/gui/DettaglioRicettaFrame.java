@@ -152,6 +152,7 @@ public class DettaglioRicettaFrame extends JFrame {
         //LISTENER PER IL LIKE
         btnLike.addActionListener(e -> {
             GestoreController controller = new GestoreController();
+            System.out.println("LIKE su ID Ricetta: " + ricetta.getIdRicetta());    //stampa debug per vedere se il like funziona correttamente
             boolean likeAggiunto = controller.toggleLike(username, ricetta.getIdRicetta());     //RICORDA: ricetta l'oggetto DTO che ho passato al costruttore e lo stesso username
 
             ricetta.setNumeroLike(ricetta.getNumeroLike() + (likeAggiunto ? 1 : -1));
@@ -182,7 +183,7 @@ public class DettaglioRicettaFrame extends JFrame {
             if (successo) {
                 JOptionPane.showMessageDialog(this, "Commento aggiunto!");
                 txtCommento.setText("");  // pulisci il campo
-                ricetta.setNumCommenti(ricetta.getNumCommenti() + 1);  // aggiorna UI se vuoi
+                ricetta.setNumCommenti(ricetta.getNumCommenti() + 1);  // aggiorna il numero di commenti nella ricetta
             } else {
                 JOptionPane.showMessageDialog(this, "Errore nell'aggiunta del commento.");
             }
@@ -191,6 +192,8 @@ public class DettaglioRicettaFrame extends JFrame {
 
         contentPane.revalidate();
         contentPane.repaint();
+
+
 
     }
 
