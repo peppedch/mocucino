@@ -2,6 +2,7 @@ package gui;
 
 import controller.GestoreController;
 import gui.RicettaRaccoltaFrame;
+import dto.StatisticheDTO;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -38,9 +39,10 @@ public class AreaPersonaleFrame extends JFrame {
     private JScrollPane raccolteScroll;
 
     private RicettaRaccoltaFrame frame;
-    private JButton creaRaccoltaBtn;
 
     private String username;
+    private GestoreController controller;
+
     /**
      * Launch the application.
      */
@@ -60,6 +62,7 @@ public class AreaPersonaleFrame extends JFrame {
 
     public AreaPersonaleFrame(String username) {
         this.username = username;
+        this.controller = new GestoreController();
         setTitle("Area Personale");
         setSize(600, 600);
         setLocationRelativeTo(null);
@@ -191,10 +194,14 @@ public class AreaPersonaleFrame extends JFrame {
         statistichePanel.setLayout(new GridLayout(3, 1));
         getContentPane().add(statistichePanel);
 
-        //da modificare, per ora sono statiche mock up
-        likeTotaliLabel = new JLabel("Like ricevuti: 0");
-        commentiTotaliLabel = new JLabel("Commenti ricevuti: 0");
-        ricettaTopLabel = new JLabel("Ricetta più apprezzata: -");
+        // GUI -> Controller: Richiesta statistiche utente
+        // Chiamata al controller per ottenere le statistiche
+        // Implementata in GestoreController.getStatisticheUtente() [linea 63]
+        StatisticheDTO stats = controller.getStatisticheUtente(username);
+
+        likeTotaliLabel = new JLabel("Like ricevuti: " + stats.getTotalLikes());
+        commentiTotaliLabel = new JLabel("Commenti ricevuti: " + stats.getTotalComments());
+        ricettaTopLabel = new JLabel("Ricetta più apprezzata: " + stats.getMostLikedRecipe());
 
         statistichePanel.add(likeTotaliLabel);
         statistichePanel.add(commentiTotaliLabel);
@@ -226,45 +233,14 @@ public class AreaPersonaleFrame extends JFrame {
         raccoltepanel.add(raccolteScroll, BorderLayout.CENTER);
         getContentPane().add(raccoltepanel);
 
-        creaRaccoltaBtn = new JButton("Crea nuova raccolta");
-        //LISTENER CREAZIONE NUOVA RACCOLTA
-        creaRaccoltaBtn.addActionListener(e -> {
-            JTextField titoloField = new JTextField();
-            JTextField descrizioneField = new JTextField();
-            JPanel panel = new JPanel(new GridLayout(0, 1));
-            panel.add(new JLabel("Titolo raccolta:"));
-            panel.add(titoloField);
-            panel.add(new JLabel("Descrizione raccolta:"));
-            panel.add(descrizioneField);
-
-            int result = JOptionPane.showConfirmDialog(this, panel, "Crea nuova raccolta",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-            if (result == JOptionPane.OK_OPTION) {
-                String titolo = titoloField.getText().trim();
-                String descrizione = descrizioneField.getText().trim();
-
-                if (titolo.isEmpty() || descrizione.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Tutti i campi sono obbligatori.", "Errore", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // MOCK: aggiunta alla lista raccolte
-                    raccolteModel.addElement(titolo);  // per ora solo titolo nella lista
-                    JOptionPane.showMessageDialog(this, "Raccolta '" + titolo + "' creata con successo.");
-                }
-            }
-        });
-
-        creaRaccoltaBtn.setBounds(300, 330, 160, 30);
-        getContentPane().add(creaRaccoltaBtn);
-
-
-        //ECCOCI: primo step: recuperare le raccolte dell'utente!!!!!!!!
-        GestoreController controller = new GestoreController();
-        List<String> raccolteUtente = controller.getRaccolteUtente(username);   //ne recupero solo i titoli delle raccolte dell'utente.
+        // GUI -> Controller: Richiesta raccolte utente
+        // Chiamata al controller per ottenere le raccolte dell'utente
+        // Implementata in GestoreController.getRaccolteUtente() [linea 89]
+        List<String> raccolteUtente = controller.getRaccolteUtente(username);
         raccolteModel.clear();
-        for (String r : raccolteUtente) {   //per ogni raccolta dell'utente, aggiungo il titolo alla lista. così l'utente le vede tutte in automatico
+        for (String r : raccolteUtente) {
             raccolteModel.addElement(r);
-        }   //ORA L'UTENTE VISUALIZZA LE SUE RACCOLTE NELLA LISTA. ANDIAMO AVANTI, SE SELEZIONA UNA RACCOLTA, DEVE VISUALIZZARE LE RICETTE CHE CONTIENE!
+        }
 
 
         //LISTENER SE CLICCO SU UNA RACCOLTA, deve darmi le ricette che contiene, quindi apro un nuovo JFrame (RicettaRaccoltaFrame) con le ricette della raccolta selezionata

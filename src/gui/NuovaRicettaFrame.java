@@ -153,9 +153,17 @@ public class NuovaRicettaFrame extends JFrame {
         pubblica_bottone = new JButton("Pubblica");
         pubblica_bottone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // Validazione visibilità
+                if (!pubblica_button.isSelected() && !privata_button.isSelected()) {
+                    JOptionPane.showMessageDialog(NuovaRicettaFrame.this,
+                            "Seleziona la visibilità della ricetta",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 //primo check
-                if (!haAlmenoUnIngrediente()) {				//controllo che venga inserito almeno un ingrediente nella ricetta
+                if (!haAlmenoUnIngrediente()) {
                     JOptionPane.showMessageDialog(null,
                             "Inserisci almeno un ingrediente.",
                             "Errore",
@@ -388,6 +396,29 @@ public class NuovaRicettaFrame extends JFrame {
 
                 if (nome.isEmpty() || quantita.isEmpty() || unita == null || unita.isBlank()) {
                     JOptionPane.showMessageDialog(null, "Completa tutti i campi dell'ingrediente.");
+                    return;
+                }
+
+                // Validazione quantità (DECIMAL(10,2))
+                try {
+                    double qty = Double.parseDouble(quantita);
+                    if (qty <= 0) {
+                        JOptionPane.showMessageDialog(null, "Inserisci una quantità valida (numero positivo).");
+                        return;
+                    }
+                    // Verifica che non superi il limite di 10 cifre totali con 2 decimali
+                    if (quantita.contains(".")) {
+                        String[] parts = quantita.split("\\.");
+                        if (parts[0].length() > 8 || parts[1].length() > 2) {
+                            JOptionPane.showMessageDialog(null, "Inserisci una quantità valida (max 8 cifre intere e 2 decimali).");
+                            return;
+                        }
+                    } else if (quantita.length() > 8) {
+                        JOptionPane.showMessageDialog(null, "Inserisci una quantità valida (max 8 cifre intere).");
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Inserisci una quantità valida (numero con al massimo 2 decimali).");
                     return;
                 }
 

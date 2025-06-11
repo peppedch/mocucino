@@ -131,6 +131,47 @@ public class RicettaDAO {
         return ricette;
     }
 
+    /**
+     * Ottiene tutte le ricette di un utente
+     * DAO -> Database: Query per ottenere le ricette dell'utente
+     * Chiamata da Piattaforma.getStatisticheUtente() [linea 147]
+     * SQL: SELECT idRicetta, titolo, procedimento, tempo, numLike, numCommenti FROM Ricette WHERE Utenti_username = ?
+     */
+    public List<RicettaDTO> getRicetteByUtente(String username) {
+        List<RicettaDTO> ricette = new ArrayList<>();
+
+        String query = "SELECT idRicetta, titolo, procedimento, tempo, numLike, numCommenti " +
+                "FROM Ricette WHERE Utenti_username = ?";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RicettaDTO dto = new RicettaDTO(
+                        rs.getString("titolo"),
+                        rs.getString("procedimento"),
+                        rs.getInt("tempo"),
+                        new IngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
+                        new TagDAO().getTagByRicetta(rs.getInt("idRicetta"))
+                );
+                dto.setIdRicetta(rs.getInt("idRicetta"));
+                dto.setAutoreUsername(username);
+                dto.setNumeroLike(rs.getInt("numLike"));
+                dto.setNumCommenti(rs.getInt("numCommenti"));
+
+                ricette.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ricette;
+    }
+
 
 
     //invocato a riga 125 di entity.Piattaforma. DA CANCELLARE, NON SERVE PIU'!

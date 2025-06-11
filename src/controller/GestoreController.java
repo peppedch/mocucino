@@ -2,6 +2,7 @@ package controller;
 
 import dto.RicettaDTO;
 import entity.Piattaforma;
+import dto.StatisticheDTO;
 
 import java.util.List;
 
@@ -40,14 +41,6 @@ public class GestoreController {
         return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
     }
 
-    //invocato a riga 199 di gui.FeedFrame
-    /* DA ELIMINARE, NON USATO
-    public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
-        return Piattaforma.getInstance(null, null).getRicettaCompletaByTitoloEAutore(titolo, autore);
-    }
-
-*/
-
     //invocato a riga 155 di gui.DettaglioRicettaFrame
     public boolean toggleLike(String username, int idRicetta) {
         return Piattaforma.getInstance(null, null).gestisciToggleLike(username, idRicetta);
@@ -64,7 +57,15 @@ public class GestoreController {
         return Piattaforma.getInstance(null, null).getRicetteByRaccolta(titoloRaccolta, username);
     }
 
-
+    /**
+     * Ottiene le statistiche dell'utente
+     * Controller -> Entity: Richiesta statistiche utente
+     * Chiamata da AreaPersonaleFrame.getStatisticheUtente() [linea 200]
+     * Implementata in Piattaforma.getStatisticheUtente() [linea 147]
+     */
+    public StatisticheDTO getStatisticheUtente(String username) {
+        return Piattaforma.getInstance(null, null).getStatisticheUtente(username);
+    }
 
 }
 

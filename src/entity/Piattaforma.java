@@ -8,6 +8,7 @@ import database.*;
 
 import dto.RicettaDTO;
 import dto.IngredienteDTO;
+import dto.StatisticheDTO;
 
 
 public class Piattaforma {
@@ -140,8 +141,38 @@ public class Piattaforma {
         return new RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);
     }
 
+    /**
+     * Ottiene le statistiche dell'utente
+     * Entity -> DAO: Richiesta ricette utente per calcolo statistiche
+     * Chiamata da GestoreController.getStatisticheUtente() [linea 63]
+     * Implementata in RicettaDAO.getRicetteByUtente() [linea 156]
+     */
+    public StatisticheDTO getStatisticheUtente(String username) {
+        List<RicettaDTO> ricette = new RicettaDAO().getRicetteByUtente(username);
+        int totalLikes = 0;
+        int totalComments = 0;
+        String mostLikedRecipe = "Nessuna ricetta";
+        int maxLikes = 0;
 
+        for (RicettaDTO ricetta : ricette) {
+            totalLikes += ricetta.getNumeroLike();
+            totalComments += ricetta.getNumCommenti();
+            if (ricetta.getNumeroLike() > maxLikes) {
+                maxLikes = ricetta.getNumeroLike();
+                mostLikedRecipe = ricetta.getTitolo();
+            }
+        }
 
+        return new StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
+    }
 
+    /**
+     * Ottiene le raccolte dell'utente
+     * Entity -> DAO: Richiesta raccolte utente
+     * Implementata in RaccoltaDAO.getTitoliRaccolteByUtente() [linea 15]
+     */
+    public List<String> getRaccolteUtente(String username) {
+        return new RaccoltaDAO().getTitoliRaccolteByUtente(username);
+    }
 
 }
