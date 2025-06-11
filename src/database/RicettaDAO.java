@@ -94,6 +94,44 @@ public class RicettaDAO {
 
     }
 
+    public List<RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
+        List<RicettaDTO> ricette = new ArrayList<>();
+
+        String query = "SELECT r.idRicetta, r.titolo, r.procedimento, r.tempo, r.numLike, r.Utenti_username " +
+                "FROM Ricette r JOIN Raccolte ra ON r.Raccolte_idRaccolta = ra.idRaccolta " +
+                "WHERE ra.titolo = ? AND ra.Utenti_username = ?";
+
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, titoloRaccolta);
+            stmt.setString(2, username);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RicettaDTO dto = new RicettaDTO(
+                        rs.getString("titolo"),
+                        rs.getString("procedimento"),
+                        rs.getInt("tempo"),
+                        new IngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
+                        new TagDAO().getTagByRicetta(rs.getInt("idRicetta"))
+                );
+                dto.setIdRicetta(rs.getInt("idRicetta"));
+                dto.setAutoreUsername(rs.getString("Utenti_username"));
+                dto.setNumeroLike(rs.getInt("numLike"));
+                dto.setCommentiRecenti(new CommentoDAO().getUltimi3CommentiPerRicetta(rs.getInt("idRicetta")));
+
+                ricette.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ricette;
+    }
+
+
 
     //invocato a riga 125 di entity.Piattaforma. DA CANCELLARE, NON SERVE PIU'!
     /*

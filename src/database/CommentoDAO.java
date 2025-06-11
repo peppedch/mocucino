@@ -56,13 +56,48 @@ public class CommentoDAO {
             stmt.setString(4, username);  // per la FK utenti
 
             int rows = stmt.executeUpdate();
-            return rows > 0;
+            if (rows > 0) {
+                int count = countCommentiPerRicetta(idRicetta);     //qui usato il metodo sotto per contare i commenti
+                aggiornaNumeroCommenti(idRicetta, count);           //qui usato il metodo sotto per aggiornare il numero commenti nella tabella ricette
+                return true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+        }
+
+        return false;
+    }
+
+    //per tenere traccia di numerocommenti e poterlo aggiornare nella tabella ricette l'attributo numcommenti. usato in inserisci commento sopra
+    private int countCommentiPerRicetta(int idRicetta) {
+        String query = "SELECT COUNT(*) FROM commenti WHERE ricette_idRicetta = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idRicetta);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //usato in inserisci commento sopra
+    private void aggiornaNumeroCommenti(int idRicetta, int nuovoNumero) {
+        String query = "UPDATE Ricette SET numCommenti = ? WHERE idRicetta = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, nuovoNumero);
+            stmt.setInt(2, idRicetta);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
 
 
 }

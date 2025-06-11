@@ -23,7 +23,7 @@ public class LikeDAO {
     }
 
     //richiamato sotto per toggle like
-    public boolean utenteHaGiaMessoLike(String username, int idRicetta) {
+    private boolean utenteHaGiaMessoLike(String username, int idRicetta) {                      //username è di quello che ha messo like, idRicetta è della ricetta a cui ha messo like
         String query = "SELECT * FROM Likes WHERE utenti_username = ? AND ricette_idRicetta = ?";
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -50,7 +50,7 @@ public class LikeDAO {
                 e.printStackTrace();
                 return false;
             }
-            aggiornaConteggioLike(idRicetta, -1);   //implementato sotto, private perchè non c'è bisogno di fornirlo all'esterno tipo API. con delta -1 lo tolgo
+            aggiornaConteggioLike(idRicetta, -1);   //implementato sotto, private perchè non c'è bisogno di fornirlo all'esterno tipo API. con delta -1 lo tolgo. serve per filtreggio in ricette della ricetta con maggiorni numlike, quindi lo aggiorna ad ogni like messo o rimosso nel secondo caso
             return false;
         } else {
             String insert = "INSERT INTO Likes (utenti_username, ricette_idRicetta) VALUES (?, ?)";
@@ -66,6 +66,8 @@ public class LikeDAO {
             aggiornaConteggioLike(idRicetta, 1);    //secondo caso: con delta=+1 lo aggiungo!
             return true;
         }
+
+
     }
 
     // Metodo privato per aggiornare il conteggio dei like per una ricetta, USATO SOLO SOPRA!!!!!!!!!! riga 53 e 66 per i due casi di toggleLike
@@ -80,5 +82,8 @@ public class LikeDAO {
             e.printStackTrace();
         }
     }
+
+
+
 
 }

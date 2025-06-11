@@ -8,12 +8,12 @@ import java.util.List;
 public class GestoreController {
 
 
-    //invocato a riga 262 di gui.NuovaRicettaFrame
+    //invocato a riga 260 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         return Piattaforma.getInstance(null, null).getTitoliRaccolteByUtente(username);
     }
 
-    //invocato a riga 282 di gui.NuovaRicettaFrame, gli passa stringa nuova raccolta e username attuale
+    //invocato a riga 282 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
     public boolean creaNuovaRaccolta(String nome, String username) {
         return Piattaforma.getInstance(null, null).creaRaccoltaPerUtente(nome, username);
     }
@@ -31,7 +31,8 @@ public class GestoreController {
     //è fondamentale recuperare l'id della raccolta che funge da fk per la ricetta e sapere la ricetta
     //in quale raccolta viene salvata. è stato fondamentale per fare "crea nuova raccolta" al momento
     //della pubblicazione di ricetta per permettere di crerare la raccolta e ad associargli subito dopo
-    //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user
+    //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user.
+    //LA NECESSITA DI QUESTO METODO è IN PARTICOLRE PER IL CASO IN CUI L'UTENTE CREA UNA NUOVA RACCOLTA. QUI IO PRIMA CREO LA RACCOLTA CON IL NOME CHE VUOLE L'UTENTE E CON LO STESSO NOME CHE HA INSERITO LA VADO A RECUPERARE.!
 
 
     //invocato a riga 159 di gui.FeedFrame
@@ -47,7 +48,7 @@ public class GestoreController {
 
 */
 
-    //invocato a riga 130 di gui.DettaglioRicettaFrame
+    //invocato a riga 155 di gui.DettaglioRicettaFrame
     public boolean toggleLike(String username, int idRicetta) {
         return Piattaforma.getInstance(null, null).gestisciToggleLike(username, idRicetta);
     }
@@ -56,6 +57,13 @@ public class GestoreController {
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
         return Piattaforma.getInstance(null, null).aggiungiCommento(username, idRicetta, testo);
     }
+
+
+    //invocato a riga 61 di gui.RicettaRaccoltaFrame
+    public List<RicettaDTO> getRicetteDaRaccolta(String titoloRaccolta, String username) {
+        return Piattaforma.getInstance(null, null).getRicetteByRaccolta(titoloRaccolta, username);
+    }
+
 
 
 }

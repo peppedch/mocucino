@@ -91,7 +91,7 @@ public class Piattaforma {
         return dao.readUtente(email, password); // ritorna oggetto Utente se valido, altrimenti null
     }
 
-    //invocato a riga 13 di controller.GestoreController
+    //invocato a riga 13 di controller.GestoreController, PER DUE CASI DIVERSI.
     public List<String> getTitoliRaccolteByUtente(String username) {
         RaccoltaDAO dao = new RaccoltaDAO();
         return dao.getTitoliRaccolteByUtente(username);
@@ -123,7 +123,7 @@ public class Piattaforma {
     }
 */
 
-    //invocato a riga 52 di controller.GestoreController
+    //invocato a riga 53 di controller.GestoreController
     public boolean gestisciToggleLike(String username, int idRicetta) {
         LikeDAO dao = new LikeDAO();
         return dao.toggleLike(username, idRicetta); // true se aggiunto, false se rimosso
@@ -134,6 +134,12 @@ public class Piattaforma {
         CommentoDAO dao = new CommentoDAO();
         return dao.inserisciCommento(username, idRicetta, testo);
     }
+
+    //invocato a riga 64 di controller.GestoreController
+    public List<RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
+        return new RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);
+    }
+
 
 
 

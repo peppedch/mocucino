@@ -1,10 +1,16 @@
 package gui;
 
+import controller.GestoreController;
 import gui.RicettaRaccoltaFrame;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.awt.Image;
 
 public class AreaPersonaleFrame extends JFrame {
 
@@ -33,6 +39,8 @@ public class AreaPersonaleFrame extends JFrame {
 
     private RicettaRaccoltaFrame frame;
     private JButton creaRaccoltaBtn;
+
+    private String username;
     /**
      * Launch the application.
      */
@@ -40,7 +48,8 @@ public class AreaPersonaleFrame extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    AreaPersonaleFrame frame = new AreaPersonaleFrame();
+                    String username = "testUser"; // nella realtà lo prendo da login e passato al feed e ora qui, ma per test va bene
+                    AreaPersonaleFrame frame = new AreaPersonaleFrame(username);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -49,7 +58,8 @@ public class AreaPersonaleFrame extends JFrame {
         });
     }
 
-    public AreaPersonaleFrame() {
+    public AreaPersonaleFrame(String username) {
+        this.username = username;
         setTitle("Area Personale");
         setSize(600, 600);
         setLocationRelativeTo(null);
@@ -181,6 +191,7 @@ public class AreaPersonaleFrame extends JFrame {
         statistichePanel.setLayout(new GridLayout(3, 1));
         getContentPane().add(statistichePanel);
 
+        //da modificare, per ora sono statiche mock up
         likeTotaliLabel = new JLabel("Like ricevuti: 0");
         commentiTotaliLabel = new JLabel("Commenti ricevuti: 0");
         ricettaTopLabel = new JLabel("Ricetta più apprezzata: -");
@@ -201,20 +212,22 @@ public class AreaPersonaleFrame extends JFrame {
         tornaFeedBtn.setBounds(257, 547, 160, 30);
         getContentPane().add(tornaFeedBtn);
 
+        //OCCUPIAMOCI DEL PANNELLO PER "LE MIE RACCOLTE"
         raccoltepanel = new JPanel();
-        raccoltepanel.setBorder(BorderFactory.createTitledBorder("Le mie raccolte"));
+        raccoltepanel.setBorder(BorderFactory.createTitledBorder("Le mie raccolte"));   //eccoci, da qui  l'inferno
         raccoltepanel.setBounds(31, 307, 209, 113);
         getContentPane().add(raccoltepanel);
         raccoltepanel.setLayout(new BorderLayout());
 
         raccolteModel = new DefaultListModel<>();
-        raccolteList = new JList<>(raccolteModel);
-        raccolteScroll = new JScrollPane(raccolteList);	//per scrollare lista
+        raccolteList = new JList<>(raccolteModel);  //lista delle raccolte dell'utente
+        raccolteScroll = new JScrollPane(raccolteList);	//per scrollare lista raccolte dell'utente
 
         raccoltepanel.add(raccolteScroll, BorderLayout.CENTER);
         getContentPane().add(raccoltepanel);
 
         creaRaccoltaBtn = new JButton("Crea nuova raccolta");
+        //LISTENER CREAZIONE NUOVA RACCOLTA
         creaRaccoltaBtn.addActionListener(e -> {
             JTextField titoloField = new JTextField();
             JTextField descrizioneField = new JTextField();
@@ -245,20 +258,23 @@ public class AreaPersonaleFrame extends JFrame {
         getContentPane().add(creaRaccoltaBtn);
 
 
-        //TEST ESEMPIO, POI LO TOLGO PER PROVARE DON DB
-        // MOCK: raccolte dell’utente, POI LI CARICHEREMO CON RaccoltaDAO.getRaccolteByUtenteId(...)
-        raccolteModel.addElement("Dolci al cucchiaio");
-        raccolteModel.addElement("Veloce");
-        raccolteModel.addElement("Cene leggere");
+        //ECCOCI: primo step: recuperare le raccolte dell'utente!!!!!!!!
+        GestoreController controller = new GestoreController();
+        List<String> raccolteUtente = controller.getRaccolteUtente(username);   //ne recupero solo i titoli delle raccolte dell'utente.
+        raccolteModel.clear();
+        for (String r : raccolteUtente) {   //per ogni raccolta dell'utente, aggiungo il titolo alla lista. così l'utente le vede tutte in automatico
+            raccolteModel.addElement(r);
+        }   //ORA L'UTENTE VISUALIZZA LE SUE RACCOLTE NELLA LISTA. ANDIAMO AVANTI, SE SELEZIONA UNA RACCOLTA, DEVE VISUALIZZARE LE RICETTE CHE CONTIENE!
 
-        //LISTENER SE CLICCO SU UNA RICETTA
+
+        //LISTENER SE CLICCO SU UNA RACCOLTA, deve darmi le ricette che contiene, quindi apro un nuovo JFrame (RicettaRaccoltaFrame) con le ricette della raccolta selezionata
         raccolteList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 String raccoltaSelezionata = raccolteList.getSelectedValue();
-                frame = new RicettaRaccoltaFrame(raccoltaSelezionata);
+                frame = new RicettaRaccoltaFrame(raccoltaSelezionata, username);    //APRO QUESTO NUOVO JFRAME PER VISUALIZARE LE RICETTE DELLA RACCOLTA SELEZIONATA!
                 frame.setVisible(true);
 
-                // In futuro: carica le ricette della raccolta
+
             }
         });
 

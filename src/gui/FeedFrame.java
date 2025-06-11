@@ -88,7 +88,7 @@ public class FeedFrame extends JFrame {
         areapersonale_button = new JButton("Area Personale");
         areapersonale_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AreaPersonaleFrame areaFrame = new AreaPersonaleFrame();
+                AreaPersonaleFrame areaFrame = new AreaPersonaleFrame(username);
                 areaFrame.setVisible(true);
             }
         });

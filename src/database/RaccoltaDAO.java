@@ -14,10 +14,10 @@ import database.DBManager;
 
 public class RaccoltaDAO {
 
-    //invocato a riga 91 di entity.Piattaforma
+    //invocato a riga 95 di entity.Piattaforma
     public List<String> getTitoliRaccolteByUtente(String username) {
         List<String> titoli = new ArrayList<>();
-        String query = "SELECT titolo FROM Raccolte WHERE Utenti_username = ?";
+        String query = "SELECT titolo FROM Raccolte WHERE Utenti_username = ?";         //ne recupero solo i titoli delle raccolte dell'utente.
 
 
         try (Connection conn = DBManager.openConnection();
@@ -76,7 +76,7 @@ public class RaccoltaDAO {
 
 
 
-    //invocato a riga 113 di entity.Piattaforma
+    //invocato a riga 113 di entity.Piattaforma. simile all'altro ma
     public int getIdRaccoltaByTitolo(String titolo, String username) {
         String query = "SELECT idRaccolta FROM Raccolte WHERE titolo = ? AND Utenti_username = ?";
         int id = -1;

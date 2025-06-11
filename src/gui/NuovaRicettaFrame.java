@@ -257,7 +257,7 @@ public class NuovaRicettaFrame extends JFrame {
 
                 if (scelta == 0) {      //prima opzione form
                     // RACCOLTA ESISTENTE
-                    List<String> raccolteUtenteList = controller.getRaccolteUtente(username);
+                    List<String> raccolteUtenteList = controller.getRaccolteUtente(username);   //prelevo le raccolte dell'utente per mostrargliele
                     String[] raccolteUtente = raccolteUtenteList.toArray(new String[0]);
 
                     String raccoltaSelezionata = (String) JOptionPane.showInputDialog(
@@ -270,7 +270,7 @@ public class NuovaRicettaFrame extends JFrame {
                             raccolteUtente.length > 0 ? raccolteUtente[0] : null);
 
                     if (raccoltaSelezionata != null) {
-                        nomeRaccoltaSelezionato = raccoltaSelezionata;  //dopo averla selezionata
+                        nomeRaccoltaSelezionato = raccoltaSelezionata;  //dopo averla selezionata. seleziona praticamente il titolo e non l'id, quindi devo recuperarlo dopo, infatti la riga sotto c'è questo metodo.
                         idRaccolta = controller.getIdRaccoltaByTitolo(nomeRaccoltaSelezionato, username);
                     }
 
@@ -281,16 +281,17 @@ public class NuovaRicettaFrame extends JFrame {
                         boolean creata = controller.creaNuovaRaccolta(nuovaRaccolta, username); //controller istanziato sopra a riga 258, vedi!
                         if (creata) {
                             nomeRaccoltaSelezionato = nuovaRaccolta;
-                            //ne recupero anche l'id della raccolta appena creata, perche va assocciata come fk alla ricetta
+                            //ne recupero anche l'id della raccolta appena creata, perche va assocciata come fk alla ricetta. ovviamente la creo prima nel db e solo in un secondo momento ne recupero l'id GRAZIE SL TITOLO CHE HA MESSO L'UTENTE. PERCIO LA NECESSITA DI AVERE UN RECUPERO TRAMITE IL TITOLO!
                             idRaccolta = controller.getIdRaccoltaByTitolo(nuovaRaccolta, username);
                         } else {
                             JOptionPane.showMessageDialog(NuovaRicettaFrame.this,
                                     "Errore durante la creazione della raccolta.",
                                     "Errore",
                                     JOptionPane.ERROR_MESSAGE);
+                            return; //se non riesce a creare la raccolta, non posso procedere con la creazione della ricetta
                         }
                     }
-                } else {
+                } else {    //terza opzione form, la default
                     nomeRaccoltaSelezionato = "Default";
                     idRaccolta = controller.getIdRaccoltaByTitolo("Default", username);
                 }
@@ -334,10 +335,6 @@ public class NuovaRicettaFrame extends JFrame {
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-
-
-
 
             }
         });
