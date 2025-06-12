@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import controller.GestoreController;
 
 public class LoginAdminFrame extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -26,6 +27,8 @@ public class LoginAdminFrame extends JFrame {
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
+
+        GestoreController controller = new GestoreController();
 
         JLabel lblTitle = new JLabel("Login Amministratore");
         lblTitle.setFont(new Font("Lucida Handwriting", Font.BOLD, 14));
@@ -43,7 +46,8 @@ public class LoginAdminFrame extends JFrame {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
 
-                if (username.equals("admin") && password.equals("admin")) {
+                boolean success = controller.autenticaAdmin(username, password);
+                if (success) {
                     new AdminReportFrame().setVisible(true);
                     dispose();
                 } else {

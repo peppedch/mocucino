@@ -5,6 +5,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
+import controller.GestoreController;
+import dto.ReportAutoriDTO;
+import dto.ReportTagDTO;
+import dto.ReportTopRicetteDTO;
+import java.sql.Date;
 
 public class AdminReportFrame extends JFrame {
 
@@ -32,6 +37,8 @@ public class AdminReportFrame extends JFrame {
         setTitle("Dashboard Amministratore - Reportistica");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 700, 600);
+
+        GestoreController controller = new GestoreController();
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -70,16 +77,23 @@ public class AdminReportFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Inserisci entrambe le date.");
                 return;
             }
-
-            // MOCK, in futuro chiameremo DAO con from/to
-            periodoResultArea.setText("Numero ricette pubblicate tra " + from + " e " + to + ": 18 (mock)");
+            try {
+                Date fromDate = Date.valueOf(from);
+                Date toDate = Date.valueOf(to);
+                // GUI -> Controller: Richiesta report 1
+                // Chiamata a GestoreController.generaReportNumRicette() [riga X]
+                int totale = controller.generaReportNumRicette(fromDate, toDate);
+                periodoResultArea.setText("Numero ricette pubblicate tra " + from + " e " + to + ": " + totale);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Formato data non valido. Usa YYYY-MM-DD.");
+            }
         });
 
         // 2. Autori più attivi
         JPanel panelAutori = new JPanel(new BorderLayout());
         tabbedPane.addTab("Autori più attivi", null, panelAutori, null);
 
-        JTextArea autoriArea = new JTextArea("1. @cucinaconluca - 12 ricette\n2. @giulia.food - 9 ricette\n3. @mariochef - 8 ricette");
+        JTextArea autoriArea = new JTextArea();
         autoriArea.setEditable(false);
         panelAutori.add(new JScrollPane(autoriArea), BorderLayout.CENTER);
 
@@ -87,16 +101,50 @@ public class AdminReportFrame extends JFrame {
         JPanel panelTag = new JPanel(new BorderLayout());
         tabbedPane.addTab("Tag più usati", null, panelTag, null);
 
-        JTextArea tagArea = new JTextArea("#dolci (21)\n#salato (15)\n#vegetariano (12)");
+        JTextArea tagArea = new JTextArea();
         tagArea.setEditable(false);
         panelTag.add(new JScrollPane(tagArea), BorderLayout.CENTER);
 
         // 4. Ricette con più interazioni
         JPanel panelTopRicette = new JPanel(new BorderLayout());
-        tabbedPane.addTab("Top Ricette per interazioni", null, panelTopRicette, null);
+        tabbedPane.addTab("Top ricette per interazioni", null, panelTopRicette, null);
 
-        JTextArea topRicetteArea = new JTextArea("Tiramisù di Nonna Maria - 54 interazioni\nCarbonara Sbagliata - 49 interazioni");
+        JTextArea topRicetteArea = new JTextArea();
         topRicetteArea.setEditable(false);
         panelTopRicette.add(new JScrollPane(topRicetteArea), BorderLayout.CENTER);
+
+        // Listener per aggiornare i report quando si seleziona il tab
+        tabbedPane.addChangeListener(e -> {
+            int idx = tabbedPane.getSelectedIndex();
+            if (idx == 1) { // Autori più attivi
+                // GUI -> Controller: Richiesta report 2
+                // Chiamata a GestoreController.generaReportAutori() [riga X]
+                List<ReportAutoriDTO> autori = controller.generaReportAutori();
+                StringBuilder sb = new StringBuilder();
+                int pos = 1;
+                for (ReportAutoriDTO a : autori) {
+                    sb.append(pos++).append(". ").append(a.getAutore()).append(" - ").append(a.getNumeroRicette()).append(" ricette\n");
+                }
+                autoriArea.setText(sb.toString());
+            } else if (idx == 2) { // Tag più usati
+                // GUI -> Controller: Richiesta report 3
+                // Chiamata a GestoreController.generaReportTag() [riga X]
+                List<ReportTagDTO> tag = controller.generaReportTag();
+                StringBuilder sb = new StringBuilder();
+                for (ReportTagDTO t : tag) {
+                    sb.append("#").append(t.getTag()).append(" (").append(t.getConteggio()).append(")\n");
+                }
+                tagArea.setText(sb.toString());
+            } else if (idx == 3) { // Top ricette per interazioni
+                // GUI -> Controller: Richiesta report 4
+                // Chiamata a GestoreController.generaReportTopRicette() [riga X]
+                List<ReportTopRicetteDTO> ricette = controller.generaReportTopRicette();
+                StringBuilder sb = new StringBuilder();
+                for (ReportTopRicetteDTO r : ricette) {
+                    sb.append(r.getTitoloRicetta()).append(" - ").append(r.getNumeroInterazioni()).append(" interazioni\n");
+                }
+                topRicetteArea.setText(sb.toString());
+            }
+        });
     }
 }

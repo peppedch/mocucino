@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import dto.ReportTagDTO;
 
 
 public class TagDAO {
@@ -69,6 +70,27 @@ public class TagDAO {
         }
 
         return tagList;
+    }
+
+    /**
+     * Report 3: Tag tematici più utilizzati
+     * DAO -> Database: Query per ottenere i tag più usati
+     * Chiamata da Piattaforma.generaReportTag() [riga X]
+     * SQL: SELECT t.nome, COUNT(*) as conteggio FROM tags t JOIN ricette_has_tags rt ON t.idTag = rt.tags_idTag GROUP BY t.nome ORDER BY conteggio DESC
+     */
+    public List<ReportTagDTO> getTagPiuUtilizzati() {
+        List<ReportTagDTO> lista = new ArrayList<>();
+        String query = "SELECT t.nome, COUNT(*) as conteggio FROM tags t JOIN ricette_has_tags rt ON t.idTag = rt.tags_idTag GROUP BY t.nome ORDER BY conteggio DESC";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(new ReportTagDTO(rs.getString("nome"), rs.getInt("conteggio")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 
 

@@ -4,6 +4,10 @@ import dto.RicettaDTO;
 import entity.Piattaforma;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
+import dto.ReportAutoriDTO;
+import dto.ReportTagDTO;
+import dto.ReportTopRicetteDTO;
+import java.sql.Date;
 
 import java.util.List;
 
@@ -86,6 +90,56 @@ public class GestoreController {
      */
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         return Piattaforma.getInstance(null, null).aggiornaProfiloUtente(profilo);
+    }
+
+    /**
+     * Genera il report sul numero di ricette pubblicate in un intervallo
+     * Controller -> Entity: Richiesta numero ricette
+     * Chiamata da AdminReportFrame.generaReportNumRicette() [riga X]
+     * Implementata in Piattaforma.generaReportNumRicette() [riga X]
+     */
+    public int generaReportNumRicette(java.sql.Date dataInizio, java.sql.Date dataFine) {
+        return Piattaforma.getInstance(null, null).generaReportNumRicette(dataInizio, dataFine);
+    }
+
+    /**
+     * Genera il report sugli autori più attivi
+     * Controller -> Entity: Richiesta autori più attivi
+     * Chiamata da AdminReportFrame.generaReportAutori() [riga X]
+     * Implementata in Piattaforma.generaReportAutori() [riga X]
+     */
+    public List<ReportAutoriDTO> generaReportAutori() {
+        return Piattaforma.getInstance(null, null).generaReportAutori();
+    }
+
+    /**
+     * Genera il report sui tag più utilizzati
+     * Controller -> Entity: Richiesta tag più usati
+     * Chiamata da AdminReportFrame.generaReportTag() [riga X]
+     * Implementata in Piattaforma.generaReportTag() [riga X]
+     */
+    public List<ReportTagDTO> generaReportTag() {
+        return Piattaforma.getInstance(null, null).generaReportTag();
+    }
+
+    /**
+     * Genera il report sulle ricette con più interazioni
+     * Controller -> Entity: Richiesta ricette top interazioni
+     * Chiamata da AdminReportFrame.generaReportTopRicette() [riga X]
+     * Implementata in Piattaforma.generaReportTopRicette() [riga X]
+     */
+    public List<ReportTopRicetteDTO> generaReportTopRicette() {
+        return Piattaforma.getInstance(null, null).generaReportTopRicette();
+    }
+
+    /**
+     * Autentica un amministratore
+     * Controller -> Entity: Richiesta autenticazione admin
+     * Chiamata da LoginAdminFrame [riga X]
+     * Implementata in Piattaforma.autenticaAdmin() [riga X]
+     */
+    public boolean autenticaAdmin(String username, String password) {
+        return Piattaforma.getInstance(null, null).autenticaAdmin(username, password);
     }
 
 }

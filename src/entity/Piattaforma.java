@@ -10,6 +10,9 @@ import dto.RicettaDTO;
 import dto.IngredienteDTO;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
+import dto.ReportAutoriDTO;
+import dto.ReportTagDTO;
+import dto.ReportTopRicetteDTO;
 
 
 public class Piattaforma {
@@ -194,6 +197,56 @@ public class Piattaforma {
      */
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         return new UtenteDAO().aggiornaProfiloUtente(profilo);
+    }
+
+    /**
+     * Genera il report sul numero di ricette pubblicate in un intervallo
+     * Entity -> DAO: Richiesta numero ricette
+     * Chiamata da GestoreController.generaReportNumRicette() [riga X]
+     * Implementata in RicettaDAO.getNumRicetteInIntervallo() [riga X]
+     */
+    public int generaReportNumRicette(java.sql.Date dataInizio, java.sql.Date dataFine) {
+        return new RicettaDAO().getNumRicetteInIntervallo(dataInizio, dataFine);
+    }
+
+    /**
+     * Genera il report sugli autori più attivi
+     * Entity -> DAO: Richiesta autori più attivi
+     * Chiamata da AdminReportController.generaReportAutori() [riga X]
+     * Implementata in RicettaDAO.getAutoriPiuAttivi() [riga X]
+     */
+    public java.util.List<ReportAutoriDTO> generaReportAutori() {
+        return new RicettaDAO().getAutoriPiuAttivi();
+    }
+
+    /**
+     * Genera il report sui tag più utilizzati
+     * Entity -> DAO: Richiesta tag più usati
+     * Chiamata da AdminReportController.generaReportTag() [riga X]
+     * Implementata in TagDAO.getTagPiuUtilizzati() [riga X]
+     */
+    public java.util.List<ReportTagDTO> generaReportTag() {
+        return new TagDAO().getTagPiuUtilizzati();
+    }
+
+    /**
+     * Genera il report sulle ricette con più interazioni
+     * Entity -> DAO: Richiesta ricette top interazioni
+     * Chiamata da AdminReportController.generaReportTopRicette() [riga X]
+     * Implementata in RicettaDAO.getTopRicettePerInterazioni() [riga X]
+     */
+    public java.util.List<ReportTopRicetteDTO> generaReportTopRicette() {
+        return new RicettaDAO().getTopRicettePerInterazioni();
+    }
+
+    /**
+     * Autentica un amministratore
+     * Entity -> DAO: Richiesta autenticazione admin
+     * Chiamata da GestoreController.autenticaAdmin() [riga X]
+     * Implementata in AmministratoreDAO.autenticaAdmin() [riga X]
+     */
+    public boolean autenticaAdmin(String username, String password) {
+        return new AmministratoreDAO().autenticaAdmin(username, password);
     }
 
 }

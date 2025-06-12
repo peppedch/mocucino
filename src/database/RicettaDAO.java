@@ -11,6 +11,8 @@ import java.util.List;
 import dto.CommentoDTO;
 import dto.IngredienteDTO;
 import dto.RicettaDTO;   // solo in IngredienteDAO
+import dto.ReportAutoriDTO;
+import dto.ReportTopRicetteDTO;
 
 
 public class RicettaDAO {
@@ -171,6 +173,71 @@ public class RicettaDAO {
         }
 
         return ricette;
+    }
+
+    /**
+     * Report 1: Numero totale di ricette pubblicate in un intervallo temporale
+     * DAO -> Database: Query per ottenere il numero di ricette
+     * Chiamata da Piattaforma.generaReportNumRicette() [riga X]
+     * SQL: SELECT COUNT(*) FROM Ricette WHERE dataPubblicazione BETWEEN ? AND ?
+     */
+    public int getNumRicetteInIntervallo(java.sql.Date dataInizio, java.sql.Date dataFine) {
+        String query = "SELECT COUNT(*) as totale FROM Ricette WHERE dataPubblicazione BETWEEN ? AND ?";
+        int totale = 0;
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDate(1, dataInizio);
+            stmt.setDate(2, dataFine);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                totale = rs.getInt("totale");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totale;
+    }
+
+    /**
+     * Report 2: Elenco dei primi 5 autori più attivi
+     * DAO -> Database: Query per ottenere autori e numero ricette
+     * Chiamata da Piattaforma.generaReportAutori() [riga X]
+     * SQL: SELECT Utenti_username, COUNT(*) as numeroRicette FROM Ricette GROUP BY Utenti_username ORDER BY numeroRicette DESC LIMIT 5
+     */
+    public List<ReportAutoriDTO> getAutoriPiuAttivi() {
+        List<ReportAutoriDTO> lista = new ArrayList<>();
+        String query = "SELECT Utenti_username, COUNT(*) as numeroRicette FROM Ricette GROUP BY Utenti_username ORDER BY numeroRicette DESC LIMIT 5";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(new ReportAutoriDTO(rs.getString("Utenti_username"), rs.getInt("numeroRicette")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    /**
+     * Report 4: Prime 5 ricette con il maggior numero di interazioni (like + commenti)
+     * DAO -> Database: Query per ottenere le ricette più interattive
+     * Chiamata da Piattaforma.generaReportTopRicette() [riga X]
+     * SQL: SELECT titolo, (numLike + numCommenti) as interazioni FROM Ricette ORDER BY interazioni DESC LIMIT 5
+     */
+    public List<ReportTopRicetteDTO> getTopRicettePerInterazioni() {
+        List<ReportTopRicetteDTO> lista = new ArrayList<>();
+        String query = "SELECT titolo, (COALESCE(numLike,0) + COALESCE(numCommenti,0)) as interazioni FROM Ricette ORDER BY interazioni DESC LIMIT 5";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(new ReportTopRicetteDTO(rs.getString("titolo"), rs.getInt("interazioni")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 
 
