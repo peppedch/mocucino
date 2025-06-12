@@ -3,6 +3,7 @@ package controller;
 import dto.RicettaDTO;
 import entity.Piattaforma;
 import dto.StatisticheDTO;
+import dto.ProfiloUtenteDTO;
 
 import java.util.List;
 
@@ -65,6 +66,26 @@ public class GestoreController {
      */
     public StatisticheDTO getStatisticheUtente(String username) {
         return Piattaforma.getInstance(null, null).getStatisticheUtente(username);
+    }
+
+    /**
+     * Ottiene il profilo dell'utente
+     * Controller -> Entity: Richiesta dati profilo utente
+     * Chiamata da AreaPersonaleFrame.getProfiloUtente() [linea 147]
+     * Implementata in Piattaforma.getProfiloUtente() [linea 147]
+     */
+    public ProfiloUtenteDTO getProfiloUtente(String username) {
+        return Piattaforma.getInstance(null, null).getProfiloUtente(username);
+    }
+
+    /**
+     * Aggiorna il profilo dell'utente
+     * Controller -> Entity: Richiesta aggiornamento profilo utente
+     * Chiamata da AreaPersonaleFrame.aggiornaProfiloUtente() [linea 147]
+     * Implementata in Piattaforma.aggiornaProfiloUtente() [linea 147]
+     */
+    public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
+        return Piattaforma.getInstance(null, null).aggiornaProfiloUtente(profilo);
     }
 
 }

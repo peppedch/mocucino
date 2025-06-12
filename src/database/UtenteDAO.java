@@ -1,5 +1,6 @@
 package database;
 
+import dto.ProfiloUtenteDTO;
 import entity.Utente;
 import entity.Raccolta;
 
@@ -62,5 +63,64 @@ public class UtenteDAO {
         }
     }
 
+    /**
+     * Ottiene il profilo dell'utente
+     * DAO -> Database: Query per ottenere i dati del profilo
+     * Chiamata da Piattaforma.getProfiloUtente() [linea 147]
+     * SQL: SELECT * FROM Utenti WHERE username = ?
+     */
+    public ProfiloUtenteDTO getProfiloUtente(String username) {
+        String query = "SELECT * FROM Utenti WHERE username = ?";
+        
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return new ProfiloUtenteDTO(
+                    rs.getString("username"),
+                    rs.getString("nome"),
+                    rs.getString("cognome"),
+                    rs.getString("email"),
+                    rs.getString("password"),
+                    rs.getString("biografia"),
+                    rs.getString("immagine")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Aggiorna il profilo dell'utente
+     * DAO -> Database: Query per aggiornare i dati del profilo
+     * Chiamata da Piattaforma.aggiornaProfiloUtente() [linea 147]
+     * SQL: UPDATE Utenti SET nome = ?, cognome = ?, email = ?, password = ?, biografia = ?, immagine = ? WHERE username = ?
+     */
+    public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
+        String query = "UPDATE Utenti SET nome = ?, cognome = ?, email = ?, password = ?, biografia = ?, immagine = ? WHERE username = ?";
+        
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, profilo.getNome());
+            stmt.setString(2, profilo.getCognome());
+            stmt.setString(3, profilo.getEmail());
+            stmt.setString(4, profilo.getPassword());
+            stmt.setString(5, profilo.getBiografia());
+            stmt.setString(6, profilo.getImmagine());
+            stmt.setString(7, profilo.getUsername());
+            
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 

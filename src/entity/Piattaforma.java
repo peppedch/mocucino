@@ -9,6 +9,7 @@ import database.*;
 import dto.RicettaDTO;
 import dto.IngredienteDTO;
 import dto.StatisticheDTO;
+import dto.ProfiloUtenteDTO;
 
 
 public class Piattaforma {
@@ -173,6 +174,26 @@ public class Piattaforma {
      */
     public List<String> getRaccolteUtente(String username) {
         return new RaccoltaDAO().getTitoliRaccolteByUtente(username);
+    }
+
+    /**
+     * Ottiene il profilo dell'utente
+     * Entity -> DAO: Richiesta dati profilo utente
+     * Chiamata da GestoreController.getProfiloUtente() [linea 147]
+     * Implementata in UtenteDAO.getProfiloUtente() [linea 147]
+     */
+    public ProfiloUtenteDTO getProfiloUtente(String username) {
+        return new UtenteDAO().getProfiloUtente(username);
+    }
+
+    /**
+     * Aggiorna il profilo dell'utente
+     * Entity -> DAO: Richiesta aggiornamento profilo utente
+     * Chiamata da GestoreController.aggiornaProfiloUtente() [linea 147]
+     * Implementata in UtenteDAO.aggiornaProfiloUtente() [linea 147]
+     */
+    public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
+        return new UtenteDAO().aggiornaProfiloUtente(profilo);
     }
 
 }

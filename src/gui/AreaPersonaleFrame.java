@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.awt.Image;
+import dto.ProfiloUtenteDTO;
 
 public class AreaPersonaleFrame extends JFrame {
 
@@ -116,6 +117,23 @@ public class AreaPersonaleFrame extends JFrame {
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         getContentPane().add(imageLabel);
 
+        // Carica i dati del profilo
+        ProfiloUtenteDTO profilo = controller.getProfiloUtente(username);
+        if (profilo != null) {
+            nomeField.setText(profilo.getNome());
+            cognomeField.setText(profilo.getCognome());
+            emailField.setText(profilo.getEmail());
+            passwordField.setText(profilo.getPassword());
+            bioTextArea.setText(profilo.getBiografia());
+            
+            if (profilo.getImmagine() != null && !profilo.getImmagine().isEmpty()) {
+                ImageIcon icon = new ImageIcon(new ImageIcon(profilo.getImmagine()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+                imageLabel.setIcon(icon);
+                imageLabel.setText("");
+                imgPath = profilo.getImmagine();
+            }
+        }
+
         //LISTENER BOTTONE CARICA IMMAGINE
         caricaImgBtn = new JButton("Carica Immagine");
         caricaImgBtn.addActionListener(new ActionListener() {
@@ -129,18 +147,15 @@ public class AreaPersonaleFrame extends JFrame {
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     java.io.File file = fileChooser.getSelectedFile();
-                    imgPath = file.getAbsolutePath();						//qui salvo il percorso, in imgPath
+                    imgPath = file.getAbsolutePath();
 
-                    // Carica l'immagine e la ridimensiona a 100x100
+                    // Carica l'immagine e la ridimensiona a 150x150
                     icon = new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
-                    //imagelabel l'ho settata a 150 px x 150, faccio lo stesso qui
                     imageLabel.setIcon(icon);
-                    imageLabel.setText(""); // rimuove eventuale testo "Nessuna immagine"
+                    imageLabel.setText("");
                 }
             }
         });
-
-
 
         caricaImgBtn.setBounds(400, 180, 150, 25);
         getContentPane().add(caricaImgBtn);
@@ -149,7 +164,6 @@ public class AreaPersonaleFrame extends JFrame {
         salvaBtn = new JButton("Salva modifiche");
         salvaBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 String nome = nomeField.getText();
                 String cognome = cognomeField.getText();
                 String email = emailField.getText();
@@ -176,13 +190,27 @@ public class AreaPersonaleFrame extends JFrame {
                     return;
                 }
 
+                // Crea DTO con i dati aggiornati
+                ProfiloUtenteDTO profiloAggiornato = new ProfiloUtenteDTO(
+                    username,
+                    nome,
+                    cognome,
+                    email,
+                    password,
+                    bio,
+                    imgPath
+                );
 
+                // Salva le modifiche nel database
+                boolean success = controller.aggiornaProfiloUtente(profiloAggiornato);
 
-                // Messaggio di conferma (niente salvataggio DB per ora)
-                JOptionPane.showMessageDialog(null, "Modifiche salvate (simulazione).", "OK", JOptionPane.INFORMATION_MESSAGE);
+                if (success) {
+                    JOptionPane.showMessageDialog(null, "Modifiche salvate con successo.", "OK", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Errore durante il salvataggio delle modifiche.", "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
-
 
         salvaBtn.setBounds(220, 260, 160, 30);
         getContentPane().add(salvaBtn);
