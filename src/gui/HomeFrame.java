@@ -16,8 +16,7 @@ import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-
-
+import javax.swing.JButton;
 
 public class HomeFrame extends JFrame {
 
@@ -75,6 +74,15 @@ public class HomeFrame extends JFrame {
 
             }
         });
+
+        JButton btnLoginAdmin = new JButton("Accedi come amministratore");
+        btnLoginAdmin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new LoginAdminFrame().setVisible(true);
+                dispose();
+            }
+        });
+
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
                 gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -96,6 +104,10 @@ public class HomeFrame extends JFrame {
                                 .addGap(120)
                                 .addComponent(welcome_label, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(104))
+                        .addGroup(gl_contentPane.createSequentialGroup()
+                                .addContainerGap(230, Short.MAX_VALUE)
+                                .addComponent(btnLoginAdmin, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         gl_contentPane.setVerticalGroup(
                 gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -110,7 +122,9 @@ public class HomeFrame extends JFrame {
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(bottone_registrati)
                                         .addComponent(bottone_accedi))
-                                .addContainerGap(125, Short.MAX_VALUE))
+                                .addPreferredGap(ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                .addComponent(btnLoginAdmin, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         contentPane.setLayout(gl_contentPane);
     }
