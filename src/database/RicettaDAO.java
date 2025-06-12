@@ -48,7 +48,7 @@ public class RicettaDAO {
         return generatedId;
     }
 
-    //invocato a riga 119 di entity.Piattaforma
+    //invocato a riga 119 di entity.Piattaforma, per mostrare le ricette recenti pubbliche nel feed.
     public List<RicettaDTO> getUltime5RicettePubbliche(String username) {
         List<RicettaDTO> ricette = new ArrayList<>();
 
@@ -94,6 +94,7 @@ public class RicettaDAO {
 
     }
 
+    //QUESTO PER OTTENERE TUTTE LE RICETTE IN UNA RACCOLTA SELEZIONATA DALL'UTENTE, quando dall'area personale, avendo la sezione delle sue racolte, clicca su una raccolta e vuole vedere le ricette che contiene.
     public List<RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
         List<RicettaDTO> ricette = new ArrayList<>();
 

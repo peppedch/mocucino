@@ -33,7 +33,7 @@ public class GestoreController {
     //in quale raccolta viene salvata. è stato fondamentale per fare "crea nuova raccolta" al momento
     //della pubblicazione di ricetta per permettere di crerare la raccolta e ad associargli subito dopo
     //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user.
-    //LA NECESSITA DI QUESTO METODO è IN PARTICOLRE PER IL CASO IN CUI L'UTENTE CREA UNA NUOVA RACCOLTA. QUI IO PRIMA CREO LA RACCOLTA CON IL NOME CHE VUOLE L'UTENTE E CON LO STESSO NOME CHE HA INSERITO LA VADO A RECUPERARE.!
+    //LA NECESSITA DI QUESTO METODO è IN PARTICOLRE PER IL CASO IN CUI L'UTENTE CREA UNA NUOVA RACCOLTA. QUI IO PRIMA CREO LA RACCOLTA CON LO STESSO NOME CHE HA INSERITO L'UTENTE (percio c'è string Titolo, glielo passo come parametro) E POI LA VADO A RECUPERARE PER INSERIRCI DENTRO LA RICETTA!
 
 
     //invocato a riga 159 di gui.FeedFrame
