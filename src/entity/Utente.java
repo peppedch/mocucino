@@ -12,6 +12,7 @@ public class Utente {
     private String password;
     private ProfiloPersonale profiloPersonale;
     private ArrayList<Raccolta> raccolteList;
+    private boolean visibility;
 
     public Utente(String username, String nome, String cognome, String email, String password, Raccolta raccoltaDefault) {
         this.username = username;
@@ -154,12 +155,38 @@ public class Utente {
         this.raccolteList = raccolteList;
     }
 
+    public boolean isVisibility() {
+        return visibility;
+    }
 
+    public List<dto.RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
+        return new database.RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);
+    }
 
+    public dto.StatisticheDTO getStatisticheUtente(String username) {
+        List<dto.RicettaDTO> ricette = new database.RicettaDAO().getRicetteByUtente(username);
+        int totalLikes = 0;
+        int totalComments = 0;
+        String mostLikedRecipe = "Nessuna ricetta";
+        int maxLikes = 0;
 
+        for (dto.RicettaDTO ricetta : ricette) {
+            totalLikes += ricetta.getNumeroLike();
+            totalComments += ricetta.getNumCommenti();
+            if (ricetta.getNumeroLike() > maxLikes) {
+                maxLikes = ricetta.getNumeroLike();
+                mostLikedRecipe = ricetta.getTitolo();
+            }
+        }
 
+        return new dto.StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
+    }
 
+    public dto.ProfiloUtenteDTO getProfiloUtente(String username) {
+        return new database.UtenteDAO().getProfiloUtente(username);
+    }
 
-
-
+    public boolean aggiornaProfiloUtente(dto.ProfiloUtenteDTO profilo) {
+        return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
+    }
 }

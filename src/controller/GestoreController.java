@@ -3,6 +3,7 @@ package controller;
 import dto.RicettaDTO;
 import entity.Piattaforma;
 import entity.Raccolta;
+import entity.Ricetta;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
 import dto.ReportAutoriDTO;
@@ -75,39 +76,45 @@ public class GestoreController {
 
     //invocato a riga 155 di gui.DettaglioRicettaFrame
     public boolean toggleLike(String username, int idRicetta) {
-        return Piattaforma.getInstance(null, null).gestisciToggleLike(username, idRicetta);
+        Ricetta ricetta = new Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
+        return ricetta.gestisciToggleLike(username, idRicetta);
     }
 
     //invocato a riga 155 di gui.DettaglioRicettaFrame
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
-        return Piattaforma.getInstance(null, null).aggiungiCommento(username, idRicetta, testo);
+        entity.Ricetta ricetta = new entity.Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
+        return ricetta.aggiungiCommento(username, idRicetta, testo);
     }
 
 
     //invocato a riga 61 di gui.RicettaRaccoltaFrame
     public List<RicettaDTO> getRicetteDaRaccolta(String titoloRaccolta, String username) {
-        return Piattaforma.getInstance(null, null).getRicetteByRaccolta(titoloRaccolta, username);
+        entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
+        return utente.getRicetteByRaccolta(titoloRaccolta, username);
     }
 
     /**
      * Ottiene le statistiche dell'utente
      * Controller -> Entity: Richiesta statistiche utente
      * Chiamata da AreaPersonaleFrame.getStatisticheUtente() linea 200
-     * Implementata in Piattaforma.getStatisticheUtente() linea 147
+     * Implementata in Utente.getStatisticheUtente() linea 147
      */
     public StatisticheDTO getStatisticheUtente(String username) {
-        return Piattaforma.getInstance(null, null).getStatisticheUtente(username);
+        entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
+        return utente.getStatisticheUtente(username);
     }
 
 
     public ProfiloUtenteDTO getProfiloUtente(String username) {
-        return Piattaforma.getInstance(null, null).getProfiloUtente(username);
+        entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
+        return utente.getProfiloUtente(username);
     }
 
 
     //Aggiorna il profilo dell'utente
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
-        return Piattaforma.getInstance(null, null).aggiornaProfiloUtente(profilo);
+        entity.Utente utente = new entity.Utente(profilo.getUsername(), null, null, null, null, null);
+        return utente.aggiornaProfiloUtente(profilo);
     }
 
     /**

@@ -14,7 +14,6 @@ public class Ricetta {
     private Date dataPublicazione;
     private Utente utente;
 
-
     public Ricetta(String titolo, String procedimento, int tempo, boolean visibility) {
         this.titolo = titolo;
         this.procedimento = procedimento;
@@ -90,4 +89,13 @@ public class Ricetta {
         return visibility;
     }
 
+    public boolean gestisciToggleLike(String username, int idRicetta) {
+        database.LikeDAO dao = new database.LikeDAO();
+        return dao.toggleLike(username, idRicetta);
+    }
+
+    public boolean aggiungiCommento(String username, int idRicetta, String testo) {
+        database.CommentoDAO dao = new database.CommentoDAO();
+        return dao.inserisciCommento(username, idRicetta, testo);
+    }
 }
