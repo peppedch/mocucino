@@ -261,7 +261,7 @@ public class NuovaRicettaFrame extends JFrame {
                         opzioni[0]);
 
                 //ISTANZIO IL CONTROLLER PER INVOCARE I SUOI METODI E PARTIRE CON IL WORKFLOW FINO A DB!
-                GestoreController controller = new GestoreController();
+                GestoreController controller =  GestoreController.getInstance();
 
                 if (scelta == 0) {      //prima opzione form
                     // RACCOLTA ESISTENTE

@@ -183,7 +183,7 @@ public class RegisterFrame extends JFrame {
                         new Raccolta("Default", "Raccolta creata automaticamente", null)
                 );
 
-                AccessoController controller = new AccessoController();
+                AccessoController controller = AccessoController.getInstance();
                 boolean success = controller.registraUtente(nuovoUtente);
 
                 if (success) {

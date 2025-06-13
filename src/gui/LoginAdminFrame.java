@@ -44,7 +44,7 @@ public class LoginAdminFrame extends JFrame {
         setContentPane(contentPane);
 
         //da invocare accesso controller e non gestore controller, cambiare a cascata
-        AccessoController controller = new AccessoController();
+        AccessoController controller = AccessoController.getInstance();
 
         JLabel lblTitle = new JLabel("Login Amministratore");
         lblTitle.setFont(new Font("Lucida Handwriting", Font.BOLD, 14));

@@ -57,7 +57,7 @@ public class RicettaRaccoltaFrame extends JFrame {
         contentPane.add(scrollPane, BorderLayout.CENTER);
 
         //  CHIAMO IL CONTROLLER PER PRENDERE LE RICETTE DELLA RACCOLTA
-        GestoreController controller = new GestoreController();
+        GestoreController controller =  GestoreController.getInstance();
         this.ricette = controller.getRicetteDaRaccolta(nomeRaccolta, username);      //recupera tutte le ricette della raccolta selezionata precedentemente in AreaPersonaleFrame
 
         for (RicettaDTO r : ricette) {

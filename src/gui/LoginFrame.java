@@ -75,7 +75,7 @@ public class LoginFrame extends JFrame {
                 String email = email_inserisci.getText();
                 String password = new String(password_inserisci.getPassword());
 
-                AccessoController controller = new AccessoController();
+                AccessoController controller = AccessoController.getInstance();
                 boolean success = controller.autenticaUtente(email, password);  //passo al controller stringhe email e password
                 //CONTROLLO PRIMA SE ESISTE QUESTO UTENTE
 

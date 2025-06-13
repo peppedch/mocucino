@@ -63,7 +63,7 @@ public class AreaPersonaleFrame extends JFrame {
 
     public AreaPersonaleFrame(String username) {
         this.username = username;
-        this.controller = new GestoreController();
+        this.controller =  GestoreController.getInstance();
         setTitle("Area Personale");
         setSize(600, 600);
         setLocationRelativeTo(null);

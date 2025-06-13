@@ -14,6 +14,22 @@ import java.util.List;
 public class GestoreController {
 
 
+    // Istanza privata statica (singleton)
+    private static GestoreController instance;
+
+    // Costruttore privato per impedire istanziazione esterna
+    private GestoreController() {
+    }
+
+    // Metodo pubblico per ottenere l'istanza
+    public static GestoreController getInstance() {
+        if (instance == null) {
+            instance = new GestoreController();
+        }
+        return instance;
+    }
+
+
     //invocato a riga 260 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         return Piattaforma.getInstance(null, null).getTitoliRaccolteByUtente(username);

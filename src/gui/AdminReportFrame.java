@@ -38,7 +38,7 @@ public class AdminReportFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 700, 600);
 
-        GestoreController controller = new GestoreController();
+        GestoreController controller =  GestoreController.getInstance();
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));

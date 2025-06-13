@@ -151,7 +151,7 @@ public class DettaglioRicettaFrame extends JFrame {
 
         //LISTENER PER IL LIKE
         btnLike.addActionListener(e -> {
-            GestoreController controller = new GestoreController();
+            GestoreController controller =  GestoreController.getInstance();
             System.out.println("LIKE su ID Ricetta: " + ricetta.getIdRicetta());    //stampa debug per vedere se il like funziona correttamente
             boolean likeAggiunto = controller.toggleLike(username, ricetta.getIdRicetta());     //RICORDA: ricetta l'oggetto DTO che ho passato al costruttore e lo stesso username
 
@@ -177,7 +177,7 @@ public class DettaglioRicettaFrame extends JFrame {
                 return;
             }
 
-            GestoreController controller = new GestoreController();
+            GestoreController controller =  GestoreController.getInstance();
             boolean successo = controller.aggiungiCommento(username, ricetta.getIdRicetta(), testo);
 
             if (successo) {

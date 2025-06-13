@@ -6,6 +6,22 @@ import entity.Utente;
 
 public class AccessoController {
 
+    // Istanza privata statica (singleton)
+    private static AccessoController instance;
+
+    // Costruttore privato per impedire istanziazione esterna
+    private AccessoController() {
+    }
+
+    // Metodo pubblico per ottenere l'istanza
+    public static AccessoController getInstance() {
+        if (instance == null) {
+            instance = new AccessoController();
+        }
+        return instance;
+    }
+
+
     //invocato a riga 79 di gui.LoginFrame
     public boolean autenticaUtente(String email, String password) {
         return Piattaforma.getInstance(null, null).autenticaUtente(email, password);

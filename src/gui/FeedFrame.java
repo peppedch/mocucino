@@ -155,7 +155,7 @@ public class FeedFrame extends JFrame {
         contentPane.setLayout(gl_contentPane);
 
         // Inizializzo il controller per recuperare le ricette recenti
-        GestoreController controller = new GestoreController();
+        GestoreController controller =  GestoreController.getInstance();
         List<RicettaDTO> recenti = controller.getRicetteRecenti(username);
 
         for (RicettaDTO ricetta : recenti) {    //debug, stampo le ricette recenti
