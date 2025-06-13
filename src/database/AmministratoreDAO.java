@@ -9,8 +9,7 @@ public class AmministratoreDAO {
     /**
      * Autentica un amministratore
      * DAO -> Database: Query per autenticare admin
-     * Chiamata da Piattaforma.autenticaAdmin() [riga X]
-     * SQL: SELECT * FROM Amministratori WHERE username = ? AND password = ?
+     * Chiamata da Piattaforma.autenticaAdmin() riga 248
      */
     public boolean autenticaAdmin(String username, String password) {
         String query = "SELECT * FROM Amministratori WHERE username = ? AND password = ?";
@@ -22,7 +21,7 @@ public class AmministratoreDAO {
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return false;           //se si verifica un errore, tipo non trova le credenziali nel db, consideriamo l'autenticazione fallita
         }
     }
 } 

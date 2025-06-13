@@ -178,8 +178,7 @@ public class RicettaDAO {
     /**
      * Report 1: Numero totale di ricette pubblicate in un intervallo temporale
      * DAO -> Database: Query per ottenere il numero di ricette
-     * Chiamata da Piattaforma.generaReportNumRicette() [riga X]
-     * SQL: SELECT COUNT(*) FROM Ricette WHERE dataPubblicazione BETWEEN ? AND ?
+     * Chiamata da Piattaforma.generaReportNumRicette()  riga 209
      */
     public int getNumRicetteInIntervallo(java.sql.Date dataInizio, java.sql.Date dataFine) {
         String query = "SELECT COUNT(*) as totale FROM Ricette WHERE dataPubblicazione BETWEEN ? AND ?";
@@ -201,11 +200,10 @@ public class RicettaDAO {
     /**
      * Report 2: Elenco dei primi 5 autori più attivi
      * DAO -> Database: Query per ottenere autori e numero ricette
-     * Chiamata da Piattaforma.generaReportAutori() [riga X]
-     * SQL: SELECT Utenti_username, COUNT(*) as numeroRicette FROM Ricette GROUP BY Utenti_username ORDER BY numeroRicette DESC LIMIT 5
+     * Chiamata da Piattaforma.generaReportAutori() riga 218
      */
     public List<ReportAutoriDTO> getAutoriPiuAttivi() {
-        List<ReportAutoriDTO> lista = new ArrayList<>();
+        List<ReportAutoriDTO> lista = new ArrayList<>();    //scegliamo volutamente top 5 come autori piu attivi.
         String query = "SELECT Utenti_username, COUNT(*) as numeroRicette FROM Ricette GROUP BY Utenti_username ORDER BY numeroRicette DESC LIMIT 5";
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -222,8 +220,8 @@ public class RicettaDAO {
     /**
      * Report 4: Prime 5 ricette con il maggior numero di interazioni (like + commenti)
      * DAO -> Database: Query per ottenere le ricette più interattive
-     * Chiamata da Piattaforma.generaReportTopRicette() [riga X]
-     * SQL: SELECT titolo, (numLike + numCommenti) as interazioni FROM Ricette ORDER BY interazioni DESC LIMIT 5
+     * Chiamata da Piattaforma.generaReportTopRicette() riga 239
+     * Volutamente, ne prendiamo solo la top 5. per sicurezza, usiamo COALESCE per evitare null come int di default nel database. Per eventuali nuovi admin e scalare il db, ricordiamo che in numike e numcommenti bisogna avere di deafult 0 e no NULL, altrimenti puo dare errori.
      */
     public List<ReportTopRicetteDTO> getTopRicettePerInterazioni() {
         List<ReportTopRicetteDTO> lista = new ArrayList<>();

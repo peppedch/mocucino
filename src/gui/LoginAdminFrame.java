@@ -10,16 +10,31 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import controller.GestoreController;
+
+import controller.AccessoController;
 
 public class LoginAdminFrame extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField usernameField;
     private JPasswordField passwordField;
+
+    //aggiunto l'esecuzione per testarlo anche singolarmente, di default me la dava sempre Eclipse.
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    LoginAdminFrame frame = new LoginAdminFrame();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public LoginAdminFrame() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -28,7 +43,8 @@ public class LoginAdminFrame extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
-        GestoreController controller = new GestoreController();
+        //da invocare accesso controller e non gestore controller, cambiare a cascata
+        AccessoController controller = new AccessoController();
 
         JLabel lblTitle = new JLabel("Login Amministratore");
         lblTitle.setFont(new Font("Lucida Handwriting", Font.BOLD, 14));

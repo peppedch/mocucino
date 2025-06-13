@@ -66,12 +66,13 @@ public class AdminReportFrame extends JFrame {
         inputPanel.add(cercaBtn);
         panelPeriodo.add(inputPanel, BorderLayout.NORTH);
 
-        JTextArea periodoResultArea = new JTextArea();
+        JTextArea periodoResultArea = new JTextArea();      //per mostare il risultato del report, richiamato a riga 87
         periodoResultArea.setEditable(false);
         panelPeriodo.add(new JScrollPane(periodoResultArea), BorderLayout.CENTER);
 
+        // Listener per il pulsante Cerca
         cercaBtn.addActionListener(e -> {
-            String from = fromField.getText().trim();
+            String from = fromField.getText().trim();   //anche queste a riga 87, richiamte per l'output del report, mostrando le date inserite dall'utente, sorta di typecasting ottenendo come stringa il formato
             String to = toField.getText().trim();
             if (from.isEmpty() || to.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Inserisci entrambe le date.");
@@ -79,15 +80,16 @@ public class AdminReportFrame extends JFrame {
             }
             try {
                 Date fromDate = Date.valueOf(from);
-                Date toDate = Date.valueOf(to);
+                Date toDate = Date.valueOf(to);     //da aggiungere nel testing: se metto fromDate > toDate, deve dare errore, poi dopo faccio qui l'input validation, ora checkko che il workflow da gui a db sia corretto
                 // GUI -> Controller: Richiesta report 1
-                // Chiamata a GestoreController.generaReportNumRicette() [riga X]
-                int totale = controller.generaReportNumRicette(fromDate, toDate);
+                // Chiamata a GestoreController.generaReportNumRicette() riga 101.
+                int totale = controller.generaReportNumRicette(fromDate, toDate);   //classe dto non necessarie, viene restituito il conteggio solamente come un intero. da gestire nel testing se non c'è alucuna ricetta in quel periodo.
                 periodoResultArea.setText("Numero ricette pubblicate tra " + from + " e " + to + ": " + totale);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Formato data non valido. Usa YYYY-MM-DD.");
             }
         });
+
 
         // 2. Autori più attivi
         JPanel panelAutori = new JPanel(new BorderLayout());
@@ -118,7 +120,7 @@ public class AdminReportFrame extends JFrame {
             int idx = tabbedPane.getSelectedIndex();
             if (idx == 1) { // Autori più attivi
                 // GUI -> Controller: Richiesta report 2
-                // Chiamata a GestoreController.generaReportAutori() [riga X]
+                // Chiamata a GestoreController.generaReportAutori() a riga 112
                 List<ReportAutoriDTO> autori = controller.generaReportAutori();
                 StringBuilder sb = new StringBuilder();
                 int pos = 1;
@@ -128,16 +130,16 @@ public class AdminReportFrame extends JFrame {
                 autoriArea.setText(sb.toString());
             } else if (idx == 2) { // Tag più usati
                 // GUI -> Controller: Richiesta report 3
-                // Chiamata a GestoreController.generaReportTag() [riga X]
+                // Chiamata a GestoreController.generaReportTag() riga 121
                 List<ReportTagDTO> tag = controller.generaReportTag();
                 StringBuilder sb = new StringBuilder();
                 for (ReportTagDTO t : tag) {
                     sb.append("#").append(t.getTag()).append(" (").append(t.getConteggio()).append(")\n");
                 }
                 tagArea.setText(sb.toString());
-            } else if (idx == 3) { // Top ricette per interazioni
+            } else if (idx == 3) { // Top ricette per interazioni. NB: per interazioni intendiamo sia numero like e numero commenti, infatti nella traccia lo si capisce che si intende entrambi. Quindi ottim la scelta di numlike e numcommenti nella table ricette, aggiornati ogni volta nell'evenienza.
                 // GUI -> Controller: Richiesta report 4
-                // Chiamata a GestoreController.generaReportTopRicette() [riga X]
+                // Chiamata a GestoreController.generaReportTopRicette() riga 131
                 List<ReportTopRicetteDTO> ricette = controller.generaReportTopRicette();
                 StringBuilder sb = new StringBuilder();
                 for (ReportTopRicetteDTO r : ricette) {

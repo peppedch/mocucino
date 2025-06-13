@@ -202,8 +202,8 @@ public class Piattaforma {
     /**
      * Genera il report sul numero di ricette pubblicate in un intervallo
      * Entity -> DAO: Richiesta numero ricette
-     * Chiamata da GestoreController.generaReportNumRicette() [riga X]
-     * Implementata in RicettaDAO.getNumRicetteInIntervallo() [riga X]
+     * Chiamata da GestoreController.generaReportNumRicette() a riga 101
+     * Implementata in RicettaDAO.getNumRicetteInIntervallo() a riga 184
      */
     public int generaReportNumRicette(java.sql.Date dataInizio, java.sql.Date dataFine) {
         return new RicettaDAO().getNumRicetteInIntervallo(dataInizio, dataFine);
@@ -212,8 +212,8 @@ public class Piattaforma {
     /**
      * Genera il report sugli autori più attivi
      * Entity -> DAO: Richiesta autori più attivi
-     * Chiamata da AdminReportController.generaReportAutori() [riga X]
-     * Implementata in RicettaDAO.getAutoriPiuAttivi() [riga X]
+     * Chiamata da GestoreController.generaReportAutori() riga 112
+     * Implementata in RicettaDAO.getAutoriPiuAttivi() riga 205
      */
     public java.util.List<ReportAutoriDTO> generaReportAutori() {
         return new RicettaDAO().getAutoriPiuAttivi();
@@ -222,8 +222,8 @@ public class Piattaforma {
     /**
      * Genera il report sui tag più utilizzati
      * Entity -> DAO: Richiesta tag più usati
-     * Chiamata da AdminReportController.generaReportTag() [riga X]
-     * Implementata in TagDAO.getTagPiuUtilizzati() [riga X]
+     * Chiamata da GestoreController.generaReportTag() riga 121
+     * Implementata in TagDAO.getTagPiuUtilizzati() riga 81
      */
     public java.util.List<ReportTagDTO> generaReportTag() {
         return new TagDAO().getTagPiuUtilizzati();
@@ -232,8 +232,8 @@ public class Piattaforma {
     /**
      * Genera il report sulle ricette con più interazioni
      * Entity -> DAO: Richiesta ricette top interazioni
-     * Chiamata da AdminReportController.generaReportTopRicette() [riga X]
-     * Implementata in RicettaDAO.getTopRicettePerInterazioni() [riga X]
+     * Chiamata da GestoreController.generaReportTopRicette() riga 132
+     * Implementata in RicettaDAO.getTopRicettePerInterazioni() riga 226
      */
     public java.util.List<ReportTopRicetteDTO> generaReportTopRicette() {
         return new RicettaDAO().getTopRicettePerInterazioni();
@@ -242,8 +242,8 @@ public class Piattaforma {
     /**
      * Autentica un amministratore
      * Entity -> DAO: Richiesta autenticazione admin
-     * Chiamata da GestoreController.autenticaAdmin() [riga X]
-     * Implementata in AmministratoreDAO.autenticaAdmin() [riga X]
+     * Chiamata da AccessoController.autenticaAdmin() riga 31
+     * Implementata in AmministratoreDAO.autenticaAdmin() riga 15
      */
     public boolean autenticaAdmin(String username, String password) {
         return new AmministratoreDAO().autenticaAdmin(username, password);

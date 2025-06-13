@@ -75,8 +75,7 @@ public class TagDAO {
     /**
      * Report 3: Tag tematici più utilizzati
      * DAO -> Database: Query per ottenere i tag più usati
-     * Chiamata da Piattaforma.generaReportTag() [riga X]
-     * SQL: SELECT t.nome, COUNT(*) as conteggio FROM tags t JOIN ricette_has_tags rt ON t.idTag = rt.tags_idTag GROUP BY t.nome ORDER BY conteggio DESC
+     * Chiamata da Piattaforma.generaReportTag() riga 228
      */
     public List<ReportTagDTO> getTagPiuUtilizzati() {
         List<ReportTagDTO> lista = new ArrayList<>();
