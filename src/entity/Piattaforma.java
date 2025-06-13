@@ -7,8 +7,6 @@ import java.util.List;
 import database.*;
 
 import dto.RicettaDTO;
-import dto.StatisticheDTO;
-import dto.ProfiloUtenteDTO;
 import dto.ReportAutoriDTO;
 import dto.ReportTagDTO;
 import dto.ReportTopRicetteDTO;
