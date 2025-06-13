@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.EventQueue;
 import controller.AccessoController;
+import controller.GestoreController;
 import entity.Utente;
 
 //import javax.swing.JOptionPane;
@@ -87,6 +88,8 @@ public class LoginFrame extends JFrame {
                     //per debug
                     System.out.println("Autore username: " + usernameReale);
 
+                    // Imposta l'utente corrente nel GestoreController
+                    GestoreController.getInstance().setUtenteCorrente(utente);
 
                     JOptionPane.showMessageDialog(LoginFrame.this,
                             "Accesso effettuato!",

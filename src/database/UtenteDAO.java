@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class UtenteDAO {
 
-    //invocato a riga 53 di entity.Piattaforma per il LOGIN, autenticautnte() e a riga 82
+    //invocato a riga 53 di entity.Piattaforma per il LOGIN, autenticautente() e a riga 82
     public Utente readUtente(String email, String password) {
         Utente utente = null;
 
@@ -122,5 +122,31 @@ public class UtenteDAO {
             return false;
         }
     }
-}
+
+    /**
+     * Restituisce un oggetto Utente dato lo username
+   
+    public Utente readUtenteByUsername(String username) {
+        Utente utente = null;
+        String query = "SELECT * FROM Utenti WHERE username = ?";
+        try (Connection conn = DBManager.openConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String nome = rs.getString("nome");
+                String cognome = rs.getString("cognome");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                Raccolta raccoltaDefault = new Raccolta("Default", "Raccolta automatica", null);
+                utente = new Utente(username, nome, cognome, email, password, raccoltaDefault);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
+    }
+        */
+}   
+
 

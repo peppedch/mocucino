@@ -307,7 +307,7 @@ public class NuovaRicettaFrame extends JFrame {
 
 
                 //FINO AD ORA ABBIAMO SOLO "SELEZIONATO" LA RISPETTIVA RACCOLTA. ORA DEVO SALVARE LA RICETTA NORMALMENTE, MA ANCHE AGGIUNGERLA ALLA RISPETTIVA RACCOLTA DESIDERATA.
-                //questo viene fatto esattamente a partire dal metodo entity.Piattaforma.creaRicetta(), richiamato però dal controller, rispettando i layer bced.
+                //questo viene fatto esattamente a partire dal metodo entity.Utente.creaRicetta(), richiamato però dal controller, rispettando i layer bced.
                 //creo il dto e passo i dati raccolti al controller
                 RicettaDTO nuovaRicetta = new RicettaDTO(
                         titolo,

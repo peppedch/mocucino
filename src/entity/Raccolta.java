@@ -22,5 +22,13 @@ public class Raccolta {
         return ricetteList;
     }
 
-
+    /**
+     * Ottiene l'ID di una raccolta dato il suo titolo e l'username dell'utente
+     * Entity -> DAO: Richiesta ID raccolta
+     * Chiamato da GestoreController.getIdRaccoltaByTitolo()
+     * Implementato in RaccoltaDAO.getIdRaccoltaByTitolo()
+     */
+    public static int getIdByTitolo(String titolo, String username) {
+        return new database.RaccoltaDAO().getIdRaccoltaByTitolo(titolo, username);
+    }
 }

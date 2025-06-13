@@ -2,6 +2,7 @@ package controller;
 
 import dto.RicettaDTO;
 import entity.Piattaforma;
+import entity.Raccolta;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
 import dto.ReportAutoriDTO;
@@ -10,12 +11,15 @@ import dto.ReportTopRicetteDTO;
 import java.sql.Date;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class GestoreController {
 
 
     // Istanza privata statica (singleton)
     private static GestoreController instance;
+    // Riferimento all'utente corrente
+    private entity.Utente utenteCorrente;
 
     // Costruttore privato per impedire istanziazione esterna
     private GestoreController() {
@@ -29,25 +33,32 @@ public class GestoreController {
         return instance;
     }
 
+    // Setter per l'utente corrente
+    public void setUtenteCorrente(entity.Utente utente) {
+        this.utenteCorrente = utente;
+    }
 
     //invocato a riga 260 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
-        return Piattaforma.getInstance(null, null).getTitoliRaccolteByUtente(username);
+        if (utenteCorrente == null) return new ArrayList<>();
+        return utenteCorrente.getTitoliRaccolte();
     }
 
     //invocato a riga 282 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
     public boolean creaNuovaRaccolta(String nome, String username) {
-        return Piattaforma.getInstance(null, null).creaRaccoltaPerUtente(nome, username);
+        if (utenteCorrente == null) return false;
+        return utenteCorrente.creaRaccolta(nome);
     }
 
     //invocata a riga 314 di gui.NuovaRicettaFrame
-    public boolean creaRicetta(RicettaDTO dto) {
-        return Piattaforma.getInstance(null, null).creaRicetta(dto);
+    public boolean creaRicetta(dto.RicettaDTO dto) {
+        if (utenteCorrente == null) return false;
+        return utenteCorrente.creaRicetta(dto);
     }
 
     //invocato a riga 278, 289, 299 di gui.NuovaRicettaFrame
     public int getIdRaccoltaByTitolo(String titolo, String username) {
-        return Piattaforma.getInstance(null, null).getIdRaccoltaByTitolo(titolo, username);
+        return Raccolta.getIdByTitolo(titolo, username);
     }
     //questa mi serve per gestirte i 3 casi di dove inserire la ricetta, per questo usata 3 volte.
     //è fondamentale recuperare l'id della raccolta che funge da fk per la ricetta e sapere la ricetta

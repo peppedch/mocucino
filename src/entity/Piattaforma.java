@@ -7,7 +7,7 @@ import java.util.List;
 import database.*;
 
 import dto.RicettaDTO;
-import dto.IngredienteDTO;
+//import dto.IngredienteDTO;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
 import dto.ReportAutoriDTO;
@@ -52,54 +52,10 @@ public class Piattaforma {
         return success;
     }
 
-    //invocata a riga 23 di controller.GestoreController
-    public boolean creaRicetta(RicettaDTO dto) {
-        RicettaDAO ricettaDAO = new RicettaDAO();
-        TagDAO tagDAO = new TagDAO();
-        IngredienteDAO ingredienteDAO = new IngredienteDAO();
-        RaccoltaDAO raccoltaDAO = new RaccoltaDAO();
-
-        // Step 1 – crea ricetta e ottieni ID
-        int ricettaId = ricettaDAO.createRicetta(dto);
-        if (ricettaId == -1) return false;
-
-        // Step 2 – ottieni ID raccolta in base al titolo e username
-        int raccoltaId = raccoltaDAO.getIdRaccoltaByTitolo(dto.getNomeRaccolta(), dto.getAutoreUsername());
-        if (raccoltaId == -1) return false;
-
-        // Step 3 – aggiorna la FK della ricetta
-        boolean okAssoc = raccoltaDAO.aggiungiRicettaARaccolta(raccoltaId, ricettaId);
-
-        // Step 4 – salva ingredienti e tag
-        boolean okTag = tagDAO.aggiungiTagARicetta(ricettaId, dto.getTag());
-        boolean okIng = ingredienteDAO.aggiungiIngredientiARicetta(ricettaId, dto.getIngredienti());
-
-        return okTag && okIng && okAssoc;   //returna false se qualcosa non è andato a buon fine
-    }
-
-
     //invocato a riga 19 controller.  i serve lo username per mostrargli il feed personalizzato
     public Utente getUtenteByCredenziali(String email, String password) {
         UtenteDAO dao = new UtenteDAO();
         return dao.readUtente(email, password); // ritorna oggetto Utente se valido, altrimenti null
-    }
-
-    //invocato a riga 13 di controller.GestoreController, PER DUE CASI DIVERSI.
-    public List<String> getTitoliRaccolteByUtente(String username) {
-        RaccoltaDAO dao = new RaccoltaDAO();
-        return dao.getTitoliRaccolteByUtente(username);
-    }
-
-    ////invocato a riga 18 di controller.GestoreController, gli passa stringa nuova raccolta e username attuale
-    public boolean creaRaccoltaPerUtente(String nome, String username) {
-        RaccoltaDAO dao = new RaccoltaDAO();
-        return dao.createRaccolta(nome, username);
-    }
-
-    //invocato a riga 28 da controller.GestoreController
-    public int getIdRaccoltaByTitolo(String titolo, String username) {
-        RaccoltaDAO dao = new RaccoltaDAO();
-        return dao.getIdRaccoltaByTitolo(titolo, username);
     }
 
     //invocato a riga 39 di controller.GestoreController
@@ -108,38 +64,35 @@ public class Piattaforma {
         return dao.getUltime5RicettePubbliche(username);
     }
 
-    //invocato a riga 44 di controller.GestoreController
-    /* DA ELIMINARE, NON USATO
-    public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
-        RicettaDAO dao = new RicettaDAO();
-        return dao.getRicettaCompletaByTitoloEAutore(titolo, autore);
-    }
-*/
-
+    //1) RESPONSABILITA' DELLA RICETTA
     //invocato a riga 53 di controller.GestoreController
-    public boolean gestisciToggleLike(String username, int idRicetta) {
+    public boolean gestisciToggleLike(String username, int idRicetta) {    
         LikeDAO dao = new LikeDAO();
         return dao.toggleLike(username, idRicetta); // true se aggiunto, false se rimosso
     }
 
+    //2) RESPONSABILITA' DELLA RICETTA
     //invocato a riga 57 di controller.GestoreController
-    public boolean aggiungiCommento(String username, int idRicetta, String testo) {
+    public boolean aggiungiCommento(String username, int idRicetta, String testo) {  
         CommentoDAO dao = new CommentoDAO();
         return dao.inserisciCommento(username, idRicetta, testo);
     }
 
+    //3) RESPONSABILITA' DELL'UTENTE
     //invocato a riga 64 di controller.GestoreController
     public List<RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
         return new RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);
     }
 
+
+    //4) RESPONSABILITA' DELL'UTENTE
     /**
      * Ottiene le statistiche dell'utente
      * Entity -> DAO: Richiesta ricette utente per calcolo statistiche
      * Chiamata da GestoreController.getStatisticheUtente() [linea 63]
      * Implementata in RicettaDAO.getRicetteByUtente() [linea 156]
      */
-    public StatisticheDTO getStatisticheUtente(String username) {
+    public StatisticheDTO getStatisticheUtente(String username) {  //CAMBIA RESPONSABILITA'
         List<RicettaDTO> ricette = new RicettaDAO().getRicetteByUtente(username);
         int totalLikes = 0;
         int totalComments = 0;
@@ -158,15 +111,18 @@ public class Piattaforma {
         return new StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
     }
 
+
+    //5) RESPONSABILITA' DELL'UTENTE
     /**
      * Ottiene le raccolte dell'utente
      * Entity -> DAO: Richiesta raccolte utente
      * Implementata in RaccoltaDAO.getTitoliRaccolteByUtente() [linea 15]
      */
-    public List<String> getRaccolteUtente(String username) {
+    public List<String> getRaccolteUtente(String username) { 
         return new RaccoltaDAO().getTitoliRaccolteByUtente(username);
     }
 
+    //6) RESPONSABILITA' DI UTENTE E DI PROFILO PERSONALE (VEDIAMO PER ULTIMO, PIU DIFFICILE)
     /**
      * Ottiene il profilo dell'utente
      * Entity -> DAO: Richiesta dati profilo utente
@@ -177,6 +133,7 @@ public class Piattaforma {
         return new UtenteDAO().getProfiloUtente(username);
     }
 
+    //7)RESPONSABILITA' DI UTENTE E DI PROFILO PERSONALE (VEDIAMO PER ULTIMO, PIU DIFFICILE)
     /**
      * Aggiorna il profilo dell'utente
      * Entity -> DAO: Richiesta aggiornamento profilo utente

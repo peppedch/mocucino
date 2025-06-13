@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import database.DBManager;
-
-
 public class RaccoltaDAO {
 
     //invocato a riga 95 di entity.Piattaforma
