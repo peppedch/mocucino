@@ -14,12 +14,6 @@ public class Raccolta {
         this.ricetteList.add(ricetta);
     }
 
-    public void aggiungiRicettaARaccolta(Ricetta ricetta) {
-
-        this.ricetteList.add(ricetta);
-    }
-
-
     /**
      * Ottiene l'ID di una raccolta dato il suo titolo e l'username dell'utente
      * Entity -> DAO: Richiesta ID raccolta
