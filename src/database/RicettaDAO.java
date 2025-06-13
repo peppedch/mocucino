@@ -181,7 +181,7 @@ public class RicettaDAO {
      * Chiamata da Piattaforma.generaReportNumRicette()  riga 209
      */
     public int getNumRicetteInIntervallo(java.sql.Date dataInizio, java.sql.Date dataFine) {
-        String query = "SELECT COUNT(*) as totale FROM Ricette WHERE dataPubblicazione BETWEEN ? AND ?";
+        String query = "SELECT COUNT(*) as totale FROM Ricette WHERE DATE(dataPubblicazione) >= ? AND DATE(dataPubblicazione) <= ?";    //in questo modo permette di fare anche il report giornaliero. es da 2023-10-01 a 2023-10-01, quindi solo le ricette pubblicate in quel giorno, se si vuole fare un report giornaliero. Se si vuole fare un report mensile, basta mettere da 2023-10-01 a 2023-10-31. è importante anche per i report giornalieri, ho avuto modo di constatarlo con il web scraping su vinted del trend dei sonny angels
         int totale = 0;
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

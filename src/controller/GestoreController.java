@@ -65,29 +65,20 @@ public class GestoreController {
     /**
      * Ottiene le statistiche dell'utente
      * Controller -> Entity: Richiesta statistiche utente
-     * Chiamata da AreaPersonaleFrame.getStatisticheUtente() [linea 200]
-     * Implementata in Piattaforma.getStatisticheUtente() [linea 147]
+     * Chiamata da AreaPersonaleFrame.getStatisticheUtente() linea 200
+     * Implementata in Piattaforma.getStatisticheUtente() linea 147
      */
     public StatisticheDTO getStatisticheUtente(String username) {
         return Piattaforma.getInstance(null, null).getStatisticheUtente(username);
     }
 
-    /**
-     * Ottiene il profilo dell'utente
-     * Controller -> Entity: Richiesta dati profilo utente
-     * Chiamata da AreaPersonaleFrame.getProfiloUtente() [linea 147]
-     * Implementata in Piattaforma.getProfiloUtente() [linea 147]
-     */
+
     public ProfiloUtenteDTO getProfiloUtente(String username) {
         return Piattaforma.getInstance(null, null).getProfiloUtente(username);
     }
 
-    /**
-     * Aggiorna il profilo dell'utente
-     * Controller -> Entity: Richiesta aggiornamento profilo utente
-     * Chiamata da AreaPersonaleFrame.aggiornaProfiloUtente() [linea 147]
-     * Implementata in Piattaforma.aggiornaProfiloUtente() [linea 147]
-     */
+
+    //Aggiorna il profilo dell'utente
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         return Piattaforma.getInstance(null, null).aggiornaProfiloUtente(profilo);
     }
@@ -126,7 +117,7 @@ public class GestoreController {
      * Genera il report sulle ricette con più interazioni
      * Controller -> Entity: Richiesta ricette top interazioni
      * Chiamata da AdminReportFrame.generaReportTopRicette() riga 143
-     * Implementata in Piattaforma.generaReportTopRicette() [riga X]
+     * Implementata in Piattaforma.generaReportTopRicette()
      */
     public List<ReportTopRicetteDTO> generaReportTopRicette() {
         return Piattaforma.getInstance(null, null).generaReportTopRicette();
