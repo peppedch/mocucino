@@ -10,6 +10,7 @@ public class Ingrediente {
     }
 
     public String getNome() {
+
         return nome;
     }
 }

@@ -26,68 +26,16 @@ public class Ricetta {
         this.dataPublicazione = new Date();  // Data corrente
     }
 
-    public boolean toggleLike(Like like){
-        if (this.likes.contains(like)) {
-            this.likes.remove(like);
-            return false;
-        } else {
-            likes.add(like);
-            return true;
-        }
-    }
-
-    public void addCommento(Commento commento){
-        comments.add(commento);
-    }
-
-    public void aggiungiIntestatario(Utente utente) {
-        this.utente = utente;
-    }
-
-    public void addTag(Tag tag){
-        this.tags.add(tag);
-    }
-
-    public void addRicettaIngrediente(RicettaIngrediente ricettaIngrediente){
-        this.ricettaIngredienteList.add(ricettaIngrediente);
-    }
-
-    ///  metodi getter
-    public int getNumLikes(){
-        return this.likes.size();
-    }
-
-    public int getNumComments(){
-        return this.comments.size();
-    }
 
     public String getTitolo() {
+
         return this.titolo;
-    }
-
-    public String getProcedimento() {
-        return this.procedimento;
-    }
-
-    public int getTempo() {
-        return this.tempo;
-    }
-
-    public boolean getVisibility() {
-        return this.visibility;
-    }
-
-    public Date getDataPublicazione() {
-        return this.dataPublicazione;
     }
 
     public Utente getUtente() {
         return this.utente;
     }
 
-    public boolean isVisibility() {
-        return visibility;
-    }
 
     public boolean gestisciToggleLike(String username, int idRicetta) {
         database.LikeDAO dao = new database.LikeDAO();

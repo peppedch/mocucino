@@ -15,12 +15,10 @@ public class Raccolta {
     }
 
     public void aggiungiRicettaARaccolta(Ricetta ricetta) {
+
         this.ricetteList.add(ricetta);
     }
 
-    public ArrayList<Ricetta> getRicetteList() {
-        return ricetteList;
-    }
 
     /**
      * Ottiene l'ID di una raccolta dato il suo titolo e l'username dell'utente

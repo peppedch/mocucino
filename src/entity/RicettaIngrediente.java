@@ -10,19 +10,8 @@ public class RicettaIngrediente {
         this.unit = unit;
     }
 
-    public void aggiungiIngrediente(Ingrediente ingrediente) {
-        this.ingrediente = ingrediente;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
     public int getUnit(){
         return unit;
     }
 
-    public String getIngrediente() {
-        return ingrediente.getNome();
-    }
 }

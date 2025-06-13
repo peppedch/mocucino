@@ -10,7 +10,7 @@ import dto.RicettaDTO;
 import dto.ReportAutoriDTO;
 import dto.ReportTagDTO;
 import dto.ReportTopRicetteDTO;
-
+import java.util.List;
 
 public class Piattaforma {
 
@@ -86,7 +86,8 @@ public class Piattaforma {
      * Chiamata da GestoreController.generaReportAutori() riga 112
      * Implementata in RicettaDAO.getAutoriPiuAttivi() riga 205
      */
-    public java.util.List<ReportAutoriDTO> generaReportAutori() {
+    public List<ReportAutoriDTO> generaReportAutori() {
+
         return new RicettaDAO().getAutoriPiuAttivi();
     }
 
@@ -96,7 +97,7 @@ public class Piattaforma {
      * Chiamata da GestoreController.generaReportTag() riga 121
      * Implementata in TagDAO.getTagPiuUtilizzati() riga 81
      */
-    public java.util.List<ReportTagDTO> generaReportTag() {
+    public List<ReportTagDTO> generaReportTag() {
         return new TagDAO().getTagPiuUtilizzati();
     }
 
@@ -106,7 +107,7 @@ public class Piattaforma {
      * Chiamata da GestoreController.generaReportTopRicette() riga 132
      * Implementata in RicettaDAO.getTopRicettePerInterazioni() riga 226
      */
-    public java.util.List<ReportTopRicetteDTO> generaReportTopRicette() {
+    public List<ReportTopRicetteDTO> generaReportTopRicette() {
         return new RicettaDAO().getTopRicettePerInterazioni();
     }
 

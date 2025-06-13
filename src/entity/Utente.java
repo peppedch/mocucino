@@ -24,29 +24,6 @@ public class Utente {
         this.raccolteList.addFirst(raccoltaDefault);
     }
 
-    public void aggiungiProfiloPersonale(ProfiloPersonale profiloPersonale) {
-        this.profiloPersonale = profiloPersonale;
-    }
-
-    public void creaRaccolta(Raccolta raccolta) {
-        this.raccolteList.add(raccolta);
-    }
-
-    //overload del metodo creaRicetta: se passi la raccolta lo aggiunge a questa raccolta
-    public boolean creaRicetta(Ricetta ricetta, Raccolta raccolta){
-        if(this.raccolteList.contains(raccolta)){
-            raccolta.aggiungiRicettaARaccolta(ricetta);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    //overload del metodo creaRicetta: se non passi la raccolta lo aggiungue alla prima che e quella di defaul
-    public boolean creaRicetta(Ricetta ricetta){
-        this.raccolteList.getFirst().aggiungiRicettaARaccolta(ricetta);
-        return true;
-    }
 
     /**
      * Crea una ricetta a partire da un RicettaDTO, salva ingredienti e tag, e la associa alla raccolta.
@@ -111,9 +88,7 @@ public class Utente {
         return this.cognome;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
+
 
     public String getEmail() {
         return this.email;
@@ -139,25 +114,6 @@ public class Utente {
         this.password = password;
     }
 
-    public ProfiloPersonale getProfiloPersonale() {
-        return this.profiloPersonale;
-    }
-
-    public void setProfiloPersonale(ProfiloPersonale profiloPersonale) {
-        this.profiloPersonale = profiloPersonale;
-    }
-
-    public ArrayList<Raccolta> getRaccolteList() {
-        return this.raccolteList;
-    }
-
-    public void setRaccolteList(ArrayList<Raccolta> raccolteList) {
-        this.raccolteList = raccolteList;
-    }
-
-    public boolean isVisibility() {
-        return visibility;
-    }
 
     public List<dto.RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
         return new database.RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);

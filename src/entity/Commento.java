@@ -13,10 +13,6 @@ public class Commento {
         this.utente = utente;
     }
 
-    public String getTesto() {
-        return this.testo;
-    }
-
     public Date getData() {
         return this.data;
     }
