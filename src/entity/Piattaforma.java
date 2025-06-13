@@ -36,18 +36,6 @@ public class Piattaforma {
     }
 
 
-    public void ordinaRicette(){
-        this.catalogoRicetta.sort(Comparator.comparing(Ricetta::getDataPublicazione).reversed());
-    }
-
-    public void mostraRicetteRecenti(){
-        int limit=Math.min(5, this.catalogoRicetta.size());
-        for (int i = 0; i < limit; i++) {
-            if(catalogoRicetta.get(i).isVisibility())
-                System.out.println(catalogoRicetta.get(i).toString());
-        }
-    }
-
     //faccio io, per fare login. invocato a riga 10 di controller.AccessoController
     public boolean autenticaUtente(String email, String password) {
         UtenteDAO dao = new UtenteDAO();
