@@ -32,13 +32,6 @@ public class Piattaforma {
         return piattaforma;
     }
 
-
-    //faccio io, per fare login. invocato a riga 10 di controller.AccessoController
-    public boolean autenticaUtente(String email, String password) {
-        UtenteDAO dao = new UtenteDAO();
-        return dao.readUtente(email, password) != null;
-    }
-
     //invocato a riga 16 di controller.AccessoController
     public boolean registraUtente(Utente utente) {
         UtenteDAO dao = new UtenteDAO();

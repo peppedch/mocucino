@@ -21,20 +21,14 @@ public class AccessoController {
         return instance;
     }
 
-
-    //invocato a riga 79 di gui.LoginFrame
-    public boolean autenticaUtente(String email, String password) {
-        return Piattaforma.getInstance(null, null).autenticaUtente(email, password);
+    //invocato a riga 84 gui.LoginFrame
+    public Utente getUtenteAutenticato(String email, String password) {
+        return Piattaforma.getInstance(null, null).getUtenteByCredenziali(email, password);
     }
 
     //invocato a riga 194 di gui.RegisterFrame
     public boolean registraUtente(Utente nuovoUtente) {
         return Piattaforma.getInstance(null, null).registraUtente(nuovoUtente);
-    }
-
-    //invocato a riga 84 gui.LoginFrame
-    public Utente getUtenteAutenticato(String email, String password) {
-        return Piattaforma.getInstance(null, null).getUtenteByCredenziali(email, password);
     }
 
     /**

@@ -72,18 +72,14 @@ public class LoginFrame extends JFrame {
         //LISTENER BOTTONE di accedi, dopo averlo premuto
         accedi_bottone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 String email = email_inserisci.getText();
                 String password = new String(password_inserisci.getPassword());
 
                 AccessoController controller = AccessoController.getInstance();
-                boolean success = controller.autenticaUtente(email, password);  //passo al controller stringhe email e password
-                //CONTROLLO PRIMA SE ESISTE QUESTO UTENTE
+                Utente utente = controller.getUtenteAutenticato(email, password);
 
-                if (success) {
-                    // POI prendi anche l'oggetto. IMPORTANTE PRELEVARE USERNAME
-                    Utente utente = controller.getUtenteAutenticato(email, password);
-                    String usernameReale = utente.getUsername(); //username pk del database, mostro il feed a lui. FONDAMENTALE
+                if (utente != null) {
+                    String usernameReale = utente.getUsername();
 
                     //per debug
                     System.out.println("Autore username: " + usernameReale);
