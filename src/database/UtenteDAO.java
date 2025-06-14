@@ -41,17 +41,17 @@ public class UtenteDAO {
 
 
     //dopo la registrazione per creare l'utente. invocato a riga 59 di entity.Piattaforma
-    public boolean createUtente(Utente utente) {
+    public boolean createUtente(UtenteDTO utenteDTO) {
         String query = "INSERT INTO Utenti (username, nome, cognome, email, password) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, utente.getUsername());
-            stmt.setString(2, utente.getNome());
-            stmt.setString(3, utente.getCognome());
-            stmt.setString(4, utente.getEmail());
-            stmt.setString(5, utente.getPassword());
+            stmt.setString(1, utenteDTO.getUsername());
+            stmt.setString(2, utenteDTO.getNome());
+            stmt.setString(3, utenteDTO.getCognome());
+            stmt.setString(4, utenteDTO.getEmail());
+            stmt.setString(5, utenteDTO.getPassword());
 
             return stmt.executeUpdate() > 0;
 

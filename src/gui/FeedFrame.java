@@ -102,7 +102,7 @@ public class FeedFrame extends JFrame {
                     JOptionPane.YES_NO_OPTION);
 
             if (scelta == JOptionPane.YES_OPTION) {
-                // Resetto lo stato dell'utente corrente
+                // Resetto lo stato  dell'utente corrente
                 GestoreController.getInstance().clearUtenteCorrente();
                 
                 dispose();  // chiude il FeedFrame

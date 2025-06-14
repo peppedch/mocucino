@@ -30,12 +30,21 @@ public class Piattaforma {
         return piattaforma;
     }
 
-    //invocato a riga 16 di controller.AccessoController
-    public boolean registraUtente(Utente utente) {
+    //invocato a riga 32 di controller.AccessoController
+    public boolean registraUtente(UtenteDTO utenteDTO) {
         UtenteDAO dao = new UtenteDAO();
-        boolean success = dao.createUtente(utente);
+        boolean success = dao.createUtente(utenteDTO);
         if (success) {
-            catalogoUtente.add(utente);  // aggiorna anche in memoria
+            // Creo l'entity solo se la registrazione è andata a buon fine
+            Utente utente = new Utente(
+                utenteDTO.getUsername(),
+                utenteDTO.getNome(),
+                utenteDTO.getCognome(),
+                utenteDTO.getEmail(),
+                utenteDTO.getPassword(),
+                new Raccolta("Default", "Raccolta di default", null)  // La raccolta di default è vuota inizialmente ed è assegnata in automatico appena un utente si registra.
+            );
+            catalogoUtente.add(utente);
         }
         return success;
     }
@@ -46,7 +55,7 @@ public class Piattaforma {
         return dao.readUtente(email, password);
     }
 
-    //invocato a riga 39 di controller.GestoreController
+    //invocato a riga 111 di controller.GestoreController. Piattaforma è contenitore logico di tutte le ricette pubbliche. è sua la responsabilotà
     public List<RicettaDTO> getUltime5RicettePubbliche(String username) {
         RicettaDAO dao = new RicettaDAO();
         return dao.getUltime5RicettePubbliche(username);

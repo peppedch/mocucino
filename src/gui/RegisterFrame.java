@@ -21,6 +21,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import dto.UtenteDTO;
 
 public class RegisterFrame extends JFrame {
 
@@ -173,18 +174,17 @@ public class RegisterFrame extends JFrame {
                     return;
                 }
 
-                //raccolgo i dati inseriti, POTEVA STARCI BENISSIMAMENTE UN OGGETTO UTENTE DTO, ma ormai fatto cosi e funziona, quindi lasciamo così
-                Utente nuovoUtente = new Utente(
-                        username,
-                        nome,
-                        cognome,
-                        email,
-                        password,
-                        new Raccolta("Default", "Raccolta creata automaticamente", null)
+                // Creo un DTO con i dati validati
+                UtenteDTO utenteDTO = new UtenteDTO(
+                    username,
+                    nome,
+                    cognome,
+                    email,
+                    password
                 );
 
                 AccessoController controller = AccessoController.getInstance();
-                boolean success = controller.registraUtente(nuovoUtente);
+                boolean success = controller.registraUtente(utenteDTO);
 
                 if (success) {
                     JOptionPane.showMessageDialog(RegisterFrame.this,
@@ -199,7 +199,6 @@ public class RegisterFrame extends JFrame {
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
 

@@ -26,9 +26,10 @@ public class AccessoController {
         return Piattaforma.getInstance(null, null).getUtenteByCredenziali(email, password);
     }
 
-    //invocato a riga 194 di gui.RegisterFrame
-    public boolean registraUtente(Utente nuovoUtente) {
-        return Piattaforma.getInstance(null, null).registraUtente(nuovoUtente);
+
+    //invocato a riga 187 di gui.RegisterFrame
+    public boolean registraUtente(UtenteDTO utenteDTO) {
+        return Piattaforma.getInstance(null, null).registraUtente(utenteDTO);
     }
 
     /**
