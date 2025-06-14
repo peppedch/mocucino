@@ -50,50 +50,43 @@ public class RicettaDAO {
         return generatedId;
     }
 
-    //invocato a riga 119 di entity.Piattaforma, per mostrare le ricette recenti pubbliche nel feed.
-    public List<RicettaDTO> getUltime5RicettePubbliche(String username) {
-        List<RicettaDTO> ricette = new ArrayList<>();
-
-        String query = "SELECT idRicetta, titolo, procedimento, tempo, dataPubblicazione, Utenti_username " +
-                "FROM Ricette WHERE visibilita = true AND Utenti_username != ? " +
-                "ORDER BY dataPubblicazione DESC LIMIT 5";
+    //invocato a riga 52 di entity.Piattaforma, per mostrare le ricette recenti pubbliche nel feed.
+    public List<dto.RicettaDTO> getUltime5RicettePubbliche(String username) {
+        List<dto.RicettaDTO> ricette = new ArrayList<>();
+        String query = "SELECT r.*, u.username as autoreUsername, " +
+                      "COUNT(DISTINCT l.Utenti_username) as numeroLike, " +
+                      "COUNT(DISTINCT c.idCommento) as numCommenti " +
+                      "FROM Ricette r " +
+                      "LEFT JOIN Utenti u ON r.Utenti_username = u.username " +
+                      "LEFT JOIN Likes l ON r.idRicetta = l.Ricette_idRicetta " +
+                      "LEFT JOIN Commenti c ON r.idRicetta = c.Ricette_idRicetta " +
+                      "WHERE r.visibilita = true " +
+                      "GROUP BY r.idRicetta " +
+                      "ORDER BY r.dataPubblicazione DESC " +
+                      "LIMIT 5";
 
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()) {
-                int idRicetta = rs.getInt("idRicetta");
-                String titolo = rs.getString("titolo");
-                String procedimento = rs.getString("procedimento");
-                int tempo = rs.getInt("tempo");
-                String autore = rs.getString("Utenti_username");
-
-                // Recupera tag e ingredienti
-                List<IngredienteDTO> ingredienti = new IngredienteDAO().getIngredientiByRicetta(idRicetta);
-                List<String> tag = new TagDAO().getTagByRicetta(idRicetta);
-
-                //  Recupera i 3 commenti recenti
-                List<CommentoDTO> commenti = new CommentoDAO().getUltimi3CommentiPerRicetta(idRicetta);
-
-                RicettaDTO dto = new RicettaDTO(titolo, procedimento, tempo, ingredienti, tag);
-                dto.setIdRicetta(idRicetta);
-                dto.setAutoreUsername(autore);
-                dto.setNumeroLike(new LikeDAO().getNumeroLikePerRicetta(idRicetta));
-                dto.setCommentiRecenti(new CommentoDAO().getUltimi3CommentiPerRicetta(idRicetta));
-
-
+                dto.RicettaDTO dto = new dto.RicettaDTO(
+                    rs.getString("titolo"),
+                    rs.getString("procedimento"),
+                    rs.getInt("tempo"),
+                    new ArrayList<>(),  // ingredienti vuoti inizialmente
+                    new ArrayList<>()   // tag vuoti inizialmente. TAG, INGREDIENTI E COMMENTI TENERLI DISGIUNTI DALLA RICETTA. QUEST'ULTIMA COMUNQUE HA VISIBILITA SU QUESTI ELEMENTI.
+                );
+                dto.setIdRicetta(rs.getInt("idRicetta"));
+                dto.setAutoreUsername(rs.getString("autoreUsername"));
+                dto.setNumeroLike(rs.getInt("numeroLike"));
+                dto.setNumCommenti(rs.getInt("numCommenti"));
                 ricette.add(dto);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return ricette;
-
     }
 
     //invocato a riga 59 di entity.Raccolta

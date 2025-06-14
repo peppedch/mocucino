@@ -102,10 +102,10 @@ public class FeedFrame extends JFrame {
                     JOptionPane.YES_NO_OPTION);
 
             if (scelta == JOptionPane.YES_OPTION) {
+                // Resetto lo stato dell'utente corrente
+                GestoreController.getInstance().clearUtenteCorrente();
+                
                 dispose();  // chiude il FeedFrame
-
-                // avrei potuto fare Reset utente corrente usando quest'ultimo come singleton e poi:
-                // UtenteCorrente.clear(); ma non complichiamoci la vita ora
 
                 // Torno a LoginFrame
                 LoginFrame login = new LoginFrame();

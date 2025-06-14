@@ -44,6 +44,7 @@ public class Ricetta {
         return dao.toggleLike(username, idRicetta);
     }
 
+    //invocato a riga 118 di controller.GestoreController
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
         database.CommentoDAO dao = new database.CommentoDAO();
         return dao.inserisciCommento(username, idRicetta, testo);
@@ -76,5 +77,32 @@ public class Ricetta {
      */
     public boolean aggiungiIngredienti(List<dto.IngredienteDTO> ingredienti) {
         return new database.IngredienteDAO().aggiungiIngredientiARicetta(this.id, ingredienti);
+    }
+
+    /**
+     * Ottiene gli ingredienti della ricetta
+     * Entity -> DAO: Richiesta ingredienti
+     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+     */
+    public List<dto.IngredienteDTO> getIngredienti() {
+        return new database.IngredienteDAO().getIngredientiByRicetta(this.id);
+    }
+
+    /**
+     * Ottiene i tag della ricetta
+     * Entity -> DAO: Richiesta tag
+     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+     */
+    public List<String> getTag() {
+        return new database.TagDAO().getTagByRicetta(this.id);
+    }
+
+    /**
+     * Ottiene i commenti recenti della ricetta
+     * Entity -> DAO: Richiesta commenti
+     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+     */
+    public List<dto.CommentoDTO> getCommentiRecenti() {
+        return new database.CommentoDAO().getUltimi3CommentiPerRicetta(this.id);
     }
 }

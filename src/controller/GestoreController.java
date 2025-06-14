@@ -65,6 +65,11 @@ public class GestoreController {
         }
     }
 
+    //chiamato per il logout, a riga 106 di gui.FeedFrame
+    public void clearUtenteCorrente() {
+        this.utenteCorrente = null;
+    }
+
     //invocato a riga 265 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 268. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         if (utenteCorrente == null) return new ArrayList<>();
@@ -103,7 +108,40 @@ public class GestoreController {
 
     //invocato a riga 159 di gui.FeedFrame
     public List<RicettaDTO> getRicetteRecenti(String username) {
-        return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
+        List<RicettaDTO> ricette = Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
+        List<RicettaDTO> ricetteComplete = new ArrayList<>();
+        
+        // Per ogni ricetta, recupero i dati correlati attraverso l'entity
+        for (RicettaDTO ricetta : ricette) {
+            // Creo un'istanza temporanea di Ricetta per accedere ai metodi dell'entity
+            entity.Ricetta ricettaEntity = new entity.Ricetta(
+                ricetta.getTitolo(), 
+                ricetta.getDescrizione(), 
+                ricetta.getTempoPreparazione(), 
+                ricetta.getVisibilita()
+            );
+            ricettaEntity.setId(ricetta.getIdRicetta());
+            
+            // Creo un nuovo DTO con tutti i dati
+            RicettaDTO ricettaCompleta = new RicettaDTO(
+                ricetta.getTitolo(),
+                ricetta.getDescrizione(),
+                ricetta.getTempoPreparazione(),
+                ricettaEntity.getIngredienti(),
+                ricettaEntity.getTag()
+            );
+            
+            // Copio gli altri dati dal DTO originale
+            ricettaCompleta.setIdRicetta(ricetta.getIdRicetta());
+            ricettaCompleta.setAutoreUsername(ricetta.getAutoreUsername());
+            ricettaCompleta.setNumeroLike(ricetta.getNumeroLike());
+            ricettaCompleta.setNumCommenti(ricetta.getNumCommenti());
+            ricettaCompleta.setCommentiRecenti(ricettaEntity.getCommentiRecenti());
+            
+            ricetteComplete.add(ricettaCompleta);
+        }
+        
+        return ricetteComplete;
     }
 
     //invocato a riga 156 di gui.DettaglioRicettaFrame
@@ -114,7 +152,7 @@ public class GestoreController {
 
     //invocato a riga 181 di gui.DettaglioRicettaFrame
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
-        entity.Ricetta ricetta = new entity.Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
+        entity.Ricetta ricetta = new entity.Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo, come per il like
         return ricetta.aggiungiCommento(username, idRicetta, testo);
     }
 
