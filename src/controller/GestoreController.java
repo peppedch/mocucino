@@ -191,7 +191,7 @@ public class GestoreController {
     /**
      * Genera il report sul numero di ricette pubblicate in un intervallo
      * Controller -> Entity: Richiesta numero ricette
-     * Chiamata da AdminReportFrame.generaReportNumRicette() a riga 86
+     * Chiamata da AdminReportFrame.generaReportNumRicette() a riga 96
      * Implementata in Piattaforma.generaReportNumRicette() a riga 208
      */
     public int generaReportNumRicette(java.sql.Date dataInizio, java.sql.Date dataFine) {
@@ -211,23 +211,24 @@ public class GestoreController {
     /**
      * Genera il report sui tag più utilizzati
      * Controller -> Entity: Richiesta tag più usati
-     * Chiamata da  AdminReportFrame.generaReportTag() riga 134
-     * Implementata in Piattaforma.generaReportTag() riga
+     * Chiamata da AdminReportFrame.generaReportTag() riga 144
+     * Implementata in Ricetta.getTagPiuUtilizzati()
      */
     public List<ReportTagDTO> generaReportTag() {
-        return Piattaforma.getInstance(null, null).generaReportTag();
+        
+        Ricetta ricetta = new Ricetta(null, null, 0, false);    //per questo report delego a ricetta che è lei ad avere visibilità diretta sui tah e non piattaforma.
+        return ricetta.getTagPiuUtilizzati();
     }
 
     /**
      * Genera il report sulle ricette con più interazioni
      * Controller -> Entity: Richiesta ricette top interazioni
-     * Chiamata da AdminReportFrame.generaReportTopRicette() riga 143
+     * Chiamata da AdminReportFrame.generaReportTopRicette() riga 153
      * Implementata in Piattaforma.generaReportTopRicette()
      */
     public List<ReportTopRicetteDTO> generaReportTopRicette() {
         return Piattaforma.getInstance(null, null).generaReportTopRicette();
     }
-
 
 }
 

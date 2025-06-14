@@ -83,8 +83,8 @@ public class Piattaforma {
     /**
      * Genera il report sugli autori più attivi
      * Entity -> DAO: Richiesta autori più attivi
-     * Chiamata da GestoreController.generaReportAutori() riga 112
-     * Implementata in RicettaDAO.getAutoriPiuAttivi() riga 205
+     * Chiamata da GestoreController.generaReportAutori() riga 208
+     * Implementata in RicettaDAO.getAutoriPiuAttivi() riga 198
      */
     public List<ReportAutoriDTO> generaReportAutori() {
 
@@ -104,8 +104,8 @@ public class Piattaforma {
     /**
      * Genera il report sulle ricette con più interazioni
      * Entity -> DAO: Richiesta ricette top interazioni
-     * Chiamata da GestoreController.generaReportTopRicette() riga 132
-     * Implementata in RicettaDAO.getTopRicettePerInterazioni() riga 226
+     * Chiamata da GestoreController.generaReportTopRicette() riga 230
+     * Implementata in RicettaDAO.getTopRicettePerInterazioni() riga 220
      */
     public List<ReportTopRicetteDTO> generaReportTopRicette() {
         return new RicettaDAO().getTopRicettePerInterazioni();

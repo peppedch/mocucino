@@ -80,10 +80,20 @@ public class AdminReportFrame extends JFrame {
             }
             try {
                 Date fromDate = Date.valueOf(from);
-                Date toDate = Date.valueOf(to);     //da aggiungere nel testing: se metto fromDate > toDate, deve dare errore, poi dopo faccio qui l'input validation, ora checkko che il workflow da gui a db sia corretto
+                Date toDate = Date.valueOf(to);
+                
+                // Validazione date
+                if (fromDate.after(toDate)) {
+                    JOptionPane.showMessageDialog(this,
+                            "La data iniziale non può essere successiva alla data finale.",
+                            "Errore date",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 // GUI -> Controller: Richiesta report 1
                 // Chiamata a GestoreController.generaReportNumRicette() riga 101.
-                int totale = controller.generaReportNumRicette(fromDate, toDate);   //classe dto non necessarie, viene restituito il conteggio solamente come un intero. da gestire nel testing se non c'è alucuna ricetta in quel periodo.
+                int totale = controller.generaReportNumRicette(fromDate, toDate);
                 periodoResultArea.setText("Numero ricette pubblicate tra " + from + " e " + to + ": " + totale);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Formato data non valido. Usa YYYY-MM-DD.");

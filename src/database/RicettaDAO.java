@@ -13,6 +13,7 @@ import dto.IngredienteDTO;
 import dto.RicettaDTO;   // solo in IngredienteDAO
 import dto.ReportAutoriDTO;
 import dto.ReportTopRicetteDTO;
+import dto.ReportTagDTO;
 
 
 public class RicettaDAO {
@@ -218,7 +219,7 @@ public class RicettaDAO {
      */
     public List<ReportTopRicetteDTO> getTopRicettePerInterazioni() {
         List<ReportTopRicetteDTO> lista = new ArrayList<>();
-        String query = "SELECT titolo, (COALESCE(numLike,0) + COALESCE(numCommenti,0)) as interazioni FROM Ricette ORDER BY interazioni DESC LIMIT 5";
+        String query = "SELECT titolo, (COALESCE(numLike,0) + COALESCE(numCommenti,0)) as interazioni FROM Ricette ORDER BY interazioni DESC LIMIT 5";      //buona idea DI inserire numlike e commenti e aggiornarle in automatico nella tabella ricette, perche cosi non dobbiamo fare join con le altre tabelle.
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
@@ -233,38 +234,7 @@ public class RicettaDAO {
 
 
 
-    //invocato a riga 125 di entity.Piattaforma. DA CANCELLARE, NON SERVE PIU'!
-    /*
-    public RicettaDTO getRicettaCompletaByTitoloEAutore(String titolo, String autore) {
-        RicettaDTO dto = null;
-        String query = "SELECT idRicetta, procedimento, tempo FROM Ricette WHERE titolo = ? AND Utenti_username = ?";
 
-        try (Connection conn = DBManager.openConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, titolo);
-            stmt.setString(2, autore);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int idRicetta = rs.getInt("idRicetta");             // recupera l'id della ricetta, importante per ingredienti e tag
-                String procedimento = rs.getString("procedimento");
-                int tempo = rs.getInt("tempo");
-
-                dto = new RicettaDTO(titolo, procedimento, tempo,
-                        new IngredienteDAO().getIngredientiByRicetta(idRicetta),
-                        new TagDAO().getTagByRicetta(idRicetta));
-                dto.setAutoreUsername(autore);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return dto;
-    }
-
-*/
 
 
 }

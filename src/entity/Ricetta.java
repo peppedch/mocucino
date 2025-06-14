@@ -2,6 +2,8 @@ package entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import dto.ReportTagDTO;
+import dto.ReportTopRicetteDTO;
 
 public class Ricetta {
     private String titolo;
@@ -105,4 +107,16 @@ public class Ricetta {
     public List<dto.CommentoDTO> getCommentiRecenti() {
         return new database.CommentoDAO().getUltimi3CommentiPerRicetta(this.id);
     }
+
+    /**
+     * Ottiene i tag più utilizzati nelle ricette
+     * Entity -> DAO: Richiesta tag più usati
+     * Chiamata da GestoreController.generaReportTag()
+     * Implementata in TagDAO.getTagPiuUtilizzati()
+     */
+    public List<ReportTagDTO> getTagPiuUtilizzati() {
+        return new database.TagDAO().getTagPiuUtilizzati();
+    }
+
+   
 }
