@@ -15,12 +15,10 @@ public class Raccolta {
         this.ricetteList.add(ricetta);
     }
 
-    /**
-     * Ottiene l'ID di una raccolta dato il suo titolo e l'username dell'utente
-     * Entity -> DAO: Richiesta ID raccolta
-     * Chiamato da GestoreController.getIdRaccoltaByTitolo()
-     * Implementato in RaccoltaDAO.getIdRaccoltaByTitolo()
-     */
+
+      //Ottiene l'ID di una raccolta dato il suo titolo e l'username dell'utente
+      //Entity -> DAO: Richiesta ID raccolta
+      //invocato a riga 87 di controller.GestoreController
     public static int getIdByTitolo(String titolo, String username) {
         return new database.RaccoltaDAO().getIdRaccoltaByTitolo(titolo, username);
     }
@@ -31,5 +29,15 @@ public class Raccolta {
 
     public int getId() {
         return this.id;
+    }
+
+    /**
+     * Aggiunge una ricetta alla raccolta
+     * Entity -> DAO: Richiesta aggiunta ricetta
+     * Chiamato da Utente.creaRicetta() a riga 50 di entity.Utente
+     * Implementato in RaccoltaDAO.aggiungiRicettaARaccolta()
+     */
+    public boolean aggiungiRicetta(int ricettaId) {
+        return new database.RaccoltaDAO().aggiungiRicettaARaccolta(this.id, ricettaId);
     }
 }

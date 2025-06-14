@@ -28,29 +28,32 @@ public class Utente {
     /**
      * Crea una ricetta a partire da un RicettaDTO, salva ingredienti e tag, e la associa alla raccolta.
      * Responsabilità dell'Utente secondo GRASP.
-     * Chiamato da GestoreController.creaRicetta() -> Utente.creaRicetta()
+     * Chiamato da GestoreController.creaRicetta() -> Utente.creaRicetta() A RIGA 83!!!
      * Entity -> DAO: RicettaDAO, RaccoltaDAO, TagDAO, IngredienteDAO
      */
     public boolean creaRicetta(dto.RicettaDTO dto) {
         database.RicettaDAO ricettaDAO = new database.RicettaDAO();
-        database.TagDAO tagDAO = new database.TagDAO();
-        database.IngredienteDAO ingredienteDAO = new database.IngredienteDAO();
         database.RaccoltaDAO raccoltaDAO = new database.RaccoltaDAO();
 
-        // Step 1 – crea ricetta e ottieni ID
+        // Step 1 – creo ricetta e ottiengo ID
         int ricettaId = ricettaDAO.createRicetta(dto);
         if (ricettaId == -1) return false;
 
-        // Step 2 – ottieni ID raccolta in base al titolo e username
-        int raccoltaId = raccoltaDAO.getIdRaccoltaByTitolo(dto.getNomeRaccolta(), this.username);
+        // Step 2 – uso l'ID della raccolta già presente nel DTO che già abbiamo recuperato, non ho bisogno di fare una nuova query, basta settarlo solo.
+        int raccoltaId = dto.getIdRaccolta();
         if (raccoltaId == -1) return false;
 
-        // Step 3 – aggiorna la FK della ricetta
-        boolean okAssoc = raccoltaDAO.aggiungiRicettaARaccolta(raccoltaId, ricettaId);
+        // Step 3 – delego le responsabilità alle classi appropriate. L'utente essendo contenitore di raccolte, crea la raccolta a livello entity.
+        // La raccolta si occupa di aggiungere la ricetta a se stessa
+        Raccolta raccolta = new Raccolta(null, null, null);
+        raccolta.setId(raccoltaId);
+        boolean okAssoc = raccolta.aggiungiRicetta(ricettaId);
 
-        // Step 4 – salva ingredienti e tag
-        boolean okTag = tagDAO.aggiungiTagARicetta(ricettaId, dto.getTag());
-        boolean okIng = ingredienteDAO.aggiungiIngredientiARicetta(ricettaId, dto.getIngredienti());
+        //L'utente ha la responsabiltà di creare la ricetta, ne è l'autore. E La ricetta si occupa di gestire i propri tag e ingredienti
+        Ricetta ricetta = new Ricetta(dto.getTitolo(), dto.getDescrizione(), dto.getTempoPreparazione(), dto.getVisibilita());
+        ricetta.setId(ricettaId);
+        boolean okTag = ricetta.aggiungiTag(dto.getTag());
+        boolean okIng = ricetta.aggiungiIngredienti(dto.getIngredienti());
 
         return okTag && okIng && okAssoc;
     }
@@ -58,8 +61,8 @@ public class Utente {
     /**
      * Ottiene i titoli delle raccolte dell'utente
      * Entity -> DAO: Richiesta titoli raccolte utente
-     * Chiamato da GestoreController.getRaccolteUtente()
-     * Implementato in RaccoltaDAO.getTitoliRaccolteByUtente()
+     * Chiamato da GestoreController.getRaccolteUtente() a riga 71
+     * Implementato in RaccoltaDAO.getTitoliRaccolteByUtente() a riga 15
      */
     public List<String> getTitoliRaccolte() {
         return new database.RaccoltaDAO().getTitoliRaccolteByUtente(this.username);
@@ -68,7 +71,7 @@ public class Utente {
     /**
      * Crea una nuova raccolta per l'utente
      * Entity -> DAO: Richiesta creazione raccolta
-     * Chiamato da GestoreController.creaNuovaRaccolta()
+     * Chiamato da GestoreController.creaNuovaRaccolta() a riga 77
      * Implementato in RaccoltaDAO.createRaccolta()
      */
     public boolean creaRaccolta(String nome) {
@@ -144,5 +147,14 @@ public class Utente {
 
     public boolean aggiornaProfiloUtente(dto.ProfiloUtenteDTO profilo) {
         return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
+    }
+
+    /**
+     * Ottiene la lista delle raccolte dell'utente
+     * Entity -> Controller: Fornisce accesso alle raccolte
+     * Chiamato da GestoreController.getIdRaccoltaDefault() a riga 87
+     */
+    public ArrayList<Raccolta> getRaccolteList() {
+        return this.raccolteList;
     }
 }

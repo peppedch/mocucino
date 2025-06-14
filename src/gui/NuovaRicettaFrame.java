@@ -80,7 +80,7 @@ public class NuovaRicettaFrame extends JFrame {
 
     private String username;    //passato dal login
 
-    //QUESTA CLASSE è INCOCATA DA GUI.FEEDFRAME A RIGA 74, PER CREARE UNA NUOVA RICETTA DAL FRAME. DEVO PASSARGLI LO STESSO USERNAME DELL'UTENTE IN FEEDFRAME
+    //QUESTA CLASSE è INVOCATA DA GUI.FEEDFRAME A RIGA 81, PER CREARE UNA NUOVA RICETTA DAL FRAME. DEVO PASSARGLI LO STESSO USERNAME DELL'UTENTE IN FEEDFRAME
 
     //per validazione di avere almeno un ingrediente, usata nel liestener del bottone "pubblica"
     private boolean haAlmenoUnIngrediente() {
@@ -216,7 +216,7 @@ public class NuovaRicettaFrame extends JFrame {
                 }
 
 
-                //check per tempo intero positivo
+                //terzo check, per tempo intero positivo
                 String tempoStr = tempo_inserisci.getText().trim();
                 int tempo;
 
@@ -233,7 +233,7 @@ public class NuovaRicettaFrame extends JFrame {
                     return;
                 }
 
-                //check descrizione non nulla
+                //quarto check, descrizione non nulla
                 String descrizione = descrizione_inserisci.getText().trim();
                 if (descrizione.isEmpty()) {
                     JOptionPane.showMessageDialog(NuovaRicettaFrame.this,
@@ -242,9 +242,6 @@ public class NuovaRicettaFrame extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-
-                // Qui poi farai validazioni su altri campi + costruzione DTO
 
                 // SCELTA RACCOLTA
                 String nomeRaccoltaSelezionato = null;
@@ -260,13 +257,13 @@ public class NuovaRicettaFrame extends JFrame {
                         opzioni,
                         opzioni[0]);
 
-                //ISTANZIO IL CONTROLLER PER INVOCARE I SUOI METODI E PARTIRE CON IL WORKFLOW FINO A DB!
+                //Richiedo il CONTROLLER PER INVOCARE I SUOI METODI E PARTIRE CON IL WORKFLOW FINO A DB!
                 GestoreController controller =  GestoreController.getInstance();
 
                 if (scelta == 0) {      //prima opzione form
                     // RACCOLTA ESISTENTE
-                    List<String> raccolteUtenteList = controller.getRaccolteUtente(username);   //prelevo le raccolte dell'utente per mostrargliele
-                    String[] raccolteUtente = raccolteUtenteList.toArray(new String[0]);
+                    List<String> raccolteUtenteList = controller.getRaccolteUtente(username);   //prelevo i titoli delle raccolte dell'utente per mostrargliele
+                    String[] raccolteUtente = raccolteUtenteList.toArray(new String[0]);    //potevo fare direttamente arraylist ma va be, influenza string da c++.
 
                     String raccoltaSelezionata = (String) JOptionPane.showInputDialog(
                             NuovaRicettaFrame.this,
@@ -278,15 +275,15 @@ public class NuovaRicettaFrame extends JFrame {
                             raccolteUtente.length > 0 ? raccolteUtente[0] : null);
 
                     if (raccoltaSelezionata != null) {
-                        nomeRaccoltaSelezionato = raccoltaSelezionata;  //dopo averla selezionata. seleziona praticamente il titolo e non l'id, quindi devo recuperarlo dopo, infatti la riga sotto c'è questo metodo.
-                        idRaccolta = controller.getIdRaccoltaByTitolo(nomeRaccoltaSelezionato, username);
+                        nomeRaccoltaSelezionato = raccoltaSelezionata;  //dopo averla selezionata. seleziona praticamente il titolo e non l'id, quindi devo recuperarlo dopo, infatti la riga sotto c'è questo metodo. Necessariamente così, posso mai mostare all'utente l'id delle raccolte? lui che ne sa, è piu intuitivo per lui il titolo e poi io dal titolo ne recupero l'id univoco. Importante tenere a mente la UX e rendere il tutto user friendly.
+                        idRaccolta = controller.getIdRaccoltaByTitolo(nomeRaccoltaSelezionato, username);   //e quindi recupero l'id della raccolta selezionata.
                     }
 
                 } else if (scelta == 1) {   //seconda opzione form, la crea
                     // NUOVA RACCOLTA
                     String nuovaRaccolta = JOptionPane.showInputDialog(NuovaRicettaFrame.this, "Inserisci nome nuova raccolta:");
                     if (nuovaRaccolta != null && !nuovaRaccolta.isBlank()) {
-                        boolean creata = controller.creaNuovaRaccolta(nuovaRaccolta, username); //controller istanziato sopra a riga 258, vedi!
+                        boolean creata = controller.creaNuovaRaccolta(nuovaRaccolta, username);
                         if (creata) {
                             nomeRaccoltaSelezionato = nuovaRaccolta;
                             //ne recupero anche l'id della raccolta appena creata, perche va assocciata come fk alla ricetta. ovviamente la creo prima nel db e solo in un secondo momento ne recupero l'id GRAZIE SL TITOLO CHE HA MESSO L'UTENTE. PERCIO LA NECESSITA DI AVERE UN RECUPERO TRAMITE IL TITOLO!
@@ -301,7 +298,7 @@ public class NuovaRicettaFrame extends JFrame {
                     }
                 } else {    //terza opzione form, la default
                     nomeRaccoltaSelezionato = "Default";
-                    idRaccolta = controller.getIdRaccoltaByTitolo("Default", username);
+                    idRaccolta = controller.getIdRaccoltaDefault();  // Uso questo metodo piu immediato siccome gia abbiamo l'accesso della raccolta di default al momento del login. invece di fare una nuova query, cioè controller.getIdRaccoltaByTitolo(nuovaRaccolta, username); questo perchè nel momento in cui si logga, utentecorrente ha la sua rispettiva raccolta di default.
                 }
                 boolean visibilita = pubblica_button.isSelected();  // true se è selezionato "Pubblica", false se "Privata"
 
@@ -322,8 +319,7 @@ public class NuovaRicettaFrame extends JFrame {
                 nuovaRicetta.setNomeRaccolta(nomeRaccoltaSelezionato);
                 //passo al dto di Ricetta anche l'autore della ricetta, cioe lo username ottenuto inizialmente dal login, passato al costruttore FeedFrame, passato a NuovaRicettaFeedFrame!
                 nuovaRicetta.setAutoreUsername(username);
-                //setto anche l'id della raccolta selezionata
-                idRaccolta = controller.getIdRaccoltaByTitolo(nomeRaccoltaSelezionato, username);
+                //setto anche l'id della raccolta selezionata, recuperato sopra in tutti e 3 eventuali casi. FONDAMENTALE COME FK IN RICETTA, COSI SO DOVE LA RICETTA IN QUALE RACCOLTA è SALVATA.
                 nuovaRicetta.setIdRaccolta(idRaccolta);
 
 

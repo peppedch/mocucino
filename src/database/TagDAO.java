@@ -12,7 +12,7 @@ import dto.ReportTagDTO;
 public class TagDAO {
 
 
-    //invocato a riga 85 di entity.Piattaforma dal suo metodo crearicetta, ne salviamo i tag sul database che servono per i report
+    //invocato a riga 53 di entity.Utente dal suo metodo crearicetta, ne salviamo i tag sul database che servono per i report
     public boolean aggiungiTagARicetta(int ricettaId, List<String> tag) {
         String select = "SELECT idTag FROM Tags WHERE nome = ?";
         String insert = "INSERT INTO Ricette_has_Tags (Ricette_idRicetta, Tags_idTag) VALUES (?, ?)";

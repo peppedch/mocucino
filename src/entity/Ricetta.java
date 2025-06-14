@@ -1,6 +1,7 @@
 package entity;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Ricetta {
     private String titolo;
@@ -13,6 +14,7 @@ public class Ricetta {
     private ArrayList<Commento> comments;
     private Date dataPublicazione;
     private Utente utente;
+    private int id;
 
     public Ricetta(String titolo, String procedimento, int tempo, boolean visibility) {
         this.titolo = titolo;
@@ -45,5 +47,34 @@ public class Ricetta {
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
         database.CommentoDAO dao = new database.CommentoDAO();
         return dao.inserisciCommento(username, idRicetta, testo);
+    }
+
+    /**
+     * Imposta l'ID della ricetta
+     * Entity: Gestione stato interno
+     * Chiamato da Utente.creaRicetta() a riga 54
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Aggiunge i tag alla ricetta
+     * Entity -> DAO: Richiesta aggiunta tag
+     * Chiamato da Utente.creaRicetta() a riga 54
+     * Implementato in TagDAO.aggiungiTagARicetta()
+     */
+    public boolean aggiungiTag(List<String> tag) {
+        return new database.TagDAO().aggiungiTagARicetta(this.id, tag);
+    }
+
+    /**
+     * Aggiunge gli ingredienti alla ricetta
+     * Entity -> DAO: Richiesta aggiunta ingredienti
+     * Chiamato da Utente.creaRicetta() a riga 55
+     * Implementato in IngredienteDAO.aggiungiIngredientiARicetta()
+     */
+    public boolean aggiungiIngredienti(List<dto.IngredienteDTO> ingredienti) {
+        return new database.IngredienteDAO().aggiungiIngredientiARicetta(this.id, ingredienti);
     }
 }

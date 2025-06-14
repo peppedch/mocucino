@@ -65,19 +65,19 @@ public class GestoreController {
         }
     }
 
-    //invocato a riga 260 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
+    //invocato a riga 265 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         if (utenteCorrente == null) return new ArrayList<>();
         return utenteCorrente.getTitoliRaccolte();
     }
 
-    //invocato a riga 282 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
+    //invocato a riga 286 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
     public boolean creaNuovaRaccolta(String nome, String username) {
         if (utenteCorrente == null) return false;
         return utenteCorrente.creaRaccolta(nome);
     }
 
-    //invocata a riga 314 di gui.NuovaRicettaFrame
+    //invocata a riga 328 di gui.NuovaRicettaFrame
     public boolean creaRicetta(dto.RicettaDTO dto) {
         if (utenteCorrente == null) return false;
         return utenteCorrente.creaRicetta(dto);
@@ -85,15 +85,21 @@ public class GestoreController {
 
     //invocato a riga 278, 289, 299 di gui.NuovaRicettaFrame
     public int getIdRaccoltaByTitolo(String titolo, String username) {
-        return Raccolta.getIdByTitolo(titolo, username);
+        return Raccolta.getIdByTitolo(titolo, username);    //l'id della raccolta mi serve come fk per la ricetta, quindi lo devo recuperare, per salvare la ricetta nella giusta raccolta.
     }
-    //questa mi serve per gestirte i 3 casi di dove inserire la ricetta, per questo usata 3 volte.
-    //è fondamentale recuperare l'id della raccolta che funge da fk per la ricetta e sapere la ricetta
-    //in quale raccolta viene salvata. è stato fondamentale per fare "crea nuova raccolta" al momento
-    //della pubblicazione di ricetta per permettere di crerare la raccolta e ad associargli subito dopo
-    //la ricetta, il tutto in fase di creazione, senza mostrare form dopo. molto piu carino e compatto dal pov user.
-    //LA NECESSITA DI QUESTO METODO è IN PARTICOLRE PER IL CASO IN CUI L'UTENTE CREA UNA NUOVA RACCOLTA. QUI IO PRIMA CREO LA RACCOLTA CON LO STESSO NOME CHE HA INSERITO L'UTENTE (percio c'è string Titolo, glielo passo come parametro) E POI LA VADO A RECUPERARE PER INSERIRCI DENTRO LA RICETTA!
+    //questa sopra mi serve per gestirte i 3 casi di dove inserire la ricetta, è necessario oltre a getRaccolteUtente(username)?
+    // sì! qui devo necessariamente passare il titolo della raccolta per due casi in particolare:
+    //CASO 1: Salvare in raccolta esistente. Perchè, proprio da getRaccolteUtente(), inizalmente all'utente mostro le sue raccolte sottoforma di titoli, non ID, essendo per lui piu intuitivo. DA qui lui deve scegliere in quale titolo di raccolta salvare la ricetta.  Quindi quando "seleziona" una raccolta in cui salvare la ricetta, sta "selezionando" il TITOLO della raccolta. Quindi devo passare il titolo come parametro per ottenerne l'id.
+    //QUESTO PRECLUDE CHE NON CI SIANO PIU RACCOLTE CON LO STESSO NOME! ED INFATTI è UN VINCOLO GIA MESSO NEL DB, QUINDI NON PUò ESSERCI UN PROBLEMA DI AMBIGUITà.
+    //CASO 2: Creare nuova raccolta. Perchè, al momento della creazione della ricetta, può creare anche la raccola in cui salvare la ricetta; devo passargli sempre il titolo che l'utente vuole
 
+    // Metodo per ottenere l'ID della raccolta di default dell'utente corrente
+    public int getIdRaccoltaDefault() {
+        if (utenteCorrente != null && !utenteCorrente.getRaccolteList().isEmpty()) {
+            return utenteCorrente.getRaccolteList().get(0).getId();  // La prima raccolta è sempre quella di default
+        }
+        return -1;
+    }
 
     //invocato a riga 159 di gui.FeedFrame
     public List<RicettaDTO> getRicetteRecenti(String username) {

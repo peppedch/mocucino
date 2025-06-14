@@ -85,7 +85,7 @@ public class LoginFrame extends JFrame {
                     //per debug
                     System.out.println("Autore username: " + usernameReale);
 
-                    // Imposta l'utente corrente nel GestoreController passando il DTO
+                    // Imposta l'utente corrente nel GestoreController passando il DTO, e poi è il controller che "spacchetta" il DTO e istanzia l'oggetto Utente.
                     GestoreController.getInstance().setUtenteCorrente(utenteDTO);  //per quanto commentato appena sopra, importante. sarà importante anche per altre query, visualizzare le rispettive raccolte in area personale di quelL'UTENTE SPECIFICO.       
 
                     JOptionPane.showMessageDialog(LoginFrame.this,
@@ -93,7 +93,7 @@ public class LoginFrame extends JFrame {
                             "Successo",
                             JOptionPane.INFORMATION_MESSAGE);
 
-                    FeedFrame feed = new FeedFrame(usernameReale);      //mostro in automatico il feed all'utente appena loggato.
+                    FeedFrame feed = new FeedFrame(usernameReale);      //mostro in automatico il feed all'utente appena loggato. ecco l'importanza di passare lo username (pk) dell'utente appena loggato.
                     feed.setVisible(true);  // passo anche lo username!
                     dispose();
                 } else {

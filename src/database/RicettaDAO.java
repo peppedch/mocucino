@@ -18,7 +18,7 @@ import dto.ReportTopRicetteDTO;
 public class RicettaDAO {
 
 
-    //invocata a riga 69 di entity.Piattaforma, crea la ricetta e restituisce l'id
+    //invocata a riga 34 di entity.Utente, crea la ricetta e restituisce l'id
     public int createRicetta(RicettaDTO dto) {
         String query = "INSERT INTO Ricette (titolo, procedimento, tempo, dataPubblicazione, visibilita, Utenti_username, Raccolte_idRaccolta)\n" +
                 "VALUES (?, ?, ?, NOW(), ?, ?, ?)\n";

@@ -45,15 +45,15 @@ public class RaccoltaDAO {
             stmt.setString(2, "Creata dall'utente");    //ci vuole sempre la descrizione nella raccolta. ipotizzando la pigrizia dell'utente, la impostiamo noi.
             stmt.setString(3, username);    //importante tenerne traccia dal login per associargli univocamente le sue ricette e raccolte
 
-            return stmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;    //returna true se l'inserimento è andato a buon fine
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return false;           //false se c'è stato un errore. tipo è una raccolta gia esistente.
         }
     }
 
-    //invocato a riga 81 di entity.Piattaforma
+    //invocato a riga 41 di entity.Raccolta
     public boolean aggiungiRicettaARaccolta(int raccoltaId, int ricettaId) {
         String query = "UPDATE Ricette SET Raccolte_idRaccolta = ? WHERE idRicetta = ?";
 
