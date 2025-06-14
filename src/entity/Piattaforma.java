@@ -114,8 +114,8 @@ public class Piattaforma {
     /**
      * Autentica un amministratore
      * Entity -> DAO: Richiesta autenticazione admin
-     * Chiamata da AccessoController.autenticaAdmin() riga 31
-     * Implementata in AmministratoreDAO.autenticaAdmin() riga 15
+     * Chiamata da AccessoController.autenticaAdmin() riga 42
+     * Implementata in AmministratoreDAO.autenticaAdmin() riga 14, in questo modo l'aspetto lato admin è scalabile in caso di aggiunta di più admin
      */
     public boolean autenticaAdmin(String username, String password) {
         return new AmministratoreDAO().autenticaAdmin(username, password);
