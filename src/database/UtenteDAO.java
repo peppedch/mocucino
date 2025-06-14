@@ -1,6 +1,7 @@
 package database;
 
 import dto.ProfiloUtenteDTO;
+import dto.UtenteDTO;
 import entity.Utente;
 import entity.Raccolta;
 
@@ -8,9 +9,9 @@ import java.sql.*;
 
 public class UtenteDAO {
 
-    //invocato a riga 53 di entity.Piattaforma per il LOGIN, autenticautente() e a riga 82
-    public Utente readUtente(String email, String password) {
-        Utente utente = null;
+    //invocato a riga 46 di entity.Piattaforma per il LOGIN,
+    public UtenteDTO readUtente(String email, String password) {
+        UtenteDTO utenteDTO = null;
 
         String query = "SELECT * FROM Utenti WHERE email = ? AND password = ?";    //  I ? sono placeholder usati nei PreparedStatement in Java. //prevenire SQL injection, affiancato a stmt.setstring dopo è piu sicuro
 
@@ -22,23 +23,20 @@ public class UtenteDAO {
 
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                // Puoi usare username come chiave principale
+            if (rs.next()) {    //se l'utente esiste nel db
+                // usO username come chiave principale
                 String username = rs.getString("username");
                 String nome = rs.getString("nome");
-                String cognome = rs.getString("cognome");
+                String cognome = rs.getString("cognome");           //ricordo che la raccolta di default viene creata dal trigger nel database, quindi poi in GestoreController si crea l'oggetto Raccolta e si passa il suo id.
 
-                // Costruisco una raccolta di default come placeholder
-                Raccolta raccoltaDefault = new Raccolta("Default", "Raccolta automatica", null);
-
-                utente = new Utente(username, nome, cognome, email, password, raccoltaDefault);
+                utenteDTO = new UtenteDTO(username, nome, cognome, email, password);    //costruisco il DTO dell'utente autenticato, MAI tipo Utente utente che violi il paradigma bced, quindi mi devo ricordare sempre sta cosa, guai a te. è poi in GestoreController che puoi creare l'oggetto Utente, congeniale con le sue responsabilità.
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return utente;
+        return utenteDTO;
     }
 
 

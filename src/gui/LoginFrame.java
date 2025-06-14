@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import controller.AccessoController;
 import controller.GestoreController;
 import entity.Utente;
+import dto.UtenteDTO;
 
 //import javax.swing.JOptionPane;
 
@@ -75,24 +76,24 @@ public class LoginFrame extends JFrame {
                 String email = email_inserisci.getText();
                 String password = new String(password_inserisci.getPassword());
 
-                AccessoController controller = AccessoController.getInstance();
-                Utente utente = controller.getUtenteAutenticato(email, password);
+                AccessoController controller = AccessoController.getInstance(); //singleton controller per accesso.
+                UtenteDTO utenteDTO = controller.getUtenteAutenticato(email, password);   //check se le credenziali sono corrette ed eventualmente restituisce l'utente autenticato come DTO.
 
-                if (utente != null) {
-                    String usernameReale = utente.getUsername();
+                if (utenteDTO != null) {   //se l'utente esiste nel db
+                    String usernameReale = utenteDTO.getUsername();    //prendo lo username dell'utente autenticato- fondamentale perchè è la pk nella table Utenti e mi serve ad esempio per fare una discrimazione importante: ovvero, in feedframe, mi devono uscire solo ricette di ALTRI AUTORI (ALTRI USERNAME) e non quella dell'utente corrente che ha effettuato l'accesso. Quindi, per fare questo, devo passare lo username dell'utente autenticato al feedframe, e poi in feedframe fare una query che mi restituisce le ricette di ALTRI AUTORI (ovvero con username diverso da quello passato come parametro al feedframe, che sarebbe l'utente loggato che sta usando la piattaforma).
 
                     //per debug
                     System.out.println("Autore username: " + usernameReale);
 
-                    // Imposta l'utente corrente nel GestoreController
-                    GestoreController.getInstance().setUtenteCorrente(utente);
+                    // Imposta l'utente corrente nel GestoreController passando il DTO
+                    GestoreController.getInstance().setUtenteCorrente(utenteDTO);  //per quanto commentato appena sopra, importante. sarà importante anche per altre query, visualizzare le rispettive raccolte in area personale di quelL'UTENTE SPECIFICO.       
 
                     JOptionPane.showMessageDialog(LoginFrame.this,
                             "Accesso effettuato!",
                             "Successo",
                             JOptionPane.INFORMATION_MESSAGE);
 
-                    FeedFrame feed = new FeedFrame(usernameReale);
+                    FeedFrame feed = new FeedFrame(usernameReale);      //mostro in automatico il feed all'utente appena loggato.
                     feed.setVisible(true);  // passo anche lo username!
                     dispose();
                 } else {
@@ -100,8 +101,9 @@ public class LoginFrame extends JFrame {
                             "Email o password errati.",
                             "Errore di accesso",
                             JOptionPane.ERROR_MESSAGE);
+                        }
                 }
-            }
+            
         });
 
 

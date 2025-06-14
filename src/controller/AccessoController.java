@@ -2,7 +2,7 @@ package controller;
 
 import entity.Piattaforma;
 import entity.Utente;
-
+import dto.UtenteDTO;
 
 public class AccessoController {
 
@@ -21,8 +21,8 @@ public class AccessoController {
         return instance;
     }
 
-    //invocato a riga 84 gui.LoginFrame
-    public Utente getUtenteAutenticato(String email, String password) {
+    //invocato a riga 80 gui.LoginFrame
+    public UtenteDTO getUtenteAutenticato(String email, String password) {
         return Piattaforma.getInstance(null, null).getUtenteByCredenziali(email, password);
     }
 

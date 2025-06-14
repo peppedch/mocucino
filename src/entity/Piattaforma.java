@@ -6,10 +6,8 @@ import java.util.List;
 
 import database.*;
 
-import dto.RicettaDTO;
-import dto.ReportAutoriDTO;
-import dto.ReportTagDTO;
-import dto.ReportTopRicetteDTO;
+import dto.*;
+
 import java.util.List;
 
 public class Piattaforma {
@@ -42,10 +40,10 @@ public class Piattaforma {
         return success;
     }
 
-    //invocato a riga 19 controller.  i serve lo username per mostrargli il feed personalizzato
-    public Utente getUtenteByCredenziali(String email, String password) {
+    //invocato a riga 26 controller.AccessoController; controllo autenticazione in fase di login.
+    public UtenteDTO getUtenteByCredenziali(String email, String password) {
         UtenteDAO dao = new UtenteDAO();
-        return dao.readUtente(email, password); // ritorna oggetto Utente se valido, altrimenti null
+        return dao.readUtente(email, password);
     }
 
     //invocato a riga 39 di controller.GestoreController

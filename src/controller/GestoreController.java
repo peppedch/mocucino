@@ -1,9 +1,11 @@
 package controller;
 
 import dto.RicettaDTO;
+import dto.UtenteDTO;
 import entity.Piattaforma;
 import entity.Raccolta;
 import entity.Ricetta;
+import entity.Utente;
 import dto.StatisticheDTO;
 import dto.ProfiloUtenteDTO;
 import dto.ReportAutoriDTO;
@@ -35,8 +37,32 @@ public class GestoreController {
     }
 
     // Setter per l'utente corrente
-    public void setUtenteCorrente(entity.Utente utente) {
-        this.utenteCorrente = utente;
+    public void setUtenteCorrente(UtenteDTO utenteDTO) {
+        if (utenteDTO != null) {
+            // Creiamo l'oggetto Utente qui, nel controller, perche è il controller che ha la responsabilità di creare l'oggetto Utente, e non posso farlo nella gui.
+            // La raccolta di default viene creata dal trigger nel database, quindi recuperiamo semplicemente il suo ID
+            int idRaccoltaDefault = Raccolta.getIdByTitolo("Default", utenteDTO.getUsername());     //come parametri il titolo della raccolta e lo usernme dell'utente
+            //per debug
+                    System.out.println("Id raccolta deafult: " + idRaccoltaDefault);    //checkka nel db nella table raccolte.
+            if (idRaccoltaDefault != -1) {  // Verifichiamo che l'ID sia valido
+                Raccolta raccoltaDefault = new Raccolta("Default", "Raccolta automatica", null);    //oltre a db abbiamo "persistenza" anche in memoria
+                raccoltaDefault.setId(idRaccoltaDefault);
+                this.utenteCorrente = new Utente(
+                    utenteDTO.getUsername(),
+                    utenteDTO.getNome(),
+                    utenteDTO.getCognome(),
+                    utenteDTO.getEmail(),
+                    utenteDTO.getPassword(),
+                    raccoltaDefault
+                );
+            } else {
+                // Se non troviamo la raccolta di default, qualcosa è andato storto
+                System.err.println("Errore: raccolta di default non trovata per l'utente " + utenteDTO.getUsername());
+                this.utenteCorrente = null;
+            }
+        } else {
+            this.utenteCorrente = null;
+        }
     }
 
     //invocato a riga 260 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
