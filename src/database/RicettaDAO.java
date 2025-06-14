@@ -96,6 +96,7 @@ public class RicettaDAO {
 
     }
 
+    //invocato a riga 59 di entity.Raccolta
     //QUESTO PER OTTENERE TUTTE LE RICETTE IN UNA RACCOLTA SELEZIONATA DALL'UTENTE, quando dall'area personale, avendo la sezione delle sue racolte, clicca su una raccolta e vuole vedere le ricette che contiene.
     public List<RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
         List<RicettaDTO> ricette = new ArrayList<>();
@@ -137,8 +138,7 @@ public class RicettaDAO {
     /**
      * Ottiene tutte le ricette di un utente
      * DAO -> Database: Query per ottenere le ricette dell'utente
-     * Chiamata da Piattaforma.getStatisticheUtente() [linea 147]
-     * SQL: SELECT idRicetta, titolo, procedimento, tempo, numLike, numCommenti FROM Ricette WHERE Utenti_username = ?
+     * Chiamata da Utente.getStatisticheUtente() 127 riga
      */
     public List<RicettaDTO> getRicetteByUtente(String username) {
         List<RicettaDTO> ricette = new ArrayList<>();

@@ -14,7 +14,8 @@ import java.util.List;
 import java.awt.Image;
 import dto.ProfiloUtenteDTO;
 
-public class AreaPersonaleFrame extends JFrame {
+public class
+AreaPersonaleFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JTextField nomeField;
@@ -224,7 +225,7 @@ public class AreaPersonaleFrame extends JFrame {
 
         // GUI -> Controller: Richiesta statistiche utente
         // Chiamata al controller per ottenere le statistiche
-        // Implementata in GestoreController.getStatisticheUtente() [linea 63]
+        // Implementata in GestoreController.getStatisticheUtente() riga 134
         StatisticheDTO stats = controller.getStatisticheUtente(username);
 
         likeTotaliLabel = new JLabel("Like ricevuti: " + stats.getTotalLikes());
@@ -267,7 +268,7 @@ public class AreaPersonaleFrame extends JFrame {
         List<String> raccolteUtente = controller.getRaccolteUtente(username);
         raccolteModel.clear();
         for (String r : raccolteUtente) {
-            raccolteModel.addElement(r);
+            raccolteModel.addElement(r);        //gli mostro le raccolte dell'utente nella lista.
         }
 
 

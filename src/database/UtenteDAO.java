@@ -64,8 +64,7 @@ public class UtenteDAO {
     /**
      * Ottiene il profilo dell'utente
      * DAO -> Database: Query per ottenere i dati del profilo
-     * Chiamata da Piattaforma.getProfiloUtente() [linea 147]
-     * SQL: SELECT * FROM Utenti WHERE username = ?
+     * Chiamata da entity.Utente.getProfiloUtente() linea 146
      */
     public ProfiloUtenteDTO getProfiloUtente(String username) {
         String query = "SELECT * FROM Utenti WHERE username = ?";
@@ -77,7 +76,7 @@ public class UtenteDAO {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return new ProfiloUtenteDTO(
+                return new ProfiloUtenteDTO(            //creo il DTO del profilo utente
                     rs.getString("username"),
                     rs.getString("nome"),
                     rs.getString("cognome"),
@@ -96,8 +95,7 @@ public class UtenteDAO {
     /**
      * Aggiorna il profilo dell'utente
      * DAO -> Database: Query per aggiornare i dati del profilo
-     * Chiamata da Piattaforma.aggiornaProfiloUtente() [linea 147]
-     * SQL: UPDATE Utenti SET nome = ?, cognome = ?, email = ?, password = ?, biografia = ?, immagine = ? WHERE username = ?
+     * Chiamata da Piattaforma.aggiornaProfiloUtente() riga 150
      */
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         String query = "UPDATE Utenti SET nome = ?, cognome = ?, email = ?, password = ?, biografia = ?, immagine = ? WHERE username = ?";
@@ -121,30 +119,7 @@ public class UtenteDAO {
         }
     }
 
-    /**
-     * Restituisce un oggetto Utente dato lo username
-   
-    public Utente readUtenteByUsername(String username) {
-        Utente utente = null;
-        String query = "SELECT * FROM Utenti WHERE username = ?";
-        try (Connection conn = DBManager.openConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                String nome = rs.getString("nome");
-                String cognome = rs.getString("cognome");
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                Raccolta raccoltaDefault = new Raccolta("Default", "Raccolta automatica", null);
-                utente = new Utente(username, nome, cognome, email, password, raccoltaDefault);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return utente;
-    }
-        */
+
 }   
 
 

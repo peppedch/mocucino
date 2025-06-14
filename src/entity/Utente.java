@@ -61,7 +61,7 @@ public class Utente {
     /**
      * Ottiene i titoli delle raccolte dell'utente
      * Entity -> DAO: Richiesta titoli raccolte utente
-     * Chiamato da GestoreController.getRaccolteUtente() a riga 71
+     * Chiamato da GestoreController.getRaccolteUtente() a riga 71, per 2 cose diverse
      * Implementato in RaccoltaDAO.getTitoliRaccolteByUtente() a riga 15
      */
     public List<String> getTitoliRaccolte() {
@@ -117,11 +117,7 @@ public class Utente {
         this.password = password;
     }
 
-
-    public List<dto.RicettaDTO> getRicetteByRaccolta(String titoloRaccolta, String username) {
-        return new database.RicettaDAO().getRicetteByRaccolta(titoloRaccolta, username);
-    }
-
+    //invocato a riga 136 di controller.GestoreController
     public dto.StatisticheDTO getStatisticheUtente(String username) {
         List<dto.RicettaDTO> ricette = new database.RicettaDAO().getRicetteByUtente(username);
         int totalLikes = 0;
@@ -141,10 +137,11 @@ public class Utente {
         return new dto.StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
     }
 
+    //invocato a riga 142 di controller.GestoreController
     public dto.ProfiloUtenteDTO getProfiloUtente(String username) {
         return new database.UtenteDAO().getProfiloUtente(username);
     }
-
+    //riga 147 di controller.GestoreController
     public boolean aggiornaProfiloUtente(dto.ProfiloUtenteDTO profilo) {
         return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
     }

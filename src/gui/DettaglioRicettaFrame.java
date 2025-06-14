@@ -43,10 +43,10 @@ public class DettaglioRicettaFrame extends JFrame {
         // Creo una lista di tag fittizi
         List<String> tag = new ArrayList<>();
         tag.add("Dolce");
-        tag.add("Salutare");
+        tag.add("Vegano");
 
-        // Creo una RicettaDTO fittizia, QUESTO SOLO PER QUESTO MAIN, OPER RUNNARLO E TESTARLO, MA IL VERO OGGETTO RICETTA DTO è PASSATO DA FEEDFRAME!
-        RicettaDTO ricetta = new RicettaDTO(
+        // Creo una RicettaDTO fittizia, QUESTO SOLO PER QUESTO MAIN, OPER RUNNARLO E TESTARLO, MA IL VERO OGGETTO RICETTA DTO è PASSATO DA FEEDFRAME o da ricettaraccltaframe
+            RicettaDTO ricetta = new RicettaDTO(
             "Paneveloce",
             "Mescola .",
             30,
@@ -67,7 +67,7 @@ public class DettaglioRicettaFrame extends JFrame {
     }
 
 
-
+    //ORA INIZIA IL COSTRUTTORE DELLA FINESTRA DETTAGLIO RICETTA, CHE SI APRE QUANDO L'UTENTE CLICCA SULLA RICETTA NELLA FEEDFRAME O NELLA RACCOLTA. QUELLO SOPRA SERVIVA SOLO PER TESTARE IL RUNNABLE.
     /**
      * Create the frame.
      */

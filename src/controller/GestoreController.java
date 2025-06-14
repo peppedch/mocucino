@@ -65,10 +65,10 @@ public class GestoreController {
         }
     }
 
-    //invocato a riga 265 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 257. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
+    //invocato a riga 265 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 268. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         if (utenteCorrente == null) return new ArrayList<>();
-        return utenteCorrente.getTitoliRaccolte();
+        return utenteCorrente.getTitoliRaccolte();      //è l'utente che deve accedere alle sue raccolte, non la piattaforma. Quindi è l'utente che ha la responsabilità di gestire le sue raccolte. Quinid a livello entity chiamo il metodo getTitoliRaccolte() dell'utente, che a sua volta chiama il DAO per recuperare i titoli delle raccolte dal database.
     }
 
     //invocato a riga 286 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
@@ -106,13 +106,13 @@ public class GestoreController {
         return Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
     }
 
-    //invocato a riga 155 di gui.DettaglioRicettaFrame
+    //invocato a riga 156 di gui.DettaglioRicettaFrame
     public boolean toggleLike(String username, int idRicetta) {
         Ricetta ricetta = new Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
         return ricetta.gestisciToggleLike(username, idRicetta);
     }
 
-    //invocato a riga 155 di gui.DettaglioRicettaFrame
+    //invocato a riga 181 di gui.DettaglioRicettaFrame
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
         entity.Ricetta ricetta = new entity.Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
         return ricetta.aggiungiCommento(username, idRicetta, testo);
@@ -121,29 +121,30 @@ public class GestoreController {
 
     //invocato a riga 61 di gui.RicettaRaccoltaFrame
     public List<RicettaDTO> getRicetteDaRaccolta(String titoloRaccolta, String username) {
-        entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
-        return utente.getRicetteByRaccolta(titoloRaccolta, username);
+        Raccolta raccolta = new Raccolta(titoloRaccolta, null, null);
+        raccolta.setUsername(username);
+        return raccolta.getRicette();
     }
 
     /**
      * Ottiene le statistiche dell'utente
      * Controller -> Entity: Richiesta statistiche utente
-     * Chiamata da AreaPersonaleFrame.getStatisticheUtente() linea 200
-     * Implementata in Utente.getStatisticheUtente() linea 147
+     * Chiamata da AreaPersonaleFrame.getStatisticheUtente() linea 229
+     * Implementata in Utente.getStatisticheUtente() lineea 125
      */
     public StatisticheDTO getStatisticheUtente(String username) {
         entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
         return utente.getStatisticheUtente(username);
     }
 
-
+    //invocato a riga 122 di gui.AreaPersonaleFrame
     public ProfiloUtenteDTO getProfiloUtente(String username) {
         entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
         return utente.getProfiloUtente(username);
     }
 
 
-    //Aggiorna il profilo dell'utente
+    //Aggiorna il profilo dell'utente, inovocato a riga 206 di gui.AreaPersonaleFrame
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         entity.Utente utente = new entity.Utente(profilo.getUsername(), null, null, null, null, null);
         return utente.aggiornaProfiloUtente(profilo);

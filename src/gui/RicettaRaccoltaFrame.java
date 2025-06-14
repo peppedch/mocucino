@@ -58,13 +58,14 @@ public class RicettaRaccoltaFrame extends JFrame {
 
         //  CHIAMO IL CONTROLLER PER PRENDERE LE RICETTE DELLA RACCOLTA
         GestoreController controller =  GestoreController.getInstance();
-        this.ricette = controller.getRicetteDaRaccolta(nomeRaccolta, username);      //recupera tutte le ricette della raccolta selezionata precedentemente in AreaPersonaleFrame
+        this.ricette = controller.getRicetteDaRaccolta(nomeRaccolta, username);      //recupera tutte le ricette della raccolta selezionata precedentemente in AreaPersonaleFrame. restitusice un alista di ricettedto
 
-        for (RicettaDTO r : ricette) {
+        for (RicettaDTO r : ricette) {  //per ogni ricetta dto ricevuta dal controller in questa lista di ricette dto.
+
             ricetteModel.addElement(r.getTitolo() + " - " + r.getNumeroLike() + " like");   //ora gli esce una vista di tutte le ricette della raccolta solo con il titolo e il numero di like
         }
 
-        //ORA INVECE PROCEDIAMO A, PARTIRE DALLA VISTA CON SOLO TITOLO E LIKE, A MOSTRARE IL DETTAGLIO DELLA RICETTA SELEZIONATA DALL'UTENTE:
+        //ORA INVECE PROCEDIAMO A, PARTIRE DALLA VISTA CON SOLO TITOLO E LIKE delle ricette, A MOSTRARE IL DETTAGLIO DELLA RICETTA SELEZIONATA DALL'UTENTE:
 
         // Listener click su una ricetta
         ricetteList.addListSelectionListener(e -> {

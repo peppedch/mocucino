@@ -324,12 +324,12 @@ public class NuovaRicettaFrame extends JFrame {
 
 
 
-                //invochiamo il controller nuovamente (già istanziato sopra) e salviamo la ricetta, passandogli tutti i dati dell'oggetto DTO come parametro
+                //richiamiamo il controller per salvare la ricetta, passandogli tutti i dati dell'oggetto DTO come parametro
                 boolean success = controller.creaRicetta(nuovaRicetta); //DA QUI IN POI SALVA SIA LA RICETTA CHE LA RICETTA NELLA RISPETTIVA RACCOLTA
 
                 if (success) {
                     JOptionPane.showMessageDialog(NuovaRicettaFrame.this,
-                            "Ricetta pubblicata con successo!",
+                            "Ricetta pubblicata con successo!",              //NB: per avere un successo, la ricetta oltre ad essere salvata nella table ricetta, deve essere correttamente salvata anche nella rispettiva raccolta con tutti gli ingredienti e tag nel db, altrimenti da errore. è un po' un privilegiare la consistenza nel db, è una scelta progettuale.
                             "Successo",
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
