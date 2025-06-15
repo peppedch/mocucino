@@ -7,13 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import dto.CommentoDTO;
-import dto.IngredienteDTO;
 import dto.RicettaDTO;   // solo in IngredienteDAO
 import dto.ReportAutoriDTO;
 import dto.ReportTopRicetteDTO;
-import dto.ReportTagDTO;
 
 
 public class RicettaDAO {

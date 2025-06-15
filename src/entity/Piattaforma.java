@@ -1,14 +1,15 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import database.UtenteDAO;
+import database.RicettaDAO;
+import database.AmministratoreDAO;
+import dto.UtenteDTO;
+import dto.RicettaDTO;
+import dto.ReportTopRicetteDTO;
+import dto.ReportAutoriDTO;
 
-import database.*;
-
-import dto.*;
-
-import java.util.List;
 
 public class Piattaforma {
 

@@ -1,9 +1,7 @@
 package gui;
 
 import controller.GestoreController;
-import dto.CommentoDTO;
 import dto.RicettaDTO;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

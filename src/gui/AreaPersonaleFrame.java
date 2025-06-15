@@ -1,7 +1,6 @@
 package gui;
 
 import controller.GestoreController;
-import gui.RicettaRaccoltaFrame;
 import dto.StatisticheDTO;
 import javax.swing.*;
 import java.awt.Color;

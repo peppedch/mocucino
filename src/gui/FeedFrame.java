@@ -10,21 +10,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import java.util.List;
-import java.util.ArrayList;
-import java.time.LocalDate;
-
 import controller.GestoreController;
-import dto.CommentoDTO;
 import dto.RicettaDTO;
-
 import java.awt.Font;
 
 

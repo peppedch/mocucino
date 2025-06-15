@@ -2,13 +2,8 @@ package gui;
 
 import java.awt.EventQueue;
 import javax.swing.ButtonGroup;
-
 import dto.IngredienteDTO;
 import controller.GestoreController;
-
-
-
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,7 +16,6 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -29,14 +23,12 @@ import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;					//queste librerie importate perchè fatto alcune cose da codice anziche da design come per inserimento ingredienti.
-
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
-
 import dto.RicettaDTO;
 import javax.swing.JRadioButton;
 

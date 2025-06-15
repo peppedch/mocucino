@@ -2,7 +2,8 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import dto.*;
+import dto.StatisticheDTO;
+import dto.RicettaDTO;
 
 public class Utente {
     //tutti a private.

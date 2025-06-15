@@ -2,9 +2,6 @@ package database;
 
 import dto.ProfiloUtenteDTO;
 import dto.UtenteDTO;
-import entity.Utente;
-import entity.Raccolta;
-
 import java.sql.*;
 
 public class UtenteDAO {
@@ -24,7 +21,7 @@ public class UtenteDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {    //se l'utente esiste nel db
-                // usO username come chiave principale
+                // uso username come chiave principale
                 String username = rs.getString("username");
                 String nome = rs.getString("nome");
                 String cognome = rs.getString("cognome");           //ricordo che la raccolta di default viene creata dal trigger nel database, quindi poi in GestoreController si crea l'oggetto Raccolta e si passa il suo id.

@@ -6,9 +6,6 @@ import javax.swing.JOptionPane;		//aggiunto io per mostrare POPUp di errore pass
 
 import java.awt.EventQueue;
 import controller.AccessoController;
-import entity.Raccolta;
-import entity.Utente;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;

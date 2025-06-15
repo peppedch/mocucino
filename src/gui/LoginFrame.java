@@ -3,21 +3,15 @@ package gui;
 import java.awt.EventQueue;
 import controller.AccessoController;
 import controller.GestoreController;
-import entity.Utente;
 import dto.UtenteDTO;
-
-//import javax.swing.JOptionPane;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
