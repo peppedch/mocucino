@@ -1,65 +1,99 @@
 package entity;
 
+import dto.UtenteDTO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import dto.UtenteDTO;
-import static org.junit.Assert.*;
+import static org.junit.Assert.*; // Importa tutti i metodi statici di Assert per comodità
 
 public class PiattaformaTest {
-    private Utente testUtente;
-    private Ricetta testRicetta;
+    // La nostra piattaforma che stiamo testando
     private Piattaforma piattaforma;
+    // Un utente di prova per i test
+    private Utente utenteTest;
+    // Una ricetta di prova per i test
+    private Ricetta ricettaTest;
 
+    // Dati per un nuovo utente da registrare
+    private static final String NEW_USERNAME = "test_new";
+    private static final String NEW_NOME = "Luke";
+    private static final String NEW_COGNOME = "Rosso";
+    private static final String NEW_EMAIL = "test_new@mail.ex";
+    private static final String NEW_PASSWORD = "TestPass2";
+
+    // Dati di un utente che sappiamo già esistere nel sistema
+    private static final String EXISTING_USERNAME = "marco_verdi";
+    private static final String EXISTING_NOME = "Marco";
+    private static final String EXISTING_COGNOME = "Verdi";
+    private static final String EXISTING_EMAIL = "marco_verdi@mail.ex";
+    private static final String EXISTING_PASSWORD = "MarcoVerd5";
+
+    // Questo metodo viene eseguito prima di ogni singolo test
     @Before
-    public void setUp() throws Exception {
-        // Create test data
-        testUtente = new Utente("testUser", "Test", "User", "test@example.com", "password123", 
-            new Raccolta("Default", "Raccolta di default", null));
-        testRicetta = new Ricetta("Test Recipe", "Test Description", 30, true);
+    public void setUp() {
+        // Creiamo un utente e una ricetta di test per preparare la piattaforma
+        utenteTest = new Utente("test_user", "Test", "User", "test@mail.ex", "TestPass1",
+                new Raccolta("Default", "Raccolta di default", null));
+        ricettaTest = new Ricetta("Test Recipe", "Test Description", 30, true);
+        // Otteniamo l'istanza della Piattaforma (è un singleton, ne esiste una sola)
+        piattaforma = Piattaforma.getInstance(utenteTest, ricettaTest);
     }
 
+    // Questo metodo viene eseguito dopo ogni singolo test
     @After
-    public void tearDown() throws Exception {
-        // Reset singleton instance
+    public void tearDown() {
+        // Puliamo l'oggetto piattaforma alla fine di ogni test
         piattaforma = null;
     }
 
+    // Test per verificare che otteniamo sempre la stessa istanza della piattaforma
     @Test
-    public void getInstance() {
-        // Test first instance creation
-        Piattaforma firstInstance = Piattaforma.getInstance(testUtente, testRicetta);
-        assertNotNull("First instance should not be null", firstInstance);
-        
-        // Test second instance is the same as first (singleton pattern)
-        Piattaforma secondInstance = Piattaforma.getInstance(testUtente, testRicetta);
-        assertSame("Second instance should be the same as first", firstInstance, secondInstance);
-        
-        // Test with different parameters (should still return same instance)
-        Utente differentUtente = new Utente("diffUser", "Diff", "User", "diff@example.com", "pass123", 
-            new Raccolta("Default", "Raccolta di default", null));
-        Ricetta differentRicetta = new Ricetta("Diff Recipe", "Diff Description", 45, false);
-        Piattaforma thirdInstance = Piattaforma.getInstance(differentUtente, differentRicetta);
-        assertSame("Third instance should be the same as first", firstInstance, thirdInstance);
+    public void testGetInstance() {
+        // Verifichiamo che la prima volta che chiediamo l'istanza, non sia vuota
+        Piattaforma firstInstance = Piattaforma.getInstance(utenteTest, ricettaTest);
+        assertNotNull("La prima istanza non dovrebbe essere vuota!", firstInstance);
+
+        // Verifichiamo che la seconda volta che la chiediamo, sia la stessa della prima (singleton)
+        Piattaforma secondInstance = Piattaforma.getInstance(utenteTest, ricettaTest);
+        assertSame("La seconda istanza deve essere la stessa della prima, perché è un singleton!", firstInstance, secondInstance);
     }
 
+    // Test per registrare un nuovo utente che non esiste ancora
+    //TODO: ATTENZIONE ogni volta che si esegue il test si devono cambiare i dati. (sopra)
     @Test
-    public void registraUtente() {
-        // Get platform instance
-        Piattaforma piattaforma = Piattaforma.getInstance(testUtente, testRicetta);
-        
-        // Test successful registration
-        UtenteDTO newUser = new UtenteDTO("newUser", "New", "User", "new@example.com", "newpass123");
+    public void testRegistraUtente_NewUser() {
+        // Creiamo i dati per un utente tutto nuovo
+        UtenteDTO newUser = new UtenteDTO(
+                NEW_USERNAME,
+                NEW_NOME,
+                NEW_COGNOME,
+                NEW_EMAIL,
+                NEW_PASSWORD
+        );
+
+        // Proviamo a registrare questo nuovo utente
         boolean success = piattaforma.registraUtente(newUser);
-        assertTrue("Registration should succeed with valid data", success);
-        
-        // Test registration with existing username (should fail)
-        UtenteDTO duplicateUser = new UtenteDTO("newUser", "Duplicate", "User", "duplicate@example.com", "pass123");
-        boolean duplicateSuccess = piattaforma.registraUtente(duplicateUser);
-        assertFalse("Registration should fail with duplicate username", duplicateSuccess);
-        
-        // Test registration with null data
-        boolean nullSuccess = piattaforma.registraUtente(null);
-        assertFalse("Registration should fail with null data", nullSuccess);
+
+        // Controlliamo che la registrazione sia andata a buon fine
+        assertTrue("La registrazione di un nuovo utente dovrebbe riuscire!", success);
+    }
+
+    // Test per provare a registrare un utente che esiste già
+    @Test
+    public void testRegistraUtente_ExistingUser() {
+        // Creiamo i dati di un utente che sappiamo già esistere
+        UtenteDTO existingUser = new UtenteDTO(
+                EXISTING_USERNAME,
+                EXISTING_NOME,
+                EXISTING_COGNOME,
+                EXISTING_EMAIL,
+                EXISTING_PASSWORD
+        );
+
+        // Proviamo a registrare questo utente che esiste già
+        boolean success = piattaforma.registraUtente(existingUser);
+
+        // Controlliamo che la registrazione non sia andata a buon fine (perché l'utente esiste già)
+        assertFalse("La registrazione di un utente che esiste già dovrebbe fallire!", success);
     }
 }

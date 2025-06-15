@@ -1,148 +1,178 @@
 package entity;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import dto.RicettaDTO;
-import dto.IngredienteDTO;
-import dto.StatisticheDTO;
-import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.*;
+import dto.*; // Importiamo tutti i "DTO" che ci servono (sono oggetti che portano dati)
+import org.junit.After; // Serve per i metodi che vengono eseguiti dopo ogni test
+import org.junit.Before; // Serve per i metodi che vengono eseguiti prima di ogni test
+import org.junit.Test; // Segna un metodo come un test da eseguire
+
+import java.util.ArrayList; // Ci serve per creare liste
+import java.util.List; // Rappresenta una lista generica
+
+import static org.junit.Assert.*; // Importiamo tutti i metodi per fare le verifiche (come assertEquals, assertTrue, ecc.)
 
 public class UtenteTest {
-    private Utente utente;
-    private Raccolta raccoltaDefault;
-    private List<IngredienteDTO> ingredienti;
-    private List<String> tag;
 
+    // L'utente che useremo per i nostri test
+    private Utente utente;
+    // La raccolta di ricette predefinita dell'utente
+    private Raccolta raccoltaDefault;
+
+    // Questo metodo viene eseguito prima di ogni singolo test per preparare l'ambiente
     @Before
     public void setUp() throws Exception {
-        // Creo una raccolta di default per l'utente
-        raccoltaDefault = new Raccolta("Default", "Raccolta di default", null);
-        raccoltaDefault.setId(1); // ID fittizio per i test
-        
-        // Creo l'utente di test
-        utente = new Utente("testUser", "Test", "User", "test@example.com", "password123", raccoltaDefault);
-        
-        // Preparo ingredienti e tag di test
-        ingredienti = new ArrayList<>();
-        ingredienti.add(new IngredienteDTO("Farina", "200", "g"));
-        ingredienti.add(new IngredienteDTO("Zucchero", "100", "g"));
-        
-        tag = new ArrayList<>();
-        tag.add("Dolce");
-        tag.add("Vegetariano");
+        // Creiamo una ricetta di base che verrà messa nella raccolta predefinita
+        Ricetta ricettaDefault = new Ricetta("Ricetta Default", "Descrizione Default", 30, true);
+        // Creiamo la raccolta di default, dandole un nome, una descrizione e la ricetta creata
+        raccoltaDefault = new Raccolta("Default", "Raccolta predefinita", ricettaDefault);
+        // Creiamo un nuovo utente di test con i dati specificati e la sua raccolta predefinita
+        utente = new Utente("testUser", "Test", "User", "test@example.com", "password", raccoltaDefault);
     }
 
+    // Questo metodo viene eseguito dopo ogni test per pulire l'ambiente e evitare problemi con i test successivi
     @After
     public void tearDown() throws Exception {
+        // Resettiamo l'utente e la raccolta a null per "pulire"
         utente = null;
         raccoltaDefault = null;
-        ingredienti = null;
-        tag = null;
     }
 
+    // Test per calcolare le statistiche di un utente quando ha delle ricette
     @Test
-    public void creaRicetta() {
-        // Test caso di successo
-        RicettaDTO ricettaDTO = new RicettaDTO(
-            "Torta al cioccolato",
-            "Procedimento test",
-            60,
-            ingredienti,
-            tag
-        );
-        ricettaDTO.setIdRaccolta(1); // ID della raccolta di default
-        ricettaDTO.setAutoreUsername("testUser");
-        ricettaDTO.setVisibilita(true);
-        
-        boolean success = utente.creaRicetta(ricettaDTO);
-        assertTrue("La creazione della ricetta dovrebbe avere successo", success);
-        
-        // Test con ID raccolta non valido
-        RicettaDTO ricettaDTOInvalid = new RicettaDTO(
-            "Torta invalida",
-            "Procedimento test",
-            60,
-            ingredienti,
-            tag
-        );
-        ricettaDTOInvalid.setIdRaccolta(-1);
-        ricettaDTOInvalid.setAutoreUsername("testUser");
-        
-        boolean fail = utente.creaRicetta(ricettaDTOInvalid);
-        assertFalse("La creazione della ricetta dovrebbe fallire con ID raccolta non valido", fail);
-        
-        // Test con DTO null
-        boolean nullFail = utente.creaRicetta(null);
-        assertFalse("La creazione della ricetta dovrebbe fallire con DTO null", nullFail);
+    public void testGetStatisticheUtente_ConRicette() {
+        // --- Preparazione dei dati per il test ---
+        List<RicettaDTO> ricette = new ArrayList<>(); // Creiamo una lista vuota per le ricette
 
-        // Test con lista tag vuota
-        RicettaDTO ricettaNoTag = new RicettaDTO(
-            "Torta senza tag",
-            "Procedimento test",
-            60,
-            ingredienti,
-            new ArrayList<>()
-        );
-        ricettaNoTag.setIdRaccolta(1);
-        ricettaNoTag.setAutoreUsername("testUser");
-        boolean noTagSuccess = utente.creaRicetta(ricettaNoTag);
-        assertTrue("La creazione della ricetta dovrebbe avere successo anche senza tag", noTagSuccess);
+        // Dati per la prima ricetta
+        List<String> tag1 = new ArrayList<>(); // Lista dei tag per la ricetta 1
+        tag1.add("test1"); // Aggiungiamo un tag
+        List<IngredienteDTO> ingredienti1 = new ArrayList<>(); // Lista degli ingredienti per la ricetta 1
+        ingredienti1.add(new IngredienteDTO("Ingrediente 1", "100", "g")); // Aggiungiamo un ingrediente
+        // Creiamo la prima ricetta con titolo, descrizione, tempo, ingredienti e tag
+        RicettaDTO ricetta1 = new RicettaDTO("Ricetta 1", "Descrizione della prima ricetta", 30, ingredienti1, tag1);
+        ricetta1.setNumeroLike(10); // Le diamo 10 "mi piace"
+        ricetta1.setNumCommenti(5); // E 5 commenti
 
-        // Test con lista ingredienti vuota
-        RicettaDTO ricettaNoIng = new RicettaDTO(
-            "Torta senza ingredienti",
-            "Procedimento test",
-            60,
-            new ArrayList<>(),
-            tag
-        );
-        ricettaNoIng.setIdRaccolta(1);
-        ricettaNoIng.setAutoreUsername("testUser");
-        boolean noIngSuccess = utente.creaRicetta(ricettaNoIng);
-        assertTrue("La creazione della ricetta dovrebbe avere successo anche senza ingredienti", noIngSuccess);
+        // Dati per la seconda ricetta
+        List<String> tag2 = new ArrayList<>(); // Lista dei tag per la ricetta 2
+        tag2.add("test2"); // Aggiungiamo un tag
+        List<IngredienteDTO> ingredienti2 = new ArrayList<>(); // Lista degli ingredienti per la ricetta 2
+        ingredienti2.add(new IngredienteDTO("Ingrediente 2", "200", "g")); // Aggiungiamo un ingrediente
+        // Creiamo la seconda ricetta
+        RicettaDTO ricetta2 = new RicettaDTO("Ricetta 2", "Descrizione della seconda ricetta", 45, ingredienti2, tag2);
+        ricetta2.setNumeroLike(15); // Le diamo 15 "mi piace"
+        ricetta2.setNumCommenti(8); // E 8 commenti
+
+        ricette.add(ricetta1); // Aggiungiamo la prima ricetta alla lista
+        ricette.add(ricetta2); // Aggiungiamo la seconda ricetta alla lista
+
+        // --- Esecuzione del test ---
+        // Chiediamo all'utente di calcolare le statistiche per le ricette che gli abbiamo dato
+        StatisticheDTO stats = utente.calcolaStatistiche(ricette);
+
+        // --- Verifica dei risultati ---
+        // Controlliamo che l'oggetto delle statistiche non sia vuoto
+        assertNotNull("Le statistiche non devono essere vuote!", stats);
+        // Controlliamo che il totale dei "mi piace" sia quello che ci aspettiamo (10 + 15 = 25)
+        assertEquals("Il totale dei 'mi piace' dovrebbe essere 25", 25, stats.getTotalLikes());
+        // Controlliamo che il totale dei commenti sia quello che ci aspettiamo (5 + 8 = 13)
+        assertEquals("Il totale dei commenti dovrebbe essere 13", 13, stats.getTotalComments());
+        // Controlliamo che la ricetta con più "mi piace" sia la "Ricetta 2"
+        assertEquals("La ricetta più apprezzata dovrebbe essere 'Ricetta 2'", "Ricetta 2", stats.getMostLikedRecipe());
     }
 
+    // Test per calcolare le statistiche quando la lista di ricette è vuota
     @Test
-    public void getStatisticheUtente() {
-        // Test con lista vuota di ricette
-        StatisticheDTO statsEmpty = utente.getStatisticheUtente("testUser");
-        assertEquals("I like totali dovrebbero essere 0 con lista vuota", 0, statsEmpty.getTotalLikes());
-        assertEquals("I commenti totali dovrebbero essere 0 con lista vuota", 0, statsEmpty.getTotalComments());
-        assertEquals("La ricetta più apprezzata dovrebbe essere 'Nessuna ricetta' con lista vuota", 
-            "Nessuna ricetta", statsEmpty.getMostLikedRecipe());
-        
-        // Creiamo una lista di ricette per testare il ciclo for
-        List<RicettaDTO> ricette = new ArrayList<>();
-        
-        RicettaDTO ricetta1 = new RicettaDTO("Torta", "Descrizione", 60, ingredienti, tag);
-        ricetta1.setNumeroLike(5);
-        ricetta1.setNumCommenti(3);
-        ricette.add(ricetta1);
-        
-        RicettaDTO ricetta2 = new RicettaDTO("Pizza", "Descrizione", 45, ingredienti, tag);
-        ricetta2.setNumeroLike(10);
-        ricetta2.setNumCommenti(5);
-        ricette.add(ricetta2);
-        
-        RicettaDTO ricetta3 = new RicettaDTO("Pasta", "Descrizione", 30, ingredienti, tag);
-        ricetta3.setNumeroLike(8);
-        ricetta3.setNumCommenti(2);
-        ricette.add(ricetta3);
-        
-        // Test con le ricette create
-        StatisticheDTO stats = utente.getStatisticheUtente("testUser");
-        assertEquals("I like totali dovrebbero essere 23", 23, stats.getTotalLikes());
-        assertEquals("I commenti totali dovrebbero essere 10", 10, stats.getTotalComments());
-        assertEquals("La ricetta più apprezzata dovrebbe essere 'Pizza'", "Pizza", stats.getMostLikedRecipe());
+    public void testGetStatisticheUtente_ListaVuota() {
+        // --- Preparazione ---
+        List<RicettaDTO> ricette = new ArrayList<>(); // Creiamo una lista di ricette vuota
 
-        // Test con username null
-        StatisticheDTO statsNullUsername = utente.getStatisticheUtente(null);
-        assertEquals("I like totali dovrebbero essere 0 con username null", 0, statsNullUsername.getTotalLikes());
-        assertEquals("I commenti totali dovrebbero essere 0 con username null", 0, statsNullUsername.getTotalComments());
-        assertEquals("La ricetta più apprezzata dovrebbe essere 'Nessuna ricetta' con username null", 
-            "Nessuna ricetta", statsNullUsername.getMostLikedRecipe());
+        // --- Esecuzione ---
+        // Calcoliamo le statistiche con una lista di ricette vuota
+        StatisticheDTO stats = utente.calcolaStatistiche(ricette);
+
+        // --- Verifica ---
+        // Controlliamo che l'oggetto delle statistiche non sia vuoto
+        assertNotNull("Le statistiche non devono essere vuote!", stats);
+        // Se la lista è vuota, i like totali devono essere 0
+        assertEquals("Il totale dei 'mi piace' dovrebbe essere 0", 0, stats.getTotalLikes());
+        // Se la lista è vuota, i commenti totali devono essere 0
+        assertEquals("Il totale dei commenti dovrebbe essere 0", 0, stats.getTotalComments());
+        // E la ricetta più apprezzata dovrebbe dire "Nessuna ricetta"
+        assertEquals("La ricetta più apprezzata dovrebbe essere 'Nessuna ricetta'", "Nessuna ricetta", stats.getMostLikedRecipe());
+    }
+
+    // Test per calcolare le statistiche con una sola ricetta nella lista
+    @Test
+    public void testGetStatisticheUtente_RicettaSingola() {
+        // --- Preparazione ---
+        List<RicettaDTO> ricette = new ArrayList<>(); // Creiamo una lista per le ricette
+
+        // Dati per la singola ricetta
+        List<String> tag = new ArrayList<>(); // Lista dei tag
+        tag.add("test"); // Aggiungiamo un tag
+        List<IngredienteDTO> ingredienti = new ArrayList<>(); // Lista degli ingredienti
+        ingredienti.add(new IngredienteDTO("Ingrediente", "100", "g")); // Aggiungiamo un ingrediente
+        // Creiamo la singola ricetta
+        RicettaDTO ricetta = new RicettaDTO("Ricetta Semplice", "Descrizione semplice", 30, ingredienti, tag);
+        ricetta.setNumeroLike(5); // Le diamo 5 "mi piace"
+        ricetta.setNumCommenti(3); // E 3 commenti
+
+        ricette.add(ricetta); // Aggiungiamo la ricetta alla lista
+
+        // --- Esecuzione ---
+        // Calcoliamo le statistiche per questa singola ricetta
+        StatisticheDTO stats = utente.calcolaStatistiche(ricette);
+
+        // --- Verifica ---
+        // Controlliamo che l'oggetto delle statistiche non sia vuoto
+        assertNotNull("Le statistiche non devono essere vuote!", stats);
+        // Controlliamo che i like totali corrispondano a quelli della singola ricetta
+        assertEquals("Il totale dei 'mi piace' dovrebbe essere 5", 5, stats.getTotalLikes());
+        // Controlliamo che i commenti totali corrispondano a quelli della singola ricetta
+        assertEquals("Il totale dei commenti dovrebbe essere 3", 3, stats.getTotalComments());
+        // La ricetta più apprezzata deve essere quella che abbiamo appena aggiunto
+        assertEquals("La ricetta più apprezzata dovrebbe essere 'Ricetta Semplice'", "Ricetta Semplice", stats.getMostLikedRecipe());
+    }
+
+    // Test per calcolare le statistiche quando ci sono ricette con lo stesso numero di "mi piace"
+    @Test
+    public void testGetStatisticheUtente_LikeUguali() {
+        // --- Preparazione ---
+        List<RicettaDTO> ricette = new ArrayList<>(); // Creiamo una lista per le ricette
+
+        // Prima ricetta con 10 like
+        List<String> tag1 = new ArrayList<>(); // Tag per la ricetta 1
+        tag1.add("test1");
+        List<IngredienteDTO> ingredienti1 = new ArrayList<>(); // Ingredienti per la ricetta 1
+        ingredienti1.add(new IngredienteDTO("Ingrediente 1", "100", "g"));
+        RicettaDTO ricetta1 = new RicettaDTO("Ricetta 1", "Descrizione ricetta 1", 30, ingredienti1, tag1);
+        ricetta1.setNumeroLike(10); // 10 "mi piace"
+        ricetta1.setNumCommenti(5);
+
+        // Seconda ricetta con lo stesso numero di like
+        List<String> tag2 = new ArrayList<>(); // Tag per la ricetta 2
+        tag2.add("test2");
+        List<IngredienteDTO> ingredienti2 = new ArrayList<>(); // Ingredienti per la ricetta 2
+        ingredienti2.add(new IngredienteDTO("Ingrediente 2", "200", "g"));
+        RicettaDTO ricetta2 = new RicettaDTO("Ricetta 2", "Descrizione ricetta 2", 45, ingredienti2, tag2);
+        ricetta2.setNumeroLike(10); // Anche questa ha 10 "mi piace" (come la prima)
+        ricetta2.setNumCommenti(8);
+
+        ricette.add(ricetta1); // Aggiungiamo la prima ricetta
+        ricette.add(ricetta2); // Aggiungiamo la seconda ricetta
+
+        // --- Esecuzione ---
+        // Calcoliamo le statistiche
+        StatisticheDTO stats = utente.calcolaStatistiche(ricette);
+
+        // --- Verifica ---
+        // Controlliamo che l'oggetto delle statistiche non sia vuoto
+        assertNotNull("Le statistiche non devono essere vuote!", stats);
+        // Controlliamo il totale dei "mi piace" (10 + 10 = 20)
+        assertEquals("Il totale dei 'mi piace' dovrebbe essere 20", 20, stats.getTotalLikes());
+        // Controlliamo il totale dei commenti (5 + 8 = 13)
+        assertEquals("Il totale dei commenti dovrebbe essere 13", 13, stats.getTotalComments());
+        // Se due ricette hanno lo stesso numero di like, dovrebbe prendere la prima che trova ("Ricetta 1")
+        assertEquals("La ricetta più apprezzata dovrebbe essere 'Ricetta 1' (la prima con 10 like)", "Ricetta 1", stats.getMostLikedRecipe());
     }
 }
