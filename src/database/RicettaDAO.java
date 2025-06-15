@@ -61,7 +61,7 @@ public class RicettaDAO {
                       "LEFT JOIN Utenti u ON r.Utenti_username = u.username " +
                       "LEFT JOIN Likes l ON r.idRicetta = l.Ricette_idRicetta " +
                       "LEFT JOIN Commenti c ON r.idRicetta = c.Ricette_idRicetta " +
-                      "WHERE r.visibilita = true " +
+                      "WHERE r.visibilita = true AND r.Utenti_username != ? " +
                       "GROUP BY r.idRicetta " +
                       "ORDER BY r.dataPubblicazione DESC " +
                       "LIMIT 5";
@@ -69,6 +69,7 @@ public class RicettaDAO {
         try (Connection conn = DBManager.openConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
+            stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 dto.RicettaDTO dto = new dto.RicettaDTO(
