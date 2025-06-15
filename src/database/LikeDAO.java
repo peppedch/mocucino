@@ -7,21 +7,6 @@ import java.sql.SQLException;
 
 public class LikeDAO {
 
-    public int getNumeroLikePerRicetta(int ricettaId) {
-        String query = "SELECT COUNT(*) FROM Likes WHERE ricette_idRicetta = ?";
-        try (Connection conn = DBManager.openConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, ricettaId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     //richiamato sotto per toggle like
     private boolean utenteHaGiaMessoLike(String username, int idRicetta) {                      //username è di quello che ha messo like, idRicetta è della ricetta a cui ha messo like
         String query = "SELECT * FROM Likes WHERE utenti_username = ? AND ricette_idRicetta = ?";

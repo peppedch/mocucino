@@ -124,7 +124,7 @@ public class DettaglioRicettaFrame extends JFrame {
         // COMMENTI RECENTI
         contentPane.add(new JLabel("Commenti recenti:"));
 
-        List<CommentoDTO> commenti = ricetta.getCommentiRecenti();
+        List<CommentoDTO> commenti = ricetta.getCommentiRecenti();  //ricetta è il DTO passato al costruttore, che contiene i commenti recenti.
         if (commenti != null && !commenti.isEmpty()) {
             for (CommentoDTO c : commenti) {
                 JTextArea area = new JTextArea(c.getAutore() + " (" + c.getData() + "): " + c.getTesto());
