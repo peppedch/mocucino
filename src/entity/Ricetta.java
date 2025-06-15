@@ -111,7 +111,7 @@ public class Ricetta {
 
      //Ottiene i tag più utilizzati nelle ricette
      //Entity -> DAO: Richiesta tag più usati
-     //Chiamata da GestoreController.generaReportTag()
+     //Chiamata da GestoreController.generaReportTag() riga 121
      //Implementata in TagDAO.getTagPiuUtilizzati()
 
     public List<ReportTagDTO> getTagPiuUtilizzati() {

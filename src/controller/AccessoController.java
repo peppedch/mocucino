@@ -32,12 +32,7 @@ public class AccessoController {
         return Piattaforma.getInstance(null, null).registraUtente(utenteDTO);
     }
 
-    /**
-     * Autentica un amministratore
-     * Controller -> Entity: Richiesta autenticazione admin
-     * Chiamata da LoginAdminFrame riga 65
-     * Implementata in Piattaforma.autenticaAdmin()
-     */
+
     public boolean autenticaAdmin(String username, String password) {
         return Piattaforma.getInstance(null, null).autenticaAdmin(username, password);
     }

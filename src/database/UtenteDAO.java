@@ -61,11 +61,10 @@ public class UtenteDAO {
         }
     }
 
-    /**
-     * Ottiene il profilo dell'utente
-     * DAO -> Database: Query per ottenere i dati del profilo
-     * Chiamata da entity.Utente.getProfiloUtente() linea 146
-     */
+
+     //DAO a Database: Query per ottenere i dati del profilo
+     //Chiamata da entity.Utente.getProfiloUtente() linea 146
+
     public ProfiloUtenteDTO getProfiloUtente(String username) {
         String query = "SELECT * FROM Utenti WHERE username = ?";
         
@@ -92,11 +91,10 @@ public class UtenteDAO {
         return null;
     }
 
-    /**
-     * Aggiorna il profilo dell'utente
-     * DAO -> Database: Query per aggiornare i dati del profilo
-     * Chiamata da Piattaforma.aggiornaProfiloUtente() riga 150
-     */
+
+     //DAO a Database: Query per aggiornare i dati del profilo
+     // Chiamata da Piattaforma.aggiornaProfiloUtente() riga 150
+
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         String query = "UPDATE Utenti SET nome = ?, cognome = ?, email = ?, password = ?, biografia = ?, immagine = ? WHERE username = ?";
         

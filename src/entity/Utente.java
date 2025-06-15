@@ -60,22 +60,22 @@ public class Utente {
         return okTag && okIng && okAssoc;       //scelta progettuale: se uno dei 3 fallisce, non creo la ricetta. aggiungo la ricetta nel mio sistema solo se sono sicuro che dopo la pubblicazione tengo traccia di tutto, raccogliendo tutti i dati.
     }
 
-    /**
-     * Ottiene i titoli delle raccolte dell'utente
-     * Entity -> DAO: Richiesta titoli raccolte utente
-     * Chiamato da GestoreController.getRaccolteUtente() a riga 71, per 2 cose diverse
-     * Implementato in RaccoltaDAO.getTitoliRaccolteByUtente() a riga 15
-     */
+
+     //Ottiene i titoli delle raccolte dell'utente
+     //Entity a DAO: Richiesta titoli raccolte utente
+     //Chiamato da GestoreController.getRaccolteUtente() a riga 71, per 2 cose diverse
+     //Implementato in RaccoltaDAO.getTitoliRaccolteByUtente() a riga 15
+
     public List<String> getTitoliRaccolte() {
         return new database.RaccoltaDAO().getTitoliRaccolteByUtente(this.username);
     }
 
-    /**
-     * Crea una nuova raccolta per l'utente
-     * Entity -> DAO: Richiesta creazione raccolta
-     * Chiamato da GestoreController.creaNuovaRaccolta() a riga 77
-     * Implementato in RaccoltaDAO.createRaccolta()
-     */
+
+     //Crea una nuova raccolta per l'utente
+     //Entity a DAO: Richiesta creazione raccolta
+     //Chiamato da GestoreController.creaNuovaRaccolta() a riga 77
+     //Implementato in RaccoltaDAO.createRaccolta()
+
     public boolean creaRaccolta(String nome) {
         return new database.RaccoltaDAO().createRaccolta(nome, this.username);
     }
@@ -152,11 +152,11 @@ public class Utente {
         return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
     }
 
-    /**
-     * Ottiene la lista delle raccolte dell'utente
-     * Entity -> Controller: Fornisce accesso alle raccolte
-     * Chiamato da GestoreController.getIdRaccoltaDefault() a riga 87
-     */
+
+     //Ottiene la lista delle raccolte dell'utente
+     //Entity a Controller: Fornisce accesso alle raccolte
+     //Chiamato da GestoreController.getIdRaccoltaDefault() a riga 87
+
     public ArrayList<Raccolta> getRaccolteList() {
         return this.raccolteList;
     }
