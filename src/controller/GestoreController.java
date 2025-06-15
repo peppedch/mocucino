@@ -180,8 +180,8 @@ public class GestoreController {
 
     //Aggiorna il profilo dell'utente, inovocato a riga 206 di gui.AreaPersonaleFrame
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
-        entity.Utente utente = new entity.Utente(profilo.getUsername(), null, null, null, null, null);
-        return utente.aggiornaProfiloUtente(profilo);
+        entity.ProfiloPersonale user = new entity.ProfiloPersonale(null, null);
+        return user.aggiornaProfiloUtente(profilo);
     }
 
 

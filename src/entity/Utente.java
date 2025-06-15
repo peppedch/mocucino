@@ -147,11 +147,6 @@ public class Utente {
     public dto.ProfiloUtenteDTO getProfiloUtente(String username) {
         return new database.UtenteDAO().getProfiloUtente(username);
     }
-    //riga 147 di controller.GestoreController
-    public boolean aggiornaProfiloUtente(dto.ProfiloUtenteDTO profilo) {
-        return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
-    }
-
 
      //Ottiene la lista delle raccolte dell'utente
      //Entity a Controller: Fornisce accesso alle raccolte

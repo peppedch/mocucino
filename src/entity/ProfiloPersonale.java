@@ -8,4 +8,10 @@ public class ProfiloPersonale {
         this.biografia = biografia;
         this.immagine = immagine;
     }
+
+    //riga 147 di controller.GestoreController
+    public boolean aggiornaProfiloUtente(dto.ProfiloUtenteDTO profilo) {
+        return new database.UtenteDAO().aggiornaProfiloUtente(profilo);
+    }
 }
+
