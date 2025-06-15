@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import dto.*;
 
 public class Utente {
     //tutti a private.
@@ -117,15 +118,19 @@ public class Utente {
         this.password = password;
     }
 
-    //invocato a riga 136 di controller.GestoreController
-    public dto.StatisticheDTO getStatisticheUtente(String username) {
-        List<dto.RicettaDTO> ricette = new database.RicettaDAO().getRicetteByUtente(username);
+
+    public StatisticheDTO getStatisticheUtente(String username) {
+    List<RicettaDTO> ricette = new database.RicettaDAO().getRicetteByUtente(username);
+    return calcolaStatistiche(ricette);
+    }
+
+    public StatisticheDTO calcolaStatistiche(List<RicettaDTO> ricette) {
         int totalLikes = 0;
         int totalComments = 0;
         String mostLikedRecipe = "Nessuna ricetta";
         int maxLikes = 0;
 
-        for (dto.RicettaDTO ricetta : ricette) {
+        for (RicettaDTO ricetta : ricette) {
             totalLikes += ricetta.getNumeroLike();
             totalComments += ricetta.getNumCommenti();
             if (ricetta.getNumeroLike() > maxLikes) {
@@ -134,7 +139,7 @@ public class Utente {
             }
         }
 
-        return new dto.StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
+        return new StatisticheDTO(totalLikes, totalComments, mostLikedRecipe);
     }
 
     //invocato a riga 142 di controller.GestoreController
