@@ -43,7 +43,7 @@ public class GestoreController {
             // La raccolta di default viene creata dal trigger nel database, quindi recuperiamo semplicemente il suo ID
             int idRaccoltaDefault = Raccolta.getIdByTitolo("Default", utenteDTO.getUsername());     //come parametri il titolo della raccolta e lo usernme dell'utente
             //per debug
-                    System.out.println("Id raccolta deafult: " + idRaccoltaDefault);    //checkka nel db nella table raccolte.
+                    System.out.println("Id raccolta default: " + idRaccoltaDefault);    //checkka nel db nella table raccolte.
             if (idRaccoltaDefault != -1) {  // Verifichiamo che l'ID sia valido
                 Raccolta raccoltaDefault = new Raccolta("Default", "Raccolta automatica", null);    //oltre a db abbiamo "persistenza" anche in memoria
                 raccoltaDefault.setId(idRaccoltaDefault);
