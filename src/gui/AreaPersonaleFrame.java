@@ -31,7 +31,7 @@ AreaPersonaleFrame extends JFrame {
     private JLabel ricettaTopLabel;
     private JButton tornaFeedBtn;
 
-    private String imgPath = null;		//serve per salvare percorso immagine del profilo caricata
+    private String imgPath = null;		//serve per salvare percorso immagine del profilo caricata, chiaramente ci vorrebbe un server apposito per gestire le immagini, ma per uno scopo accademico va bene per il momento.
     private JFileChooser fileChooser;
     private ImageIcon icon;
 
@@ -52,7 +52,7 @@ AreaPersonaleFrame extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    String username = "testUser"; // nella realtà lo prendo da login e passato al feed e ora qui, ma per test va bene
+                    String username = "testUser"; // nella realtà lo prendo da login e passato al feed e ora passato qui, questo è solo un mockup per testare come eseguibile.
                     AreaPersonaleFrame frame = new AreaPersonaleFrame(username);
                     frame.setVisible(true);
                 } catch (Exception e) {
@@ -262,9 +262,9 @@ AreaPersonaleFrame extends JFrame {
         raccoltepanel.add(raccolteScroll, BorderLayout.CENTER);
         getContentPane().add(raccoltepanel);
 
-        // GUI -> Controller: Richiesta raccolte utente
+        // GUI a Controller: Richiesta raccolte utente
         // Chiamata al controller per ottenere le raccolte dell'utente
-        // Implementata in GestoreController.getRaccolteUtente() [linea 89]
+        // Implementata in GestoreController.getRaccolteUtente()
         List<String> raccolteUtente = controller.getRaccolteUtente(username);
         raccolteModel.clear();
         for (String r : raccolteUtente) {

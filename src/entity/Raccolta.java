@@ -39,22 +39,22 @@ public class Raccolta {
         return this.id;
     }
 
-    /**
-     * Aggiunge una ricetta alla raccolta
-     * Entity -> DAO: Richiesta aggiunta ricetta
-     * Chiamato da Utente.creaRicetta() a riga 50 di entity.Utente
-     * Implementato in RaccoltaDAO.aggiungiRicettaARaccolta()
-     */
-    public boolean aggiungiRicetta(int ricettaId) {
+
+     //Aggiunge una ricetta alla raccolta
+     //Entity -> DAO: Richiesta aggiunta ricetta
+     //Chiamato da Utente.creaRicetta() a riga 50 di entity.Utente
+     //Implementato in RaccoltaDAO.aggiungiRicettaARaccolta()
+
+    public boolean aggiungiRicetta(int ricettaId) {     //raccolta ha visbilità sulle sue ricette, quindi è sua la responsabilota di aggiungere la ricetta nella rispettivaraccolta
         return new database.RaccoltaDAO().aggiungiRicettaARaccolta(this.id, ricettaId);
     }
 
-    /**
-     * Ottiene le ricette contenute nella raccolta
-     * Entity -> DAO: Richiesta ricette della raccolta
-     * Chiamato da GestoreController.getRicetteDaRaccolta()
-     * Implementato in RicettaDAO.getRicetteByRaccolta()
-     */
+
+     //Ottiene le ricette contenute nella raccolta
+     //Entity -> DAO: Richiesta ricette della raccolta
+     //Chiamato da GestoreController.getRicetteDaRaccolta()
+     //Implementato in RicettaDAO.getRicetteByRaccolta()
+
     public List<dto.RicettaDTO> getRicette() {
         return new database.RicettaDAO().getRicetteByRaccolta(this.titolo, this.username);
     }

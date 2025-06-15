@@ -85,7 +85,7 @@ public class GestoreController {
     //invocata a riga 328 di gui.NuovaRicettaFrame
     public boolean creaRicetta(dto.RicettaDTO dto) {
         if (utenteCorrente == null) return false;
-        return utenteCorrente.creaRicetta(dto);
+        return utenteCorrente.creaRicetta(dto);     //la responsabilità di cerare la ricetta è dell'utente in quel momento.
     }
 
     //invocato a riga 278, 289, 299 di gui.NuovaRicettaFrame

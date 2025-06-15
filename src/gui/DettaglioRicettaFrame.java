@@ -33,7 +33,7 @@ public class DettaglioRicettaFrame extends JFrame {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) {        //creo ricetta fittizia necessaria per passarla al costruttore dell'eseguibile e testare. chiaramente il vero flusso parte dal costruttore a riga 74, e d lì gli viene passata la ricetta effettiva.
         // Creo una lista di ingredienti fittizi
         List<dto.IngredienteDTO> ingredienti = new ArrayList<>();
         ingredienti.add(new dto.IngredienteDTO("Farina", "200", "g"));

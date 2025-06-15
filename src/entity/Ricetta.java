@@ -52,68 +52,68 @@ public class Ricetta {
         return dao.inserisciCommento(username, idRicetta, testo);
     }
 
-    /**
-     * Imposta l'ID della ricetta
-     * Entity: Gestione stato interno
-     * Chiamato da Utente.creaRicetta() a riga 54
-     */
+
+    //Imposta l'ID della ricetta
+    //Entity: Gestione stato interno
+     // Chiamato da Utente.creaRicetta() a riga 54
+
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Aggiunge i tag alla ricetta
-     * Entity -> DAO: Richiesta aggiunta tag
-     * Chiamato da Utente.creaRicetta() a riga 54
-     * Implementato in TagDAO.aggiungiTagARicetta()
-     */
+
+     //Aggiunge i tag alla ricetta
+     //Entity a DAO: Richiesta aggiunta tag
+     //Chiamato da Utente.creaRicetta() a riga 54
+     //Implementato in TagDAO.aggiungiTagARicetta()
+
     public boolean aggiungiTag(List<String> tag) {
         return new database.TagDAO().aggiungiTagARicetta(this.id, tag);
     }
 
-    /**
-     * Aggiunge gli ingredienti alla ricetta
-     * Entity -> DAO: Richiesta aggiunta ingredienti
-     * Chiamato da Utente.creaRicetta() a riga 55
-     * Implementato in IngredienteDAO.aggiungiIngredientiARicetta()
-     */
+
+     // Aggiunge gli ingredienti alla ricetta
+     //Entity a DAO: Richiesta aggiunta ingredienti
+     //Chiamato da Utente.creaRicetta() a riga 55
+     //Implementato in IngredienteDAO.aggiungiIngredientiARicetta()
+
     public boolean aggiungiIngredienti(List<dto.IngredienteDTO> ingredienti) {
         return new database.IngredienteDAO().aggiungiIngredientiARicetta(this.id, ingredienti);
     }
 
-    /**
-     * Ottiene gli ingredienti della ricetta
-     * Entity -> DAO: Richiesta ingredienti
-     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
-     */
+
+     //Ottiene gli ingredienti della ricetta
+     //Entity -> DAO: Richiesta ingredienti
+     //Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+
     public List<dto.IngredienteDTO> getIngredienti() {
         return new database.IngredienteDAO().getIngredientiByRicetta(this.id);
     }
 
-    /**
-     * Ottiene i tag della ricetta
-     * Entity -> DAO: Richiesta tag
-     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
-     */
+
+     //Ottiene i tag della ricetta
+     //Entity a DAO: Richiesta tag
+     //Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+
     public List<String> getTag() {
         return new database.TagDAO().getTagByRicetta(this.id);
     }
 
-    /**
-     * Ottiene i commenti recenti della ricetta
-     * Entity -> DAO: Richiesta commenti
-     * Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
-     */
+
+     //Ottiene i commenti recenti della ricetta
+     //Entity a DAO: Richiesta commenti
+     //Chiamato da RicettaDAO.getUltime5RicettePubbliche() e getRicetteByRaccolta()
+
     public List<dto.CommentoDTO> getCommentiRecenti() {
         return new database.CommentoDAO().getUltimi3CommentiPerRicetta(this.id);
     }
 
-    /**
-     * Ottiene i tag più utilizzati nelle ricette
-     * Entity -> DAO: Richiesta tag più usati
-     * Chiamata da GestoreController.generaReportTag()
-     * Implementata in TagDAO.getTagPiuUtilizzati()
-     */
+
+     //Ottiene i tag più utilizzati nelle ricette
+     //Entity -> DAO: Richiesta tag più usati
+     //Chiamata da GestoreController.generaReportTag()
+     //Implementata in TagDAO.getTagPiuUtilizzati()
+
     public List<ReportTagDTO> getTagPiuUtilizzati() {
         return new database.TagDAO().getTagPiuUtilizzati();
     }

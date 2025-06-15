@@ -171,21 +171,10 @@ public class NuovaRicettaFrame extends JFrame {
                     return;
                 }
 
-                List<IngredienteDTO> ingredienti = new ArrayList<>();
-                DefaultTableModel model = (DefaultTableModel) ingredienti_table.getModel();
-
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    String nome = model.getValueAt(i, 0).toString();
-                    String quantita = model.getValueAt(i, 1).toString();
-                    String unita = model.getValueAt(i, 2).toString();
-
-                    ingredienti.add(new IngredienteDTO(nome, quantita, unita)); //creo dto e gli passo gli ingredienti raccolti
-                }
-
-
-                List<String> tagSelezionati = new ArrayList<>();    //aggiungo i tag spuntati
+                //SE SELEZIONO I TAG, LI RACCOLGO IN UNA LISTA. IMPORTANTE CHE FARANNO PARTE DI RICETTA DTO, VEDI LA COSTRUZIONE SOTTO DI RICETT DTO
+                List<String> tagSelezionati = new ArrayList<>();
                 if (checkboxsalato.isSelected()) tagSelezionati.add("salato");
-                if (checkboxdolce.isSelected()) tagSelezionati.add("dolce");
+                if (checkboxdolce.isSelected()) tagSelezionati.add("dolce");  //aggiungo i tag spuntati. Questa scelta progettuale rende il sistema più robusto, approccio di Gui "guidata"; garantisce maggior sicurezza rispetto a permettere all'utente di inserire una stringa come tag.
                 if (chechkboxdieta.isSelected()) tagSelezionati.add("salutare");
                 if (chckbox_spuntino.isSelected()) tagSelezionati.add("spuntino");
                 if (chckbox_vegetariano.isSelected()) tagSelezionati.add("vegetariano");
@@ -214,7 +203,6 @@ public class NuovaRicettaFrame extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
 
                 //terzo check, per tempo intero positivo
                 String tempoStr = tempo_inserisci.getText().trim();
@@ -302,34 +290,39 @@ public class NuovaRicettaFrame extends JFrame {
                 }
                 boolean visibilita = pubblica_button.isSelected();  // true se è selezionato "Pubblica", false se "Privata"
 
-
                 //FINO AD ORA ABBIAMO SOLO "SELEZIONATO" LA RISPETTIVA RACCOLTA. ORA DEVO SALVARE LA RICETTA NORMALMENTE, MA ANCHE AGGIUNGERLA ALLA RISPETTIVA RACCOLTA DESIDERATA.
                 //questo viene fatto esattamente a partire dal metodo entity.Utente.creaRicetta(), richiamato però dal controller, rispettando i layer bced.
-                //creo il dto e passo i dati raccolti al controller
+
+                // Salvo gli ingredienti nella lista del di IngredientiDTO.
+                List<IngredienteDTO> ingredienti = new ArrayList<>();
+                DefaultTableModel model = (DefaultTableModel) ingredienti_table.getModel();
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    String nome = model.getValueAt(i, 0).toString();
+                    String quantita = model.getValueAt(i, 1).toString();        //A differenza dei tag che sono semplicemente una stringa, per gli ingredienti ho bisogno di dto a loro volto, essendo un dato piu strutturato.
+                    String unita = model.getValueAt(i, 2).toString();
+                    ingredienti.add(new IngredienteDTO(nome, quantita, unita));  //avremo anche qui come per i tag piu sopra, una lista di ingredienti dto.
+                }
+
+                // Creo il DTO della ricetta con i dati raccolti dalla gui per passarla al controller e poi all'utente entity!!!!
                 RicettaDTO nuovaRicetta = new RicettaDTO(
-                        titolo,
-                        descrizione,
-                        tempo,
-                        ingredienti,
-                        tagSelezionati
+                    titolo,
+                    descrizione,
+                    tempo,
+                    ingredienti,  // ingredienti come lista di <IngredienteDTO>
+                    tagSelezionati   // tag come lista di <String>
                 );
-                nuovaRicetta.setVisibilita(visibilita);
+                nuovaRicetta.setVisibilita(visibilita);  
+                nuovaRicetta.setNomeRaccolta(nomeRaccoltaSelezionato);  //passo a Ricetta DTO anche la raccolta selezionata ovviamente.
+                nuovaRicetta.setAutoreUsername(username);       //passo a Ricetta DTO anche l'username dell'autore, perche l'utente è autore della ricetta. Questo username è passato dal login in poi, vedere il parametro nel costruttore delle classi come in FeedFrame.
+                nuovaRicetta.setIdRaccolta(idRaccolta);         //passo a Ricetta DTO anche l'id della raccolta selezionata, recuperato sopra in tutti e 3 eventuali casi. FONDAMENTALE COME FK IN RICETTA, COSI SO DOVE LA RICETTA IN QUALE RACCOLTA è SALVATA.
 
-                //passo a Ricetta DTO anche la raccolta selezionata ovviamente
-                nuovaRicetta.setNomeRaccolta(nomeRaccoltaSelezionato);
-                //passo al dto di Ricetta anche l'autore della ricetta, cioe lo username ottenuto inizialmente dal login, passato al costruttore FeedFrame, passato a NuovaRicettaFeedFrame!
-                nuovaRicetta.setAutoreUsername(username);
-                //setto anche l'id della raccolta selezionata, recuperato sopra in tutti e 3 eventuali casi. FONDAMENTALE COME FK IN RICETTA, COSI SO DOVE LA RICETTA IN QUALE RACCOLTA è SALVATA.
-                nuovaRicetta.setIdRaccolta(idRaccolta);
-
-
-
-                //richiamiamo il controller per salvare la ricetta, passandogli tutti i dati dell'oggetto DTO come parametro
-                boolean success = controller.creaRicetta(nuovaRicetta); //DA QUI IN POI SALVA SIA LA RICETTA CHE LA RICETTA NELLA RISPETTIVA RACCOLTA
+                // Ora che ho nuovaricetta, come DTO di ricetta con tutti i dati, la passo al controller per farla creare all'utente a livello entity salvarla nel db.
+                //il controller ha il metodo creaRicetta che mi salva la ricetta nel db.
+                boolean success = controller.creaRicetta(nuovaRicetta);
 
                 if (success) {
                     JOptionPane.showMessageDialog(NuovaRicettaFrame.this,
-                            "Ricetta pubblicata con successo!",              //NB: per avere un successo, la ricetta oltre ad essere salvata nella table ricetta, deve essere correttamente salvata anche nella rispettiva raccolta con tutti gli ingredienti e tag nel db, altrimenti da errore. è un po' un privilegiare la consistenza nel db, è una scelta progettuale.
+                            "Ricetta pubblicata con successo!",
                             "Successo",
                             JOptionPane.INFORMATION_MESSAGE);
                     dispose();
@@ -339,7 +332,6 @@ public class NuovaRicettaFrame extends JFrame {
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
 

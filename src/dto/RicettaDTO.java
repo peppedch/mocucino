@@ -11,11 +11,24 @@ public class RicettaDTO {
     private int numeroLike;
     private List<CommentoDTO> commentiRecenti;
     private int numCommenti;
+    private int idRicetta;
+    private String nomeRaccolta;
+    private String autoreUsername;
+    private int idRaccolta;
+    private boolean visibilita;
+
+    public RicettaDTO(String titolo, String descrizione, int tempoPreparazione,
+                      List<IngredienteDTO> ingredienti, List<String> tag) {
+        this.titolo = titolo;
+        this.descrizione = descrizione;
+        this.tempoPreparazione = tempoPreparazione;
+        this.ingredienti = ingredienti;
+        this.tag = tag;
+    }
 
     public int getNumCommenti() {
         return numCommenti;
     }
-
     public void setNumCommenti(int numCommenti) {
         this.numCommenti = numCommenti;
     }
@@ -27,23 +40,15 @@ public class RicettaDTO {
     public void setCommentiRecenti(List<CommentoDTO> c) { this.commentiRecenti = c; }
     public List<CommentoDTO> getCommentiRecenti() { return commentiRecenti; }
 
-    private int idRicetta;
 
     public int getIdRicetta() {
         return idRicetta;
     }
-
     public void setIdRicetta(int idRicetta) {
         this.idRicetta = idRicetta;
     }
 
 
-
-    private String nomeRaccolta;
-
-    private String autoreUsername;
-
-    private int idRaccolta;
 
     public void setIdRaccolta(int idRaccolta) {
         this.idRaccolta = idRaccolta;
@@ -52,65 +57,47 @@ public class RicettaDTO {
         return idRaccolta;
     }
 
-    private boolean visibilita;
 
     public boolean getVisibilita() {
         return visibilita;
     }
-
     public void setVisibilita(boolean visibilita) {
         this.visibilita = visibilita;
     }
 
-
-
-
-    public RicettaDTO(String titolo, String descrizione, int tempoPreparazione,
-                      List<IngredienteDTO> ingredienti, List<String> tag) {
-        this.titolo = titolo;
-        this.descrizione = descrizione;
-        this.tempoPreparazione = tempoPreparazione;
-        this.ingredienti = ingredienti;
-        this.tag = tag;
-    }
-
-    // Getter
+    // altri Getter
     public String getTitolo() {
         return titolo;
     }
-
     public String getDescrizione() {
         return descrizione;
     }
-
     public int getTempoPreparazione() {
         return tempoPreparazione;
     }
-
     public List<IngredienteDTO> getIngredienti() {
         return ingredienti;
     }
-
     public List<String> getTag() {
         return tag;
     }
-
-    //aggiunti per la raccolta selezionata in cui salvare la ricetta
     public String getNomeRaccolta() {
         return nomeRaccolta;
     }
+    public String getAutoreUsername() {
+        return autoreUsername;
+    }
+
+
 
     public void setNomeRaccolta(String nomeRaccolta) {
         this.nomeRaccolta = nomeRaccolta;
     }
-
     public void setAutoreUsername(String username) {
         this.autoreUsername = username;
     }
 
-    public String getAutoreUsername() {
-        return autoreUsername;
-    }
+
 
 
     // toString per stampa/debug

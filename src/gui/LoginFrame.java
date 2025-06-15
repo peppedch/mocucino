@@ -77,7 +77,7 @@ public class LoginFrame extends JFrame {
                 String password = new String(password_inserisci.getPassword());
 
                 AccessoController controller = AccessoController.getInstance(); //singleton controller per accesso.
-                UtenteDTO utenteDTO = controller.getUtenteAutenticato(email, password);   //check se le credenziali sono corrette ed eventualmente restituisce l'utente autenticato come DTO.
+                UtenteDTO utenteDTO = controller.getUtenteAutenticato(email, password);   //check se le credenziali sono corrette ed eventualmente restituisce l'utente autenticato come DTO. 1 sola query al db per verificare se esiste e restituisce le info(dto) dell'utente autenticato. Serve l'utente, perchè a Piattaforma, contenitore di utenti, bisogna passargli un oggetto utente nel costruttore,
 
                 if (utenteDTO != null) {   //se l'utente esiste nel db
                     String usernameReale = utenteDTO.getUsername();    //prendo lo username dell'utente autenticato- fondamentale perchè è la pk nella table Utenti e mi serve ad esempio per fare una discrimazione importante: ovvero, in feedframe, mi devono uscire solo ricette di ALTRI AUTORI (ALTRI USERNAME) e non quella dell'utente corrente che ha effettuato l'accesso. Quindi, per fare questo, devo passare lo username dell'utente autenticato al feedframe, e poi in feedframe fare una query che mi restituisce le ricette di ALTRI AUTORI (ovvero con username diverso da quello passato come parametro al feedframe, che sarebbe l'utente loggato che sta usando la piattaforma).

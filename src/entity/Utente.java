@@ -26,37 +26,38 @@ public class Utente {
     }
 
 
-    /**
-     * Crea una ricetta a partire da un RicettaDTO, salva ingredienti e tag, e la associa alla raccolta.
-     * Responsabilità dell'Utente secondo GRASP.
-     * Chiamato da GestoreController.creaRicetta() -> Utente.creaRicetta() A RIGA 83!!!
-     * Entity -> DAO: RicettaDAO, RaccoltaDAO, TagDAO, IngredienteDAO
-     */
+
+     // Crea una ricetta a partire da un RicettaDTO, salva ingredienti e tag, e la associa alla raccolta.
+     // Responsabilità dell'Utente secondo GRASP.
+     //Chiamato da GestoreController.creaRicetta() A RIGA 83!!!
+     // Entity a DAO: RicettaDAO, RaccoltaDAO, TagDAO, IngredienteDAO
+
     public boolean creaRicetta(dto.RicettaDTO dto) {
         database.RicettaDAO ricettaDAO = new database.RicettaDAO();
-        database.RaccoltaDAO raccoltaDAO = new database.RaccoltaDAO();
+        database.RaccoltaDAO raccoltaDAO = new database.RaccoltaDAO();  //sue responsabilità. l'utente è autore di una ricetta e ha visibilità sulle SUE raccolte.
 
-        // Step 1 – creo ricetta e ottiengo ID
+        // Step 1 – creo ricetta e ottiengo ID. è la responsabilità dell'utente creare una ricetta. creo a livello entity e db
+        Ricetta ricetta = new Ricetta(dto.getTitolo(), dto.getDescrizione(), dto.getTempoPreparazione(), dto.getVisibilita());
         int ricettaId = ricettaDAO.createRicetta(dto);
         if (ricettaId == -1) return false;
 
-        // Step 2 – uso l'ID della raccolta già presente nel DTO che già abbiamo recuperato, non ho bisogno di fare una nuova query, basta settarlo solo.
+        // Step 2 – uso l'ID della raccolta già presente nel DTO di ricetta che già abbiamo recuperato in fase di selezione della raccolta, non ho bisogno di fare una nuova query, basta settarlo solo.
         int raccoltaId = dto.getIdRaccolta();
         if (raccoltaId == -1) return false;
 
         // Step 3 – delego le responsabilità alle classi appropriate. L'utente essendo contenitore di raccolte, crea la raccolta a livello entity.
-        // La raccolta si occupa di aggiungere la ricetta a se stessa
-        Raccolta raccolta = new Raccolta(null, null, null);
+        // La raccolta si occupa di aggiungere la ricetta, appena creata, a se stessa
+        Raccolta raccolta = new Raccolta(dto.getNomeRaccolta(), null, ricetta);     //la descrizione l'abbiamo gestita di default, sia se la crea utente che non, scelta progettuale, per evitare si inseriscano parolacce e implementare un sistema di moderazione. chiaramente si potrebbe fare diversamente si potrebbe pensare lo stesso per gli altri inserimenti, ma bisogna fare un trade off e valutarne costi-benefici, porof Fasolino docet.
         raccolta.setId(raccoltaId);
-        boolean okAssoc = raccolta.aggiungiRicetta(ricettaId);
+        boolean okAssoc = raccolta.aggiungiRicetta(ricettaId);  //creo a livello entity la raccolta e gli associo la ricetta. a livello db la raccolta già è stata creata, vedere in nuovaricettaframe.
 
-        //L'utente ha la responsabiltà di creare la ricetta, ne è l'autore. E La ricetta si occupa di gestire i propri tag e ingredienti
-        Ricetta ricetta = new Ricetta(dto.getTitolo(), dto.getDescrizione(), dto.getTempoPreparazione(), dto.getVisibilita());
-        ricetta.setId(ricettaId);
-        boolean okTag = ricetta.aggiungiTag(dto.getTag());
+        //L'utente ha la responsabiltà di creare la ricetta, fatto sopra a livello entity, ne è l'autore. E La ricetta, a sua volta, si occupa di gestire i propri tag e ingredienti, ha visbilità su di essi.
+
+        ricetta.setId(ricettaId);   //restituita dal database sopra in fase di creazione della ricetta.
+        boolean okTag = ricetta.aggiungiTag(dto.getTag());  //ricetta appena creata gestisce i suoi tag e ingredienti che gli sono stati passati come dto dal controller.
         boolean okIng = ricetta.aggiungiIngredienti(dto.getIngredienti());
 
-        return okTag && okIng && okAssoc;
+        return okTag && okIng && okAssoc;       //scelta progettuale: se uno dei 3 fallisce, non creo la ricetta. aggiungo la ricetta nel mio sistema solo se sono sicuro che dopo la pubblicazione tengo traccia di tutto, raccogliendo tutti i dati.
     }
 
     /**
