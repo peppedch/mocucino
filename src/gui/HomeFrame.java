@@ -24,7 +24,7 @@ public class HomeFrame extends JFrame {
     private JPanel contentPane;
 
     /**
-     * Lancio dell'applicazione.
+     * Launch the application.
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
