@@ -20,7 +20,7 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
   - JFrame
   - WindowBuilder
 - **Testing**: 
-  - JUnit
+  - JUnit 4
 
 ## DESCRIZIONE SISTEMA
 
