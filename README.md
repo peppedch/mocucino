@@ -1,5 +1,5 @@
 # MOCUCINO - PIATTAFORMA SOCIALE DEDICATA ALLA CONDIVISIONE DI RICETTE CULINARIE
-![Università](docs/photos/logo_uni.png)
+![Università](docs/photos/uni_logo.png)
 Progetto di Ingegneria del Software a.a. 2024/2025, seguito dalla prof. A.R. Fasolino
 
 ## SPECIFICHE INFORMALI
