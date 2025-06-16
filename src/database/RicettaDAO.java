@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import dto.RicettaDTO;   // solo in IngredienteDAO
+import dto.RicettaDTO;   // solo in RicettaIngredienteDAO
 import dto.ReportAutoriDTO;
 import dto.ReportTopRicetteDTO;
 
@@ -108,8 +108,8 @@ public class RicettaDAO {
                         rs.getString("titolo"),
                         rs.getString("procedimento"),
                         rs.getInt("tempo"),
-                        new IngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
-                        new TagDAO().getTagByRicetta(rs.getInt("idRicetta"))
+                        new RicettaIngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
+                        new RicettaTagDAO().getTagByRicetta(rs.getInt("idRicetta"))
                 );
                 dto.setIdRicetta(rs.getInt("idRicetta"));
                 dto.setAutoreUsername(rs.getString("Utenti_username"));
@@ -147,8 +147,8 @@ public class RicettaDAO {
                         rs.getString("titolo"),
                         rs.getString("procedimento"),
                         rs.getInt("tempo"),
-                        new IngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
-                        new TagDAO().getTagByRicetta(rs.getInt("idRicetta"))
+                        new RicettaIngredienteDAO().getIngredientiByRicetta(rs.getInt("idRicetta")),
+                        new RicettaTagDAO().getTagByRicetta(rs.getInt("idRicetta"))
                 );
                 dto.setIdRicetta(rs.getInt("idRicetta"));
                 dto.setAutoreUsername(username);
