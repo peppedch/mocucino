@@ -7,9 +7,6 @@ import java.sql.SQLException;
 
 public class AmministratoreDAO {
 
-
-
-
     public boolean autenticaAdmin(String username, String password) {
         String query = "SELECT * FROM Amministratori WHERE username = ? AND password = ?";
         try (Connection conn = DBManager.openConnection();
@@ -23,4 +20,5 @@ public class AmministratoreDAO {
             return false;           //se si verifica un errore, tipo non trova le credenziali nel db, consideriamo l'autenticazione fallita
         }
     }
+
 } 

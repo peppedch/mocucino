@@ -42,7 +42,7 @@ public class CommentoDAO {
         return commenti;
     }
 
-    //INvocato a riga 135 di entity.Piattaforma.java
+    //Invocato a riga 135 di entity.Piattaforma.java
     public boolean inserisciCommento(String username, int idRicetta, String testo) {
         String query = "INSERT INTO commenti (autore, testocommento, datapubblicazione, ricette_idRicetta, utenti_username) " +
                 "VALUES (?, ?, NOW(), ?, ?)";
