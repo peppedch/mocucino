@@ -99,7 +99,8 @@ public class RegisterFrame extends JFrame {
      */
     public RegisterFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 500, 400);
+        setMinimumSize(new java.awt.Dimension(450, 350));
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
