@@ -109,7 +109,7 @@ public class Piattaforma {
     //Entity -> DAO: Richiesta tag più usati
     //Chiamata da GestoreController.generaReportTag() riga 121
     public List<ReportTagDTO> getTagPiuUtilizzati() {
-        return new database.TagDAO().getTagPiuUtilizzati();
+        return new database.RicettaTagDAO().getTagPiuUtilizzati();
     }
 
 }
