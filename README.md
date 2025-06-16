@@ -12,8 +12,10 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 - **IDE**: 
   - Intellij IDEA 2024.3.5
   - Eclipse IDE
-- **Database**: MySQL
-- **Connettività DB**: JDBC
+- **Database**:
+  - MySQL
+- **Connettività DB**:
+  - JDBC
 - **Interfaccia Grafica**: 
   - JFrame
   - WindowBuilder
