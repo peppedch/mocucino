@@ -17,6 +17,8 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 - **Interfaccia Grafica**: 
   - JFrame
   - WindowBuilder
+- **Testing**: 
+  - JUnit
 
 ## DESCRIZIONE SISTEMA
 
