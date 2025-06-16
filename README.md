@@ -36,9 +36,3 @@ Gli amministratori della piattaforma, previa autenticazione, possono accedere a 
 
 Il sistema dovrà essere accessibile sia da dispositivi desktop che mobili, prevedere un sistema di notifiche in tempo reale per segnalare all'utente l'arrivo di nuovi commenti o apprezzamenti, garantire la protezione dei dati personali, la sicurezza delle informazioni archiviate e l'adozione di un meccanismo di autenticazione robusto e affidabile.
 Il sistema dovrà essere accessibile sia da dispositivi desktop che mobili, prevedere un sistema di notifiche in tempo reale per segnalare all'utente l'arrivo di nuovi commenti o apprezzamenti, garantire la protezione dei dati personali, la sicurezza delle informazioni archiviate e l'adozione di un meccanismo di autenticazione robusto e affidabile.
-
-## AUTORI
-
-- [Fabio](https://www.github.com/lightskinF)  
-- [Giuseppe](https://www.github.com/peppedch)  
-- [Marco](https://www.github.com/marcodb1106)  
