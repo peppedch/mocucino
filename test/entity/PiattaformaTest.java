@@ -15,10 +15,10 @@ public class PiattaformaTest {
     private Ricetta ricettaTest;
 
     // Dati per un nuovo utente da registrare
-    private static final String NEW_USERNAME = "test_new";
-    private static final String NEW_NOME = "Luke";
-    private static final String NEW_COGNOME = "Rosso";
-    private static final String NEW_EMAIL = "test_new@mail.ex";
+    private static final String NEW_USERNAME = "t3st_junit";
+    private static final String NEW_NOME = "Test";
+    private static final String NEW_COGNOME = "Test";
+    private static final String NEW_EMAIL = "t3st_junit4@mail.ex";
     private static final String NEW_PASSWORD = "TestPass2";
 
     // Dati di un utente che sappiamo già esistere nel sistema

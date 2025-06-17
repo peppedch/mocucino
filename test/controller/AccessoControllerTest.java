@@ -18,11 +18,11 @@ public class AccessoControllerTest {
     private static final String ADMIN_PASSWORD = "admin";
 
     // Dati per un nuovo utente
-    private static final String NEW_USERNAME = "gina_gilli";
-    private static final String NEW_NOME = "Gina";
-    private static final String NEW_COGNOME = "Sorda";
-    private static final String NEW_EMAIL = "gino_sords@mail.ex";
-    private static final String NEW_PASSWORD = "GinoSord9";
+    private static final String NEW_USERNAME = "test_junit4";
+    private static final String NEW_NOME = "Test";
+    private static final String NEW_COGNOME = "Testing";
+    private static final String NEW_EMAIL = "test_jUnit4@mail.ex";
+    private static final String NEW_PASSWORD = "Test9";
     private static final String NEW_BIOGRAFIA = "Cuoca professional";
     private static final String NEW_IMMAGINE = "uploads/marco_verdi.jpg";
 
