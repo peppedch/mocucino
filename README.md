@@ -4,7 +4,6 @@
 
 Progetto di Ingegneria del Software a.a. 2024/2025, seguito dalla prof. A.R. Fasolino
 
-![Demo] (ShareX_4KfwMDNLS9.gif)
 
 ## SPECIFICHE INFORMALI
 
