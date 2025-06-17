@@ -31,7 +31,7 @@ public class Utente {
      // Crea una ricetta a partire da un RicettaDTO, salva ingredienti e tag, e la associa alla raccolta.
      // Responsabilità dell'Utente secondo GRASP.
      //Chiamato da GestoreController.creaRicetta() A RIGA 83!!!
-     // Entity a DAO: RicettaDAO, RaccoltaDAO, TagDAO, IngredienteDAO
+     // Entity a DAO: RicettaDAO, RaccoltaDAO, TagDAO, RicettaIngredienteDAO
 
     public boolean creaRicetta(dto.RicettaDTO dto) {
         database.RicettaDAO ricettaDAO = new database.RicettaDAO();

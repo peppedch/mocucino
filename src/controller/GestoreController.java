@@ -196,9 +196,7 @@ public class GestoreController {
 
 
     public List<ReportTagDTO> generaReportTag() {
-        
-        Ricetta ricetta = new Ricetta(null, null, 0, false);    //per questo report delego a ricetta che è lei ad avere visibilità diretta sui tah e non piattaforma.
-        return ricetta.getTagPiuUtilizzati();
+        return Piattaforma.getInstance(null, null).getTagPiuUtilizzati();
     }
 
 

@@ -86,7 +86,7 @@ public class RegisterFrame extends JFrame {
         if (input.isEmpty()) return false;
 
         for (char c : input.toCharArray()) {
-            if (!Character.isLetter(c) && c != ' ') {
+            if (!Character.isLetter(c) && c != ' ' && c != '\'') {
                 return false;
             }
         }

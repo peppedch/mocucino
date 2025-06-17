@@ -9,6 +9,7 @@ import dto.UtenteDTO;
 import dto.RicettaDTO;
 import dto.ReportTopRicetteDTO;
 import dto.ReportAutoriDTO;
+import dto.ReportTagDTO;
 
 
 public class Piattaforma {
@@ -102,6 +103,13 @@ public class Piattaforma {
 
     public boolean autenticaAdmin(String username, String password) {
         return new AmministratoreDAO().autenticaAdmin(username, password);
+    }
+
+    //Ottiene i tag più utilizzati nelle ricette
+    //Entity -> DAO: Richiesta tag più usati
+    //Chiamata da GestoreController.generaReportTag() riga 121
+    public List<ReportTagDTO> getTagPiuUtilizzati() {
+        return new database.RicettaTagDAO().getTagPiuUtilizzati();
     }
 
 }
