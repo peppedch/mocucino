@@ -113,7 +113,7 @@ public class GestoreController {
         
         // Per ogni ricetta, recupero i dati correlati attraverso l'entity
         for (RicettaDTO ricetta : ricette) {
-            // Creo un'istanza temporanea di Ricetta per accedere ai metodi dell'entity
+            // Creo un'istanza di Ricetta; questo mi permette, vedi dopo, di accedere ai metodi dell'entity Ricetta per ottenerne anche rispettivi tag, ingredienti e commenti recenti. In questo modo al feed restitisco la ricetta completa, che verrà mostrata in interezza solo dopo averci cliccato sopra.
             entity.Ricetta ricettaEntity = new entity.Ricetta(
                 ricetta.getTitolo(), 
                 ricetta.getDescrizione(), 
@@ -127,8 +127,8 @@ public class GestoreController {
                 ricetta.getTitolo(),
                 ricetta.getDescrizione(),
                 ricetta.getTempoPreparazione(),
-                ricettaEntity.getIngredienti(),
-                ricettaEntity.getTag()
+                ricettaEntity.getIngredienti(),     //grazie all'entity Ricetta, posso accedere agli ingredienti della ricetta
+                ricettaEntity.getTag()              // grazie all'entity Ricetta, posso accedere ai tag della ricetta
             );
             
             // Copio gli altri dati dal DTO originale
@@ -136,7 +136,7 @@ public class GestoreController {
             ricettaCompleta.setAutoreUsername(ricetta.getAutoreUsername());
             ricettaCompleta.setNumeroLike(ricetta.getNumeroLike());
             ricettaCompleta.setNumCommenti(ricetta.getNumCommenti());
-            ricettaCompleta.setCommentiRecenti(ricettaEntity.getCommentiRecenti());
+            ricettaCompleta.setCommentiRecenti(ricettaEntity.getCommentiRecenti()); //grazie all'entity Ricetta, posso accedere ai commenti recenti della ricetta
             
             ricetteComplete.add(ricettaCompleta);
         }
