@@ -1,7 +1,8 @@
-package gui;
+package gui.UtenteBoundary;
 
 import controller.GestoreController;
 import dto.RicettaDTO;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

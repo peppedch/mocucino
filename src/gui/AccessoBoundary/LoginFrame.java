@@ -1,9 +1,11 @@
-package gui;
+package gui.AccessoBoundary;
 
 import java.awt.EventQueue;
 import controller.AccessoController;
 import controller.GestoreController;
 import dto.UtenteDTO;
+import gui.UtenteBoundary.FeedFrame;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;

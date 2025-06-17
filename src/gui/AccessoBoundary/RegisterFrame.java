@@ -1,4 +1,4 @@
-package gui;
+package gui.AccessoBoundary;
 
 import javax.swing.JOptionPane;		//aggiunto io per mostrare POPUp di errore password
 

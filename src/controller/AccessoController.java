@@ -21,13 +21,13 @@ public class AccessoController {
         return instance;
     }
 
-    //invocato a riga 80 gui.LoginFrame
+    //invocato a riga 80 gui.AccessoBoundary.LoginFrame
     public UtenteDTO getUtenteAutenticato(String email, String password) {
         return Piattaforma.getInstance(null, null).getUtenteByCredenziali(email, password);
     }
 
 
-    //invocato a riga 187 di gui.RegisterFrame
+    //invocato a riga 187 di gui.AccessoBoundary.RegisterFrame
     public boolean registraUtente(UtenteDTO utenteDTO) {
         return Piattaforma.getInstance(null, null).registraUtente(utenteDTO);
     }

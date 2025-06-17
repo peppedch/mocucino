@@ -1,4 +1,4 @@
-package gui;
+package gui.AutoreBoundary;
 
 import java.awt.EventQueue;
 import javax.swing.ButtonGroup;

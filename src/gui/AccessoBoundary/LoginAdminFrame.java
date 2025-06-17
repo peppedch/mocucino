@@ -1,4 +1,4 @@
-package gui;
+package gui.AccessoBoundary;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import controller.AccessoController;
+import gui.AmministratoreBoundary.AdminReportFrame;
 
 public class LoginAdminFrame extends JFrame {
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package gui;
+package gui.UtenteBoundary;
 
 import controller.GestoreController;
 import dto.StatisticheDTO;

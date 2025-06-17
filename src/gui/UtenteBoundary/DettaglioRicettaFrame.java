@@ -1,4 +1,4 @@
-package gui;
+package gui.UtenteBoundary;
 
 //anche qui importati i vari moduli javax.swing e il modulo CommentoDTO nel package dto da me creato
 //serve per visualizzare i 3 commenti recenti una volta cliccata la ricetta da feed (e quindi ora ci troviamo nella ricetta in dettaglio comn tutto)

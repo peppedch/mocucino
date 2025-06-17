@@ -1,4 +1,4 @@
-package gui;
+package gui.AccessoBoundary;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

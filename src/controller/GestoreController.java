@@ -65,30 +65,30 @@ public class GestoreController {
         }
     }
 
-    //chiamato per il logout, a riga 106 di gui.FeedFrame
+    //chiamato per il logout, a riga 106 di gui.UtenteBoundary.FeedFrame
     public void clearUtenteCorrente() {
         this.utenteCorrente = null;
     }
 
-    //invocato a riga 265 di gui.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 268. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
+    //invocato a riga 265 di gui.AutoreBoundary.NuovaRicettaFrame e usato anche in gui.Areapersonaleframe a riga 268. SIMILE A getIdRaccoltaByTitolo PIU SOTTO, MA GIU HO SPIEGATO IL PERCHè DI AVERNE DUE SIMILI MA DIVERSE.
     public List<String> getRaccolteUtente(String username) {
         if (utenteCorrente == null) return new ArrayList<>();
         return utenteCorrente.getTitoliRaccolte();      //è l'utente che deve accedere alle sue raccolte, non la piattaforma. Quindi è l'utente che ha la responsabilità di gestire le sue raccolte. Quinid a livello entity chiamo il metodo getTitoliRaccolte() dell'utente, che a sua volta chiama il DAO per recuperare i titoli delle raccolte dal database.
     }
 
-    //invocato a riga 286 di gui.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
+    //invocato a riga 286 di gui.AutoreBoundary.NuovaRicettaFrame, gli passa la stringa della nuova raccolta che vuole creare username attuale. PER CREARE UNA RACCOLTA SERVE ANCHE IL TITOLO CHE VUOLE L'UTENTE, QUINDI NECESSARIAMENTE METODO DIVERSO.
     public boolean creaNuovaRaccolta(String nome, String username) {
         if (utenteCorrente == null) return false;
         return utenteCorrente.creaRaccolta(nome);
     }
 
-    //invocata a riga 328 di gui.NuovaRicettaFrame
+    //invocata a riga 328 di gui.AutoreBoundary.NuovaRicettaFrame
     public boolean creaRicetta(dto.RicettaDTO dto) {
         if (utenteCorrente == null) return false;
         return utenteCorrente.creaRicetta(dto);     //la responsabilità di cerare la ricetta è dell'utente in quel momento.
     }
 
-    //invocato a riga 278, 289, 299 di gui.NuovaRicettaFrame
+    //invocato a riga 278, 289, 299 di gui.AutoreBoundary.NuovaRicettaFrame
     public int getIdRaccoltaByTitolo(String titolo, String username) {
         return Raccolta.getIdByTitolo(titolo, username);    //l'id della raccolta mi serve come fk per la ricetta, quindi lo devo recuperare, per salvare la ricetta nella giusta raccolta.
     }
@@ -106,7 +106,7 @@ public class GestoreController {
         return -1;
     }
 
-    //invocato a riga 159 di gui.FeedFrame
+    //invocato a riga 159 di gui.UtenteBoundary.FeedFrame
     public List<RicettaDTO> getRicetteRecenti(String username) {
         List<RicettaDTO> ricette = Piattaforma.getInstance(null, null).getUltime5RicettePubbliche(username);
         List<RicettaDTO> ricetteComplete = new ArrayList<>();
@@ -144,20 +144,20 @@ public class GestoreController {
         return ricetteComplete;
     }
 
-    //invocato a riga 156 di gui.DettaglioRicettaFrame
+    //invocato a riga 156 di gui.UtenteBoundary.DettaglioRicettaFrame
     public boolean toggleLike(String username, int idRicetta) {
         Ricetta ricetta = new Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo
         return ricetta.gestisciToggleLike(username, idRicetta);
     }
 
-    //invocato a riga 181 di gui.DettaglioRicettaFrame
+    //invocato a riga 181 di gui.UtenteBoundary.DettaglioRicettaFrame
     public boolean aggiungiCommento(String username, int idRicetta, String testo) {
         entity.Ricetta ricetta = new entity.Ricetta(null, null, 0, false); // Creo un'istanza temporanea per accedere al metodo, come per il like
         return ricetta.aggiungiCommento(username, idRicetta, testo);
     }
 
 
-    //invocato a riga 61 di gui.RicettaRaccoltaFrame
+    //invocato a riga 61 di gui.UtenteBoundary.RicettaRaccoltaFrame
     public List<RicettaDTO> getRicetteDaRaccolta(String titoloRaccolta, String username) {
         Raccolta raccolta = new Raccolta(titoloRaccolta, null, null);
         raccolta.setUsername(username);
@@ -171,14 +171,14 @@ public class GestoreController {
         return utente.getStatisticheUtente(username);
     }
 
-    //invocato a riga 122 di gui.AreaPersonaleFrame
+    //invocato a riga 122 di gui.UtenteBoundary.AreaPersonaleFrame
     public ProfiloUtenteDTO getProfiloUtente(String username) {
         entity.Utente utente = new entity.Utente(username, null, null, null, null, null);
         return utente.getProfiloUtente(username);
     }
 
 
-    //Aggiorna il profilo dell'utente, inovocato a riga 206 di gui.AreaPersonaleFrame
+    //Aggiorna il profilo dell'utente, inovocato a riga 206 di gui.UtenteBoundary.AreaPersonaleFrame
     public boolean aggiornaProfiloUtente(ProfiloUtenteDTO profilo) {
         entity.ProfiloPersonale user = new entity.ProfiloPersonale(null, null);
         return user.aggiornaProfiloUtente(profilo);

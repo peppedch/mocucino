@@ -1,4 +1,4 @@
-package gui;
+package gui.UtenteBoundary;
 
 import java.awt.EventQueue;
 import javax.swing.JOptionPane;
@@ -17,6 +17,9 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import controller.GestoreController;
 import dto.RicettaDTO;
+import gui.AccessoBoundary.LoginFrame;
+import gui.AutoreBoundary.NuovaRicettaFrame;
+
 import java.awt.Font;
 
 
