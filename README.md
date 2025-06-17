@@ -4,6 +4,8 @@
 
 Progetto di Ingegneria del Software a.a. 2024/2025, seguito dalla prof. A.R. Fasolino
 
+![Demo] (ShareX_4KfwMDNLS9.gif)
+
 ## SPECIFICHE INFORMALI
 
 Si desidera sviluppare un sistema software per la gestione di una piattaforma sociale dedicata alla condivisione di ricette culinarie semplici e veloci. La piattaforma è pensata per permettere agli utenti di pubblicare le proprie ricette, organizzarle in raccolte tematiche e interagire con i contenuti pubblicati dagli altri utenti attraverso apprezzamenti e commenti.
