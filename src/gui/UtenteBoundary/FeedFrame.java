@@ -57,7 +57,8 @@ public class FeedFrame extends JFrame {
         this.username=username;
         System.out.println("Username ricevuto in FeedFrame: " + this.username); //stampa per debug, verifico che ho ricevuto correttamente lo username da login
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 650, 350);
+        setMinimumSize(new java.awt.Dimension(650, 350));
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -138,7 +139,7 @@ public class FeedFrame extends JFrame {
                                         .addComponent(areapersonale_button))
                                 .addGap(18)
                                 .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
-                                .addGap(18)
+                                .addGap(8)
                                 .addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(pubblica_bottone, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(logoutBtn))

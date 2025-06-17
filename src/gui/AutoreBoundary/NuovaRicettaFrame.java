@@ -105,7 +105,8 @@ public class NuovaRicettaFrame extends JFrame {
     public NuovaRicettaFrame(String username) {     //è qui che recupoero effettivamente lo stesso username di feedframe che a sua volta è stato passato dal login
         this.username = username;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 550, 550);
+        setBounds(100, 100, 700, 600);
+        setMinimumSize(new java.awt.Dimension(700, 600));
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

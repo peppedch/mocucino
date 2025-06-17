@@ -65,7 +65,7 @@ AreaPersonaleFrame extends JFrame {
         this.username = username;
         this.controller =  GestoreController.getInstance();
         setTitle("Area Personale");
-        setSize(600, 600);
+        setSize(600, 640);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
