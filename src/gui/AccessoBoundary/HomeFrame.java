@@ -55,7 +55,7 @@ public class HomeFrame extends JFrame {
         welcome_label.setFont(new Font("Lucida Handwriting", Font.BOLD, 14));
 
         // Logo statico come prima
-        JLabel logoLabel = new JLabel(new ImageIcon("docs/photos/mocucino_logo.png"));
+        JLabel logoLabel = new JLabel(new ImageIcon(getClass().getResource("/photos/mocucino_logo.png")));
         logoLabel.setHorizontalAlignment(JLabel.CENTER);
 
         // Messaggio di benvenuto sotto il logo
