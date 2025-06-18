@@ -10,6 +10,9 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 
 # DEMO
 
+**Homepage**
+![Homepage](docs/photos/homepage.png)
+
 **Funzionalità area personale**
 ![Demo](docs/gif/ShareX_9nOdDp8SWK.gif)
 
