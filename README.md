@@ -11,12 +11,15 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 # DEMO
 
 **Homepage**  
+
 <img src="docs/photos/homepage.png" alt="Homepage" width="600" style="display: block; margin: 0;" />
 
 **Funzionalità area personale**
+
 ![Demo](docs/gif/ShareX_9nOdDp8SWK.gif)
 
 **Funzionalità feed**
+
 ![Demo](docs/gif/ShareX_XHx4aide0K.gif)
 
 ## TECNOLOGIE UTILIZZATE
