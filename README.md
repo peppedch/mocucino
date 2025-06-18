@@ -10,13 +10,19 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 
 # DEMO
 
-**Homepage**
-![Homepage](docs/photos/homepage.png)
+**HOMEPAGE**  
 
-**Funzionalità area personale**
+<img src="docs/photos/homepage.png" alt="Homepage" width="600" style="display: block; margin: 0;" />
+ 
+Il pulsante **"Accedi come amministratore"** è inizialmente nascosto. Per visualizzarlo è necessario **ingrandire la finestra del browser**.
+Questa scelta è stata fatta per migliorare la **user experience**, mantenendo l'interfaccia pulita e semplice per l'utente comune.
+
+**AREA PERSONALE**
+
 ![Demo](docs/gif/ShareX_9nOdDp8SWK.gif)
 
-**Funzionalità feed**
+**FEED - PUBBLICA RICETTA**
+
 ![Demo](docs/gif/ShareX_XHx4aide0K.gif)
 
 ## TECNOLOGIE UTILIZZATE
