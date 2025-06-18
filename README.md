@@ -11,9 +11,7 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 # DEMO
 
 **Homepage**
-<p align="center">
-  <img src="docs/photos/homepage.png" alt="Homepage" width="400"/>
-</p>
+<img src="docs/photos/homepage.png" alt="Homepage" width="400"/>
 
 **Funzionalità area personale**
 ![Demo](docs/gif/ShareX_9nOdDp8SWK.gif)
