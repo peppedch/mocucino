@@ -13,6 +13,7 @@ Si desidera sviluppare un sistema software per la gestione di una piattaforma so
 **Funzionalità area personale**
 ![Demo](docs/gif/ShareX_9nOdDp8SWK.gif)
 
+**Funzionalità feed**
 ![Demo](docs/gif/ShareX_XHx4aide0K.gif)
 
 ## TECNOLOGIE UTILIZZATE
